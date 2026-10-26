@@ -1,19 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <androidx.fragment.app.FragmentContainerView android:id="@+id/nav_host_fragment" android:name="androidx.navigation.fragment.NavHostFragment" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" app:defaultNavHost="true" app:navGraph="@navigation/nav_graph"/>
+    <LinearLayout android:id="@+id/ll_bottom_nav" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@color/surface">
+        <View android:layout_width="match_parent" android:layout_height="@dimen/divider_height" android:background="@color/home_border"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:baselineAligned="false">
+            <LinearLayout android:id="@+id/btn_nav_home" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="@dimen/home_nav_height" android:gravity="center" android:orientation="vertical" android:padding="@dimen/spacing_4" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:contentDescription="@string/home_tab_home">
+                <ImageView android:layout_width="@dimen/home_nav_icon" android:layout_height="@dimen/home_nav_icon" android:src="@drawable/ic_home" app:tint="@color/home_green" android:importantForAccessibility="no"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="@string/home_tab_home" android:textAppearance="@style/TextAppearance.Drink.Nav" android:textColor="@color/home_green"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/btn_nav_menu" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="@dimen/home_nav_height" android:gravity="center" android:orientation="vertical" android:padding="@dimen/spacing_4" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:contentDescription="@string/home_tab_menu">
+                <ImageView android:layout_width="@dimen/home_nav_icon" android:layout_height="@dimen/home_nav_icon" android:src="@drawable/ic_cup" app:tint="@color/home_muted" android:importantForAccessibility="no"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="@string/home_tab_menu" android:textAppearance="@style/TextAppearance.Drink.Nav"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/btn_nav_history" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="@dimen/home_nav_height" android:gravity="center" android:orientation="vertical" android:padding="@dimen/spacing_4" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:contentDescription="@string/home_tab_history">
+                <ImageView android:layout_width="@dimen/home_nav_icon" android:layout_height="@dimen/home_nav_icon" android:src="@drawable/ic_history" app:tint="@color/home_muted" android:importantForAccessibility="no"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="@string/home_tab_history" android:textAppearance="@style/TextAppearance.Drink.Nav"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/btn_nav_vouchers" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="@dimen/home_nav_height" android:gravity="center" android:orientation="vertical" android:padding="@dimen/spacing_4" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:contentDescription="@string/home_tab_vouchers">
+                <ImageView android:layout_width="@dimen/home_nav_icon" android:layout_height="@dimen/home_nav_icon" android:src="@drawable/ic_voucher" app:tint="@color/home_muted" android:importantForAccessibility="no"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="@string/home_tab_vouchers" android:textAppearance="@style/TextAppearance.Drink.Nav"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/btn_nav_profile" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="@dimen/home_nav_height" android:gravity="center" android:orientation="vertical" android:padding="@dimen/spacing_4" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:contentDescription="@string/home_tab_profile">
+                <ImageView android:layout_width="@dimen/home_nav_icon" android:layout_height="@dimen/home_nav_icon" android:src="@drawable/ic_profile" app:tint="@color/home_muted" android:importantForAccessibility="no"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="@string/home_tab_profile" android:textAppearance="@style/TextAppearance.Drink.Nav"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
