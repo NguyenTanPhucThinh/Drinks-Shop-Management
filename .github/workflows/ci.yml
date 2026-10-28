@@ -1,0 +1,269 @@
+name: Android CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  # Có commit mới thì hủy lần chạy cũ của cùng PR/nhánh để tiết kiệm phút Actions
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------
+  # 1. Quy chuẩn code & resource (mục 2, 3, 5, 6, 7)
+  # ---------------------------------------------------------------
+  code-rules:
+    name: Quy chuẩn code & resource
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Kiểm tra quy chuẩn
+        run: |
+          FAIL=0
+
+          # Đọc output "file:line:..." của grep -n, in annotation lên GitHub
+          annotate() {
+            local level="$1" msg="$2" found=0 hit file rest line
+            while IFS= read -r hit; do
+              [ -z "$hit" ] && continue
+              file="${hit%%:*}"; rest="${hit#*:}"; line="${rest%%:*}"
+              echo "::${level} file=${file},line=${line}::${msg}"
+              found=1
+            done
+            [ "$found" = 1 ] && [ "$level" = error ] && return 1
+            return 0
+          }
+          # scan <error|warning> <thông báo> <regex> <file...>
+          scan() {
+            local level="$1" msg="$2" pattern="$3"; shift 3
+            [ "$#" -eq 0 ] && return 0
+            grep -nHE "$pattern" "$@" | annotate "$level" "$msg"
+          }
+
+          mapfile -t LAYOUTS < <(git ls-files '*/src/main/res/layout*/*.xml')
+          mapfile -t CODE    < <(git ls-files '*/src/main/*.kt' '*/src/main/*.java')
+          mapfile -t MODELS  < <(printf '%s\n' "${CODE[@]}" | grep '/data/model/')
+          mapfile -t UI_CODE < <(printf '%s\n' "${CODE[@]}" | grep '/ui/')
+
+          # --- Mục 5: Design System ---
+          scan error "Hardcode mã màu. Dùng @color/... trong colors.xml." \
+            '"#[0-9A-Fa-f]{3,8}"' "${LAYOUTS[@]}" || FAIL=1
+          scan error "Hardcode màu trong code. Dùng ContextCompat.getColor(context, R.color...)." \
+            'Color\.parseColor\(|0x[Ff]{2}[0-9A-Fa-f]{6}' "${CODE[@]}" || FAIL=1
+          scan error "Hardcode chuỗi hiển thị. Đặt vào strings.xml rồi dùng @string/..." \
+            'android:(text|hint|contentDescription)="[^@?"]' "${LAYOUTS[@]}" || FAIL=1
+          scan warning "Kích thước hardcode. Cân nhắc dùng @dimen/... (spacing_16, text_16...)." \
+            '"[0-9]*[1-9][0-9]*(\.[0-9]+)?(dp|dip|sp)"' "${LAYOUTS[@]}"
+
+          # --- Mục 2: Tiền dùng Long ---
+          scan error "Model không dùng Double/Float. Giá tiền và thành tiền phải là Long (VNĐ)." \
+            '\b(Double|Float|double|float)\b' "${MODELS[@]}" || FAIL=1
+
+          # --- Mục 3: UI không gọi MockData trực tiếp ---
+          scan error "UI không được gọi Mock data trực tiếp. Lấy dữ liệu qua Repository." \
+            'data\.mock\b|\bMock[A-Za-z]*Data\b' "${UI_CODE[@]}" || FAIL=1
+
+          # --- Mục 6: Tên file layout ---
+          for f in "${LAYOUTS[@]}"; do
+            name="$(basename "$f")"
+            if ! [[ "$name" =~ ^(activity|fragment|item|dialog)_[a-z0-9_]+\.xml$ ]]; then
+              echo "::error file=$f::Tên layout '$name' phải bắt đầu bằng activity_, fragment_, item_ hoặc dialog_ (snake_case)."
+              FAIL=1
+            fi
+          done
+
+          # --- Mục 6: ID trong XML ---
+          if [ ${#LAYOUTS[@]} -gt 0 ]; then
+            while IFS= read -r hit; do
+              [ -z "$hit" ] && continue
+              file="${hit%%:*}"; rest="${hit#*:}"; line="${rest%%:*}"; id="${hit##*@+id/}"
+              if ! [[ "$id" =~ ^[a-z][a-z0-9]*(_[a-z0-9]+)*$ ]]; then
+                echo "::error file=$file,line=$line::ID '$id' phải viết snake_case (vd: tv_product_name)."
+                FAIL=1
+              elif ! [[ "$id" =~ ^(btn|tv|et|rv|iv|cb|rb|cl|ll)_ ]]; then
+                echo "::warning file=$file,line=$line::ID '$id' chưa dùng tiền tố trong bảng quy ước (btn_, tv_, et_, rv_, iv_, cb_, rb_, cl_, ll_)."
+              fi
+            done < <(grep -nHoE '@\+id/[A-Za-z0-9_]+' "${LAYOUTS[@]}")
+          fi
+
+          # --- Mục 7: File không được commit ---
+          BAD_FILES=$(git ls-files | grep -E '(^|/)(local\.properties$|build/|\.gradle/|\.idea/)|\.(jks|keystore)$' || true)
+          if [ -n "$BAD_FILES" ]; then
+            while IFS= read -r f; do
+              echo "::error file=$f::File này phải nằm trong .gitignore. Gỡ bằng: git rm --cached \"$f\""
+            done <<< "$BAD_FILES"
+            FAIL=1
+          fi
+
+          # --- Mục 1: Phiên bản SDK ---
+          GRADLE_FILES=$(git ls-files 'app/build.gradle' 'app/build.gradle.kts' 'gradle/libs.versions.toml')
+          check_sdk() {
+            if [ -z "$GRADLE_FILES" ] || ! grep -qE "$1[^0-9]*\b$2\b" $GRADLE_FILES; then
+              echo "::error::Không tìm thấy $1 = $2 trong app/build.gradle(.kts) hoặc libs.versions.toml (mục 1 của quy chuẩn)."
+              FAIL=1
+            fi
+          }
+          check_sdk minSdk 26
+          check_sdk compileSdk 34
+          check_sdk targetSdk 34
+
+          if [ "$FAIL" != 0 ]; then
+            echo "Có vi phạm quy chuẩn, xem chi tiết ở tab 'Files changed' hoặc phần Annotations."
+          fi
+          exit $FAIL
+
+  # ---------------------------------------------------------------
+  # 2. Build, Unit test, Lint (mục 1 + điều kiện "PR xong" ở mục 7)
+  # ---------------------------------------------------------------
+  build:
+    name: Build, Unit test & Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Cài JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Cài Gradle (có cache + kiểm tra gradle-wrapper.jar)
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          # Chỉ main/develop được ghi cache, nhánh feature chỉ đọc
+          cache-read-only: ${{ github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/main' }}
+
+      - run: chmod +x ./gradlew
+
+      - name: Build debug
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Unit test
+        run: ./gradlew testDebugUnitTest
+
+      - name: Android Lint
+        run: ./gradlew lintDebug
+
+      - name: Upload báo cáo lint/test
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            **/build/reports/
+            **/build/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload APK debug
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 7
+
+  # ---------------------------------------------------------------
+  # 3. Chạy thử app trên máy ảo: mở app + bấm ngẫu nhiên, bắt crash/ANR
+  # ---------------------------------------------------------------
+  smoke-test:
+    name: Chạy thử app trên máy ảo
+    needs: build   # Dùng lại APK của job build, không build lại
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Tải APK từ job build
+        uses: actions/download-artifact@v4
+        with:
+          name: app-debug-apk
+          path: apk
+
+      - name: Bật KVM (tăng tốc máy ảo)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Đọc package name từ APK
+        run: |
+          APK=$(ls apk/*.apk | head -n 1)
+          AAPT=$(ls "$ANDROID_HOME"/build-tools/*/aapt | sort -V | tail -n 1)
+          PKG=$("$AAPT" dump badging "$APK" | sed -n "s/^package: name='\([^']*\)'.*/\1/p")
+          if [ -z "$PKG" ]; then
+            echo "::error::Không đọc được package name từ APK."
+            exit 1
+          fi
+          echo "APK=$APK" >> "$GITHUB_ENV"
+          echo "PKG=$PKG" >> "$GITHUB_ENV"
+          echo "Package: $PKG"
+
+      # Emulator runner chạy 'script' từng dòng riêng lẻ, nên logic nhiều dòng phải để trong file
+      - name: Tạo script smoke test
+        run: |
+          cat > smoke.sh <<'EOF'
+          #!/usr/bin/env bash
+          FAIL=0
+          mkdir -p smoke-results
+
+          adb install -r "$APK" || { echo "::error::Cài APK lên máy ảo thất bại."; exit 1; }
+          adb logcat -c
+
+          echo "== Bước 1: Mở app =="
+          adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 > /dev/null
+          sleep 8
+          adb shell screencap -p /sdcard/launch.png && adb pull /sdcard/launch.png smoke-results/launch.png
+          if ! adb shell pidof "$PKG" > /dev/null; then
+            echo "::error::App bị tắt ngay sau khi mở (crash lúc khởi động). Xem logcat.txt trong artifact smoke-results."
+            FAIL=1
+          fi
+
+          if [ "$FAIL" = 0 ]; then
+            echo "== Bước 2: Bấm ngẫu nhiên 500 thao tác =="
+            # -s 42: seed cố định để lặp lại đúng chuỗi thao tác khi debug
+            adb shell monkey -p "$PKG" -s 42 --throttle 300 --pct-syskeys 0 -v 500 > smoke-results/monkey.txt 2>&1
+            if grep -qE '// CRASH|// NOT RESPONDING|Monkey aborted' smoke-results/monkey.txt; then
+              echo "::error::App bị crash hoặc treo (ANR) khi chạy thử. Xem monkey.txt và logcat.txt trong artifact smoke-results."
+              FAIL=1
+            fi
+          fi
+
+          adb logcat -d > smoke-results/logcat.txt
+          if grep -A 1 'FATAL EXCEPTION' smoke-results/logcat.txt | grep -q "Process: $PKG"; then
+            echo "== Stack trace của crash =="
+            grep -A 40 'FATAL EXCEPTION' smoke-results/logcat.txt | head -n 80
+            FAIL=1
+          fi
+
+          [ "$FAIL" = 0 ] && echo "Smoke test OK: app mở được và không crash sau 500 thao tác."
+          exit $FAIL
+          EOF
+
+      - name: Chạy máy ảo Android 14 và smoke test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          script: bash smoke.sh
+
+      - name: Upload kết quả smoke test
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-results
+          path: smoke-results/
+          if-no-files-found: ignore
+          retention-days: 7
