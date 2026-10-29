@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="@dimen/thien_card_gap">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+    <ImageView android:layout_width="@dimen/thien_thumb_size" android:layout_height="@dimen/thien_thumb_size" android:src="@drawable/ic_thien_drink" android:padding="@dimen/spacing_12" android:background="@drawable/bg_thien_mint" android:contentDescription="@string/thien_product_illustration"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginStart="@dimen/spacing_8">
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_history_id" android:textStyle="bold"/>
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_tiny_size" android:text="" android:id="@+id/tv_thien_history_products"/>
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_tiny_size" android:text="" android:id="@+id/tv_thien_history_time"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_history_total" android:textStyle="bold" android:gravity="end"/>
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/primary" android:textSize="@dimen/thien_tiny_size" android:text="" android:id="@+id/tv_thien_history_status" android:gravity="end"/>
+    </LinearLayout>
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_8">
+    <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_history_details" android:layout_width="0dp" android:layout_height="34dp" android:text="@string/thien_figma_072" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/primary" app:backgroundTint="@color/thien_white" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" app:strokeColor="@color/primary" app:strokeWidth="1dp" android:layout_weight="1"/>
+    <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_history_review" android:layout_width="0dp" android:layout_height="34dp" android:text="@string/thien_figma_073" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/on_primary" app:backgroundTint="@color/primary" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" android:layout_weight="1" android:layout_marginStart="@dimen/spacing_8"/>
+  </LinearLayout>
+</LinearLayout>

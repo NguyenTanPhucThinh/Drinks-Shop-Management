@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/thien_page">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="54dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="@dimen/thien_page_space" android:paddingEnd="@dimen/thien_page_space">
+    <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/text_28" android:text="@string/thien_figma_026" android:id="@+id/btn_thien_checkout_back" android:textStyle="bold" android:gravity="center"/>
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_title_size" android:text="@string/thien_figma_006" android:textStyle="bold" android:layout_weight="1"/>
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginStart="@dimen/thien_page_space" android:layout_marginEnd="@dimen/thien_page_space" android:layout_marginBottom="@dimen/spacing_12" android:background="@drawable/bg_thien_mint">
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_013" android:id="@+id/tv_thien_step_cart" android:layout_weight="1" android:gravity="center" android:padding="@dimen/spacing_12" android:background="@drawable/bg_thien_mint"/>
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/on_primary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_014" android:id="@+id/tv_thien_step_checkout" android:textStyle="bold" android:layout_weight="1" android:gravity="center" android:padding="@dimen/spacing_12" android:background="@drawable/bg_thien_chip_active"/>
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_015" android:id="@+id/tv_thien_step_tracking" android:layout_weight="1" android:gravity="center" android:padding="@dimen/spacing_12" android:background="@drawable/bg_thien_mint"/>
+  </LinearLayout>
+  <androidx.core.widget.NestedScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="@dimen/thien_page_space" android:paddingEnd="@dimen/thien_page_space" android:paddingBottom="@dimen/spacing_16">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="@dimen/thien_card_gap">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_body_size" android:text="@string/thien_figma_027" android:textStyle="bold"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_028"/>
+      </LinearLayout>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="@dimen/thien_card_gap">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_body_size" android:text="@string/thien_figma_029" android:textStyle="bold"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/thien_checkout_items"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_030" android:layout_weight="1"/>
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_031" android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_032" android:layout_weight="1"/>
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_checkout_subtotal" android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_033" android:layout_weight="1"/>
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_checkout_discount" android:textStyle="bold"/>
+        </LinearLayout>
+      </LinearLayout>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="@dimen/thien_card_gap">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_body_size" android:text="@string/thien_figma_022" android:textStyle="bold"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/primary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_034" android:id="@+id/tv_thien_selected_voucher" android:layout_marginTop="@dimen/spacing_8" android:padding="@dimen/spacing_8" android:background="@drawable/bg_thien_mint"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_choose_voucher" android:layout_width="match_parent" android:layout_height="@dimen/thien_chip_height" android:text="@string/thien_figma_035" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/primary" app:backgroundTint="@color/thien_white" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" app:strokeColor="@color/primary" app:strokeWidth="1dp" android:layout_marginTop="@dimen/spacing_8"/>
+      </LinearLayout>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="@dimen/thien_card_gap">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_body_size" android:text="@string/thien_figma_036" android:textStyle="bold"/>
+        <RadioButton android:id="@+id/rb_thien_cash" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/thien_figma_037" android:checked="true" android:textSize="@dimen/thien_small_size" android:buttonTint="@color/primary"/>
+        <RadioButton android:id="@+id/rb_thien_wallet" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/thien_figma_038" android:textSize="@dimen/thien_small_size" android:buttonTint="@color/primary"/>
+      </LinearLayout>
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="0dp" android:layout_marginStart="@dimen/thien_page_space" android:layout_marginEnd="@dimen/thien_page_space">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+      <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_032" android:layout_weight="1"/>
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_checkout_total" android:textStyle="bold"/>
+    </LinearLayout>
+    <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_place_order" android:layout_width="match_parent" android:layout_height="@dimen/button_height" android:text="@string/thien_figma_025" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/on_primary" app:backgroundTint="@color/primary" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" android:layout_marginTop="@dimen/spacing_8"/>
+  </LinearLayout>
+</LinearLayout>

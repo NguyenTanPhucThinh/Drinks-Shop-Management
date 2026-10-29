@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="thien_demo_due">Tạm tính: %1$s</string>
+<string name="thien_demo_checkout_btn">Xử lý đơn hàng · %1$s</string>
+<string name="thien_demo_wallet_note">Thanh toán ví chỉ là giao diện mẫu; vui lòng chọn tiền mặt để thử đặt hàng.</string>
+</resources>

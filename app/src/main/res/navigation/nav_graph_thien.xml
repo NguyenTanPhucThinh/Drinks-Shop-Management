@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/thien_flow"
+    app:startDestination="@id/thien_cart">
+
+    <fragment
+        android:id="@+id/thien_cart"
+        android:name="com.uitdrinkapp.app.ui.customer.order.CartFragment"
+        android:label="@string/thien_cart_title">
+        <action android:id="@+id/action_thien_cart_to_checkout" app:destination="@id/thien_checkout" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/thien_checkout"
+        android:name="com.uitdrinkapp.app.ui.customer.order.CheckoutFragment"
+        android:label="@string/thien_checkout_title">
+        <action android:id="@+id/action_thien_checkout_to_tracking"
+            app:destination="@id/thien_tracking"
+            app:popUpTo="@id/thien_cart" app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/thien_tracking"
+        android:name="com.uitdrinkapp.app.ui.customer.order.OrderTrackingFragment"
+        android:label="@string/thien_tracking_title">
+        <argument android:name="order_id" app:argType="string" app:nullable="true" android:defaultValue="@null" />
+        <action android:id="@+id/action_thien_tracking_to_history" app:destination="@id/thien_history" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/thien_history"
+        android:name="com.uitdrinkapp.app.ui.customer.history.PurchaseHistoryFragment"
+        android:label="@string/thien_history_title">
+        <action android:id="@+id/action_thien_history_to_tracking" app:destination="@id/thien_tracking" />
+        <action android:id="@+id/action_thien_history_to_review" app:destination="@id/thien_review" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/thien_review"
+        android:name="com.uitdrinkapp.app.ui.customer.review.ReviewFragment"
+        android:label="@string/thien_review_title">
+        <argument android:name="order_id" app:argType="string" app:nullable="true" android:defaultValue="@null" />
+        <action android:id="@+id/action_thien_review_to_history" app:destination="@id/thien_history"
+            app:popUpTo="@id/thien_history" app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

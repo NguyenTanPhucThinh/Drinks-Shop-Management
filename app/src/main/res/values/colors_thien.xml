@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="thien_page">#F4F3EF</color>
+    <color name="thien_white">#FFFFFF</color>
+    <color name="thien_mint">#E5F1EB</color>
+    <color name="thien_muted">#7B9188</color>
+    <color name="thien_border">#E4EAE6</color>
+    <color name="thien_warning">#F3A43B</color>
+    <color name="thien_warning_bg">#FFF3DF</color>
+    <color name="thien_error_bg">#FFEEEE</color>
+</resources>

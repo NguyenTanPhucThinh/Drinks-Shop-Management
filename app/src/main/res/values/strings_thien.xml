@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thien_cart_title">Giỏ hàng của bạn</string>
+    <string name="thien_cart_subtitle">Kiểm tra các món trước khi đặt</string>
+    <string name="thien_cart_empty">Giỏ hàng đang trống. Hãy chọn món yêu thích nhé!</string>
+    <string name="thien_products_count">%1$d món</string>
+    <string name="thien_subtotal">Tạm tính</string>
+    <string name="thien_total">Tổng thanh toán</string>
+    <string name="thien_checkout">Tiến hành thanh toán</string>
+    <string name="thien_seed_cart">Nạp lại giỏ hàng mẫu</string>
+    <string name="thien_cart_options">Size %1$s · Đường %2$d%% · Đá %3$d%%</string>
+    <string name="thien_no_topping">Không có topping</string>
+    <string name="thien_topping_label">Topping: %1$s</string>
+    <string name="thien_remove_item">Xóa món</string>
+    <string name="thien_plus_symbol">+</string>
+    <string name="thien_minus_symbol">−</string>
+    <string name="thien_increase_quantity">Tăng số lượng</string>
+    <string name="thien_decrease_quantity">Giảm số lượng</string>
+    <string name="thien_product_illustration">Ảnh minh họa đồ uống</string>
+    <string name="thien_checkout_title">Xác nhận đơn hàng</string>
+    <string name="thien_order_summary">Chi tiết đơn hàng</string>
+    <string name="thien_checkout_item_line">%1$d × %2$s · Size %3$s — %4$s</string>
+    <string name="thien_choose_voucher">Chọn voucher</string>
+    <string name="thien_no_voucher">Chưa áp dụng voucher</string>
+    <string name="thien_voucher_not_eligible"> (chưa đủ điều kiện)</string>
+    <string name="thien_discount">Giảm giá</string>
+    <string name="thien_place_order">Xác nhận đặt hàng</string>
+    <string name="thien_order_placed_note">Chế độ mock: chưa thực hiện thanh toán thật.</string>
+    <string-array name="thien_voucher_choices">
+        <item>Không dùng voucher</item>
+        <item>GIAM10 — giảm 10.000đ</item>
+        <item>GIAM15K — giảm 15.000đ cho đơn từ 80.000đ</item>
+    </string-array>
+    <string name="thien_tracking_title">Theo dõi đơn hàng</string>
+    <string name="thien_order_label">Đơn hàng #%1$s</string>
+    <string name="thien_status_pending">Đang chờ xử lý</string>
+    <string name="thien_status_delivering">Đang giao</string>
+    <string name="thien_status_completed">Đã hoàn thành</string>
+    <string name="thien_status_cancelled">Đã hủy</string>
+    <string name="thien_cancel_order">Hủy đơn hàng</string>
+    <string name="thien_cancel_confirm_title">Xác nhận hủy đơn?</string>
+    <string name="thien_cancel_confirm_body">Bạn chỉ có thể hủy khi đơn chưa được xử lý.</string>
+    <string name="thien_cannot_cancel">Không thể hủy đơn ở trạng thái hiện tại.</string>
+    <string name="thien_simulate_complete">Mô phỏng hoàn thành (demo)</string>
+    <string name="thien_go_to_history">Xem lịch sử đơn hàng</string>
+    <string name="thien_order_not_found">Không tìm thấy đơn hàng.</string>
+    <string name="thien_back">Quay lại</string>
+    <string name="thien_close">Đóng</string>
+    <string name="thien_history_title">Lịch sử đơn hàng</string>
+    <string name="thien_filter_all">Tất cả</string>
+    <string name="thien_filter_completed">Hoàn thành</string>
+    <string name="thien_filter_cancelled">Đã hủy</string>
+    <string name="thien_history_empty">Chưa có đơn hàng phù hợp.</string>
+    <string name="thien_order_details">Xem chi tiết</string>
+    <string name="thien_review_action">Đánh giá</string>
+    <string name="thien_review_title">Đánh giá trải nghiệm</string>
+    <string name="thien_review_subtitle">Chia sẻ cảm nhận của bạn</string>
+    <string name="thien_review_stars">Bạn hài lòng đến mức nào?</string>
+    <string name="thien_review_tags">Chọn nhận xét phù hợp</string>
+    <string name="thien_review_tag_delicious">Đồ uống ngon</string>
+    <string name="thien_review_tag_fast">Phục vụ nhanh</string>
+    <string name="thien_review_tag_pretty">Đóng gói đẹp</string>
+    <string name="thien_review_tag_friendly">Nhân viên thân thiện</string>
+    <string name="thien_review_tag_price">Giá hợp lý</string>
+    <string name="thien_review_note_hint">Viết góp ý của bạn...</string>
+    <string name="thien_review_image">Chọn ảnh từ thiết bị</string>
+    <string name="thien_review_selected_image">Ảnh được chọn để đánh giá</string>
+    <string name="thien_review_send">Gửi đánh giá</string>
+    <string name="thien_review_unavailable">Chỉ có thể đánh giá đơn đã hoàn thành và chưa được đánh giá.</string>
+    <string name="thien_choose_star">Hãy chọn ít nhất 1 sao.</string>
+    <string name="thien_review_saved">Đã lưu đánh giá mẫu.</string>
+</resources>
