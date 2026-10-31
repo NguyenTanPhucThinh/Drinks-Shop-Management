@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.shop;
+package com.uitdrinkapp.app.ui.customer.storeentry;
 
 import android.Manifest;
 import android.content.Intent;
@@ -29,7 +29,7 @@ import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentJoinShopBinding;
 import com.uitdrinkapp.app.domain.JoinShopService;
 import com.uitdrinkapp.app.domain.ShopQrCode;
-import com.uitdrinkapp.app.ui.home.HomeFragment;
+import com.uitdrinkapp.app.ui.customer.home.HomeFragment;
 
 public final class JoinShopFragment extends Fragment {
     private static final String STATE_CODE = "shop_code";

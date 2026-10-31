@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.product;
+package com.uitdrinkapp.app.ui.customer.product;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;

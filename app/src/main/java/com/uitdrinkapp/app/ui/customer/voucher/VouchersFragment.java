@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.voucher;
+package com.uitdrinkapp.app.ui.customer.voucher;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

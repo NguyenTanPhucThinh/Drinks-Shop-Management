@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.home;
+package com.uitdrinkapp.app.ui.customer.home;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

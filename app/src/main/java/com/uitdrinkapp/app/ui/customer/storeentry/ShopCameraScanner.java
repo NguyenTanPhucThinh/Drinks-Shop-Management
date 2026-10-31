@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.shop;
+package com.uitdrinkapp.app.ui.customer.storeentry;
 
 import android.Manifest;
 import android.content.Context;

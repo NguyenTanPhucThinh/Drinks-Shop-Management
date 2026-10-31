@@ -15,16 +15,16 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
-import com.uitdrinkapp.app.databinding.ActivityMainBinding;
+import com.uitdrinkapp.app.databinding.HomeActivityBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
+    private HomeActivityBinding binding;
     private Snackbar messageBar;
     private NavController nav;
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = HomeActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (view, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

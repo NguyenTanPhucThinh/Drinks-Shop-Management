@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.home;
+package com.uitdrinkapp.app.ui.customer.home;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -86,7 +86,7 @@ public final class HomeFragment extends Fragment {
         androidx.navigation.NavController nav = NavHostFragment.findNavController(this);
         if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() == R.id.homeFragment) {
             Bundle args = new Bundle();
-            args.putString(com.uitdrinkapp.app.ui.product.ProductDetailFragment.ARG_PRODUCT_ID, productId);
+            args.putString(com.uitdrinkapp.app.ui.customer.product.ProductDetailFragment.ARG_PRODUCT_ID, productId);
             nav.navigate(R.id.productDetailFragment, args);
         }
     }
