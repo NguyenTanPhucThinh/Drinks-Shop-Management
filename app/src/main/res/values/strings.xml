@@ -5,9 +5,9 @@
     <string name="home_greeting_evening">Chào buổi tối,</string>
     <string name="home_user_name">Văn A</string>
     <string name="home_notifications">Thông báo, có thông báo mới</string>
-    <string name="home_not_joined">Chưa vào quán · Quét mã QR để đặt món</string>
+    <string name="home_not_joined">Chưa có bàn · Quét mã QR để đặt bàn</string>
     <string name="home_joined">Đã vào quán · Sẵn sàng đặt món</string>
-    <string name="home_joined_table">Đã vào quán · Bàn %1$s</string>
+    <string name="home_joined_table">Đã vào bàn · Bàn %1$s</string>
     <string name="home_scan_qr">Quét QR</string>
     <string name="home_featured">Đặc biệt hôm nay</string>
     <string name="home_recommended">Gợi ý cho bạn</string>
@@ -23,9 +23,7 @@
     <string name="join_title">Vào quán</string>
     <string name="join_back">Quay lại Trang chủ</string>
     <string name="join_instructions">Đưa mã QR tại bàn/quầy vào khung để vào quán</string>
-    <string name="join_manual">— hoặc nhập mã quán —</string>
-    <string name="join_shop_label">Mã quán</string>
-    <string name="join_shop_hint">VD: TS-0123</string>
+    <string name="join_manual">— hoặc nhập số bàn —</string>
     <string name="join_table_label">Số bàn (tùy chọn)</string>
     <string name="join_table_hint">VD: 05</string>
     <string name="join_submit">Vào quán</string>
@@ -33,8 +31,8 @@
     <string name="join_camera_starting">Đang mở camera…</string>
     <string name="join_camera_scanning">Camera đang quét mã QR…</string>
     <string name="join_camera_permission">Cho phép camera để quét mã QR tại quán.</string>
-    <string name="join_camera_settings">Camera chưa được cấp quyền. Bạn có thể bật quyền trong cài đặt hoặc nhập mã quán bên dưới.</string>
-    <string name="join_camera_unavailable">Không mở được camera. Thử lại hoặc nhập mã quán bên dưới.</string>
+    <string name="join_camera_settings">Camera chưa được cấp quyền. Bạn có thể bật quyền trong cài đặt hoặc nhập số bàn bên dưới.</string>
+    <string name="join_camera_unavailable">Không mở được camera. Thử lại hoặc nhập số bàn bên dưới.</string>
     <string name="join_camera_read_error">Chưa đọc được mã QR. Giữ mã rõ trong khung và thử lại.</string>
     <string name="join_camera_unknown_qr">Mã QR này chưa được hỗ trợ. Hãy quét mã của quán.</string>
     <string name="join_enable_camera">Bật camera</string>
@@ -67,8 +65,6 @@
     <string name="detail_counter">Tại quầy</string>
     <string name="detail_takeaway">Mang về</string>
     <string name="detail_delivery">Ship về</string>
-    <string name="detail_favorite_add">Thêm vào yêu thích</string>
-    <string name="detail_favorite_remove">Bỏ yêu thích</string>
     <string name="detail_quantity">Số lượng %1$d</string>
     <string name="detail_increase">Tăng số lượng</string>
     <string name="detail_decrease">Giảm số lượng</string>

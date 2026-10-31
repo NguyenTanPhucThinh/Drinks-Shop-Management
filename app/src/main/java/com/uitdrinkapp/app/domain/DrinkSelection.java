@@ -14,7 +14,6 @@ public final class DrinkSelection {
     private SugarLevel sugar = SugarLevel.P50;
     private Temperature temperature = Temperature.ICED;
     private FulfillmentMethod fulfillment = FulfillmentMethod.AT_COUNTER;
-    private boolean favorite;
     private final List<Topping> toppings = new ArrayList<>();
     public DrinkSelection(Product product) { this.product = product; }
     public int getQuantity() { return quantity; }
@@ -27,8 +26,6 @@ public final class DrinkSelection {
     public void setTemperature(Temperature temperature) { this.temperature = temperature; }
     public FulfillmentMethod getFulfillment() { return fulfillment; }
     public void setFulfillment(FulfillmentMethod fulfillment) { this.fulfillment = fulfillment; }
-    public boolean isFavorite() { return favorite; }
-    public void setFavorite(boolean favorite) { this.favorite = favorite; }
     public List<Topping> getToppings() { return Collections.unmodifiableList(toppings); }
     public boolean hasTopping(String id) {
         for (Topping topping : toppings) if (topping.getId().equals(id)) return true;

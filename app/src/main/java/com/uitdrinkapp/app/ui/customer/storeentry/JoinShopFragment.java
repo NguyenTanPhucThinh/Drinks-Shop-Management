@@ -32,7 +32,7 @@ import com.uitdrinkapp.app.domain.ShopQrCode;
 import com.uitdrinkapp.app.ui.customer.home.HomeFragment;
 
 public final class JoinShopFragment extends Fragment {
-    private static final String STATE_CODE = "shop_code";
+    private static final String STATE_SHOP_CODE = "scanned_shop_code";
     private static final String STATE_TABLE = "table_number";
     private static final String STATE_PERMISSION = "requested_camera";
     private FragmentJoinShopBinding binding;
@@ -41,6 +41,7 @@ public final class JoinShopFragment extends Fragment {
     private boolean submitting;
     private boolean requestedCamera;
     private boolean permissionInFlight;
+    private String scannedShopCode;
     private final ActivityResultLauncher<String> cameraPermission = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(), granted -> {
                 permissionInFlight = false;
@@ -63,8 +64,8 @@ public final class JoinShopFragment extends Fragment {
         });
         binding.previewCamera.setClipToOutline(true);
         if (state != null) {
-            binding.etShopCode.setText(state.getString(STATE_CODE, ""));
             binding.etTableNumber.setText(state.getString(STATE_TABLE, ""));
+            scannedShopCode = state.getString(STATE_SHOP_CODE);
             requestedCamera = state.getBoolean(STATE_PERMISSION, false);
         }
         binding.btnBack.setOnClickListener(clicked -> {
@@ -135,7 +136,7 @@ public final class JoinShopFragment extends Fragment {
                     binding.tvCameraStatus.setText(R.string.join_camera_unknown_qr);
                     return;
                 }
-                binding.etShopCode.setText(payload.getShopCode());
+                scannedShopCode = payload.getShopCode();
                 if (payload.getTableNumber() != null) binding.etTableNumber.setText(payload.getTableNumber());
                 submit(true);
             }
@@ -170,7 +171,8 @@ public final class JoinShopFragment extends Fragment {
         binding.btnJoin.setEnabled(false);
         stopCamera();
         new JoinShopService(repositories.shops(), repositories.sessions()).join(
-                String.valueOf(binding.etShopCode.getText()), String.valueOf(binding.etTableNumber.getText()));
+                scannedShopCode == null ? repositories.shops().getDemoCode() : scannedShopCode,
+                String.valueOf(binding.etTableNumber.getText()));
         hideKeyboard();
         NavController nav = NavHostFragment.findNavController(this);
         NavBackStackEntry home = nav.getPreviousBackStackEntry();
@@ -186,8 +188,8 @@ public final class JoinShopFragment extends Fragment {
     @Override public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_PERMISSION, requestedCamera);
+        outState.putString(STATE_SHOP_CODE, scannedShopCode);
         if (binding != null) {
-            outState.putString(STATE_CODE, String.valueOf(binding.etShopCode.getText()));
             outState.putString(STATE_TABLE, String.valueOf(binding.etTableNumber.getText()));
         }
     }

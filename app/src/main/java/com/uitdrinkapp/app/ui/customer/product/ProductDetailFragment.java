@@ -1,6 +1,5 @@
 package com.uitdrinkapp.app.ui.customer.product;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -73,7 +72,6 @@ public final class ProductDetailFragment extends Fragment {
         binding.tvDetailDescription.post(this::checkDescriptionOverflow);
         binding.btnQuantityPlus.setOnClickListener(clicked -> { selection.setQuantity(selection.getQuantity() + 1); updatePrice(); });
         binding.btnQuantityMinus.setOnClickListener(clicked -> { selection.setQuantity(selection.getQuantity() - 1); updatePrice(); });
-        binding.btnFavorite.setOnClickListener(clicked -> { selection.setFavorite(!selection.isFavorite()); updateFavorite(); });
         bindChoice(binding.cgTemperature, new int[]{R.id.chip_iced, R.id.chip_hot}, Temperature.values(), selection.getTemperature(), selection::setTemperature);
         bindSizeLabels();
         bindChoice(binding.cgSize, new int[]{R.id.chip_size_s, R.id.chip_size_m, R.id.chip_size_l}, Size.values(), selection.getSize(), selection::setSize);
@@ -83,7 +81,6 @@ public final class ProductDetailFragment extends Fragment {
         binding.btnDetailAddCart.setOnClickListener(null);
         binding.btnDetailBuy.setOnClickListener(null);
         updatePrice();
-        updateFavorite();
     }
     private <T extends Enum<T>> void bindChoice(ChipGroup group, int[] ids, T[] values, T selected, Consumer<T> setter) {
         group.check(ids[selected.ordinal()]);
@@ -130,11 +127,6 @@ public final class ProductDetailFragment extends Fragment {
     private String money(long value) {
         return getString(R.string.home_price, NumberFormat.getIntegerInstance(Locale.forLanguageTag("vi-VN")).format(value));
     }
-    private void updateFavorite() {
-        binding.btnFavorite.setSelected(selection.isFavorite());
-        binding.btnFavorite.setIconTint(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), selection.isFavorite() ? R.color.home_green : R.color.home_muted)));
-        binding.btnFavorite.setContentDescription(getString(selection.isFavorite() ? R.string.detail_favorite_remove : R.string.detail_favorite_add));
-    }
     private void updateDescription() {
         binding.tvDetailDescription.setMaxLines(descriptionTooLong && descriptionExpanded ? Integer.MAX_VALUE : 2);
         binding.btnDescriptionMore.setVisibility(descriptionTooLong ? View.VISIBLE : View.GONE);
@@ -172,7 +164,6 @@ public final class ProductDetailFragment extends Fragment {
         selection.setSugar(SugarLevel.valueOf(state.getString("sugar", SugarLevel.P50.name())));
         selection.setTemperature(Temperature.valueOf(state.getString("temperature", Temperature.ICED.name())));
         selection.setFulfillment(FulfillmentMethod.valueOf(state.getString("fulfillment", FulfillmentMethod.AT_COUNTER.name())));
-        selection.setFavorite(state.getBoolean("favorite"));
         descriptionExpanded = state.getBoolean("description_expanded");
         ArrayList<String> ids = state.getStringArrayList("toppings");
         if (ids != null) for (Topping topping : toppings) if (ids.contains(topping.getId())) selection.setTopping(topping, true);
@@ -185,7 +176,6 @@ public final class ProductDetailFragment extends Fragment {
         out.putString("sugar", selection.getSugar().name());
         out.putString("temperature", selection.getTemperature().name());
         out.putString("fulfillment", selection.getFulfillment().name());
-        out.putBoolean("favorite", selection.isFavorite());
         out.putBoolean("description_expanded", descriptionExpanded);
         ArrayList<String> ids = new ArrayList<>();
         for (Topping topping : selection.getToppings()) ids.add(topping.getId());
