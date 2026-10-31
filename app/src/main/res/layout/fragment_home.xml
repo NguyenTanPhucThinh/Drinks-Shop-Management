@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/screen_padding">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:baselineAligned="false">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:id="@+id/tv_greeting" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Muted"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_user_name" android:textAppearance="@style/TextAppearance.Drink.Section" android:textSize="@dimen/home_header_text"/>
+            </LinearLayout>
+            <FrameLayout android:id="@+id/btn_notifications" android:layout_width="@dimen/home_touch_target" android:layout_height="@dimen/home_touch_target" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@string/home_notifications">
+                <ImageView android:layout_width="@dimen/home_icon_button_size" android:layout_height="@dimen/home_icon_button_size" android:layout_gravity="center" android:background="@drawable/bg_home_circle" android:padding="@dimen/home_notification_padding" android:src="@drawable/ic_bell" android:importantForAccessibility="no"/>
+                <View android:layout_width="@dimen/home_badge_size" android:layout_height="@dimen/home_badge_size" android:layout_gravity="top|end" android:layout_margin="@dimen/spacing_4" android:background="@drawable/bg_home_badge"/>
+            </FrameLayout>
+        </LinearLayout>
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_12" app:cardBackgroundColor="@color/surface" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/card_elevation" app:strokeColor="@color/home_border" app:strokeWidth="@dimen/divider_height">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/spacing_8" android:gravity="center_vertical" android:orientation="horizontal" android:baselineAligned="false">
+                <ImageView android:layout_width="@dimen/icon_24" android:layout_height="@dimen/icon_24" android:src="@drawable/ic_pin" app:tint="@color/home_green" android:importantForAccessibility="no"/>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="@dimen/spacing_8" android:orientation="vertical">
+                    <TextView android:id="@+id/tv_shop_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Body" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tv_shop_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Muted" android:textSize="@dimen/home_small_text"/>
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton android:id="@+id/btn_scan_qr" style="@style/Widget.Drink.Button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="@dimen/home_qr_button_width" android:text="@string/home_scan_qr" android:textSize="@dimen/home_small_text" android:paddingHorizontal="@dimen/spacing_12"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <androidx.viewpager2.widget.ViewPager2 android:id="@+id/vp_banners" android:layout_width="match_parent" android:layout_height="@dimen/home_banner_height" android:layout_marginTop="@dimen/spacing_12"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:gravity="center_vertical" android:orientation="horizontal" android:baselineAligned="false">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/home_featured" android:textAppearance="@style/TextAppearance.Drink.Section"/>
+            <TextView android:id="@+id/btn_featured_all" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="@dimen/home_touch_target" android:minWidth="@dimen/home_touch_target" android:gravity="center" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:text="@string/home_see_all" android:textAppearance="@style/TextAppearance.Drink.Body" android:textColor="@color/home_green"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_featured" android:layout_width="match_parent" android:layout_height="wrap_content" android:nestedScrollingEnabled="false"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:baselineAligned="false">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/home_recommended" android:textAppearance="@style/TextAppearance.Drink.Section"/>
+            <TextView android:id="@+id/btn_recommended_all" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="@dimen/home_touch_target" android:minWidth="@dimen/home_touch_target" android:gravity="center" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground" android:text="@string/home_see_all" android:textAppearance="@style/TextAppearance.Drink.Body" android:textColor="@color/home_green"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_recommended" android:layout_width="match_parent" android:layout_height="wrap_content" android:nestedScrollingEnabled="false"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:clickable="true" android:focusable="true" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/card_elevation" app:strokeWidth="@dimen/home_zero">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView android:id="@+id/iv_banner" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:importantForAccessibility="no"/>
+        <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/banner_scrim"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_vertical" android:padding="@dimen/spacing_16" android:paddingEnd="@dimen/home_scan_icon" android:paddingStart="@dimen/spacing_16">
+            <TextView android:id="@+id/tv_banner_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Section" android:textColor="@color/white"/>
+            <TextView android:id="@+id/tv_banner_subtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_4" android:textAppearance="@style/TextAppearance.Drink.Body" android:textSize="@dimen/home_small_text" android:textColor="@color/white"/>
+        </LinearLayout>
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

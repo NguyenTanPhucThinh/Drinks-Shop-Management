@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph" app:startDestination="@id/homeFragment">
+    <fragment android:id="@+id/homeFragment" android:name="com.uitdrinkapp.app.ui.customer.home.HomeFragment" android:label="@string/home_tab_home">
+        <action android:id="@+id/action_home_to_join" app:destination="@id/joinShopFragment"/>
+    </fragment>
+    <fragment android:id="@+id/joinShopFragment" android:name="com.uitdrinkapp.app.ui.customer.storeentry.JoinShopFragment" android:label="@string/join_title"/>
+    <fragment android:id="@+id/vouchersFragment" android:name="com.uitdrinkapp.app.ui.customer.voucher.VouchersFragment" android:label="@string/voucher_title"/>
+    <fragment android:id="@+id/productDetailFragment" android:name="com.uitdrinkapp.app.ui.customer.product.ProductDetailFragment" android:label="@string/detail_title">
+        <argument android:name="product_id" app:argType="string"/>
+    </fragment>
+</navigation>

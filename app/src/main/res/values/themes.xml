@@ -22,5 +22,8 @@
         <item name="android:statusBarColor">@color/primary_dark</item>
     </style>
 
-    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication">
+        <item name="android:windowBackground">@color/home_background</item>
+        <item name="android:colorBackground">@color/home_background</item>
+    </style>
 </resources>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginVertical="@dimen/home_card_gap" app:cardBackgroundColor="@color/surface" app:cardCornerRadius="@dimen/radius_8" app:cardElevation="@dimen/card_elevation" app:strokeColor="@color/home_border" app:strokeWidth="@dimen/divider_height">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/voucher_card_height" android:orientation="horizontal" android:baselineAligned="false">
+        <FrameLayout android:layout_width="@dimen/voucher_icon_panel" android:layout_height="match_parent" android:background="@color/primary">
+            <ImageView android:layout_width="@dimen/icon_24" android:layout_height="@dimen/icon_24" android:layout_gravity="center" android:src="@drawable/ic_gift" android:importantForAccessibility="no"/>
+        </FrameLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:padding="@dimen/spacing_12">
+            <TextView android:id="@+id/tv_voucher_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Body" android:textStyle="bold"/>
+            <TextView android:id="@+id/tv_voucher_description" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_4" android:textAppearance="@style/TextAppearance.Drink.Muted" android:textSize="@dimen/home_small_text"/>
+            <TextView android:id="@+id/tv_voucher_expiry" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Body" android:textSize="@dimen/home_small_text" android:textColor="@color/error"/>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
