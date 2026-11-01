@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="@dimen/home_card_gap" android:clickable="true" android:focusable="true" app:cardBackgroundColor="@color/surface" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/card_elevation" app:strokeColor="@color/home_border" app:strokeWidth="@dimen/divider_height">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/home_card_padding">
+        <com.google.android.material.imageview.ShapeableImageView android:id="@+id/iv_product_image" android:layout_width="match_parent" android:layout_height="@dimen/home_product_image_height" android:scaleType="centerCrop" android:background="@color/home_mint" android:importantForAccessibility="no" app:shapeAppearanceOverlay="@style/ShapeAppearance.Drink.Image"/>
+        <TextView android:id="@+id/tv_product_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:textAppearance="@style/TextAppearance.Drink.Body" android:textStyle="bold"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:baselineAligned="false">
+            <TextView android:id="@+id/tv_product_price" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textAppearance="@style/TextAppearance.Drink.Body" android:textColor="@color/home_green" android:textStyle="bold"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/btn_add_product" style="@style/Widget.Material3.Button.IconButton.Filled" android:layout_width="@dimen/home_touch_target" android:layout_height="@dimen/home_touch_target" app:icon="@drawable/ic_plus" app:iconTint="@color/on_primary" app:backgroundTint="@color/primary" app:cornerRadius="@dimen/radius_pill"/>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

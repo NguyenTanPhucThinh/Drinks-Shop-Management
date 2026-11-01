@@ -18,4 +18,14 @@
     <color name="divider">#EBEBEB</color>
     <color name="error">#C82014</color>
     <color name="error_soft">#F47C7C</color>
+
+    <color name="home_background">#F2F0EB</color>
+    <color name="home_ink">#203D35</color>
+    <color name="home_muted">#72877F</color>
+    <color name="home_border">#DCE5E0</color>
+    <color name="home_mint">#E3F0E9</color>
+    <color name="home_green">#007A53</color>
+    <color name="home_badge">#E34B53</color>
+    <color name="banner_scrim">#33001E15</color>
+
 </resources>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginVertical="@dimen/spacing_4" app:cardBackgroundColor="@color/surface" app:cardCornerRadius="@dimen/radius_12" app:strokeWidth="@dimen/divider_height" app:strokeColor="@color/home_border" app:cardElevation="@dimen/card_elevation">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:baselineAligned="false" android:paddingEnd="@dimen/spacing_12" android:paddingStart="@dimen/home_zero">
+        <com.google.android.material.checkbox.MaterialCheckBox android:id="@+id/cb_detail_topping" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minHeight="@dimen/home_touch_target" android:textAppearance="@style/TextAppearance.Drink.Body" app:buttonTint="@color/home_green"/>
+        <TextView android:id="@+id/tv_topping_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Drink.Body" android:textColor="@color/home_green" android:textStyle="bold"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
