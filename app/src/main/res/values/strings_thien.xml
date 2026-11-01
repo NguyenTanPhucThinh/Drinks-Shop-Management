@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="thien_cart_title">Giỏ hàng của bạn</string>
     <string name="thien_cart_subtitle">Kiểm tra các món trước khi đặt</string>
@@ -34,8 +34,8 @@
     <string name="thien_tracking_title">Theo dõi đơn hàng</string>
     <string name="thien_order_label">Đơn hàng #%1$s</string>
     <string name="thien_status_pending">Đang chờ xử lý</string>
-    <string name="thien_status_delivering">Đang giao</string>
-    <string name="thien_status_completed">Đã hoàn thành</string>
+    <string name="thien_status_delivering">Đang pha chế</string>
+    <string name="thien_status_completed">Hoàn thành</string>
     <string name="thien_status_cancelled">Đã hủy</string>
     <string name="thien_cancel_order">Hủy đơn hàng</string>
     <string name="thien_cancel_confirm_title">Xác nhận hủy đơn?</string>

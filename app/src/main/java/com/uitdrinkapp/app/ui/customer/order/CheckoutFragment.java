@@ -32,6 +32,7 @@ public final class CheckoutFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         repo = BuyerOrderRepositoryProvider.get(requireContext());
+        BuyerNavBars.setVisible(requireActivity(), false);
         voucher = getArguments()==null?"":getArguments().getString("voucher_code","");
         binding.rbThienCash.setOnClickListener(v -> binding.rbThienWallet.setChecked(false));
         binding.rbThienWallet.setOnClickListener(v -> {
@@ -39,12 +40,18 @@ public final class CheckoutFragment extends Fragment {
             Toast.makeText(requireContext(),R.string.thien_demo_wallet_note,Toast.LENGTH_SHORT).show();
         });
         binding.btnThienCheckoutBack.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
+        binding.btnThienClearOrder.setOnClickListener(v -> new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.thien_clear_draft_title)
+                .setMessage(R.string.thien_clear_draft_message)
+                .setNegativeButton(R.string.thien_close, null)
+                .setPositiveButton(R.string.thien_clear_draft, (dialog, which) -> {
+                    repo.clearCart();
+                    NavHostFragment.findNavController(this).popBackStack();
+                }).show());
         binding.btnThienChooseVoucher.setOnClickListener(v -> chooseVoucher());
         binding.btnThienPlaceOrder.setOnClickListener(v -> {
-            if (binding.rbThienWallet.isChecked()) {
+            if (binding.rbThienWallet.isChecked())
                 Toast.makeText(requireContext(),R.string.thien_demo_wallet_note,Toast.LENGTH_SHORT).show();
-                return;
-            }
             try {
                 DemoOrder newOrder = repo.placeOrder(voucher);
                 Bundle args = new Bundle(); args.putString("order_id", newOrder.orderId);
@@ -55,6 +62,7 @@ public final class CheckoutFragment extends Fragment {
         });
         render();
     }
+    @Override public void onResume() { super.onResume(); BuyerNavBars.setVisible(requireActivity(), false); }
     private void chooseVoucher() {
         String[] choices = getResources().getStringArray(R.array.thien_voucher_choices);
         new AlertDialog.Builder(requireContext())

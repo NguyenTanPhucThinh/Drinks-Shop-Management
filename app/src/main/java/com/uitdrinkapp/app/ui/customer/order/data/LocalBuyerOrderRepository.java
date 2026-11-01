@@ -19,6 +19,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
     private static final String KEY_ORDERS = "orders";
     private static final String KEY_REVIEWS = "reviews";
     private static final String KEY_SEEDED = "seeded";
+    private static final String KEY_HISTORY_SEEDED = "history_seeded_v2";
     private static LocalBuyerOrderRepository instance;
     private final SharedPreferences prefs;
 
@@ -27,6 +28,10 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         if (!prefs.getBoolean(KEY_SEEDED, false)) {
             prefs.edit().putBoolean(KEY_SEEDED, true).apply();
             addDemoProductsForTesting();
+        }
+        if (!prefs.getBoolean(KEY_HISTORY_SEEDED, false)) {
+            seedHistoryForDemo();
+            prefs.edit().putBoolean(KEY_HISTORY_SEEDED, true).apply();
         }
     }
     public static synchronized LocalBuyerOrderRepository getInstance(Context context) {
@@ -59,6 +64,28 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         }
         return lines;
     }
+    @Override public List<CartLine> getAvailableProducts() {
+        // Demo: các món đang có trạng thái "hiển thị". Backend thật sẽ cấp danh sách này.
+        List<CartLine> products = new ArrayList<>();
+        products.add(new CartLine("milk-tea-01", "Trà sữa trân châu", 32_000L,
+                CartLine.Size.M, CartLine.Level.P50, CartLine.Level.P70,
+                Arrays.asList(new CartLine.Topping("Trân châu đen", 5_000L)), 1));
+        products.add(new CartLine("fruit-tea-02", "Trà đào cam sả", 35_000L,
+                CartLine.Size.S, CartLine.Level.P30, CartLine.Level.P50,
+                Collections.emptyList(), 1));
+        products.add(new CartLine("coffee-03", "Cà phê muối", 39_000L,
+                CartLine.Size.M, CartLine.Level.P50, CartLine.Level.P50,
+                Collections.emptyList(), 1));
+        products.add(new CartLine("matcha-04", "Trà sữa matcha", 42_000L,
+                CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
+                Collections.emptyList(), 1));
+        products.add(new CartLine("fruit-tea-05", "Trà vải", 37_000L,
+                CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
+                Collections.emptyList(), 1));
+        return products;
+    }
+    @Override public synchronized void clearCart() { saveCart(Collections.emptyList()); }
+
     @Override public synchronized void addToCart(CartLine line) {
         List<CartLine> cart = getCart();
         for (CartLine existing : cart) {
@@ -136,6 +163,33 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         }
         return false;
     }
+    @Override public synchronized DemoReview getReview(String orderId) {
+        if (orderId == null) return null;
+        JSONArray all = load(KEY_REVIEWS);
+        for (int i = 0; i < all.length(); i++) {
+            JSONObject value = all.optJSONObject(i);
+            if (value != null && orderId.equals(value.optString("orderId")))
+                return DemoReview.fromJson(value);
+        }
+        return null;
+    }
+    @Override public synchronized boolean updateStatus(String orderId, DemoOrder.Status nextStatus) {
+        if (orderId == null || nextStatus == null) return false;
+        List<DemoOrder> orders = getOrders();
+        for (DemoOrder order : orders) {
+            if (!order.orderId.equals(orderId)) continue;
+            if (order.status == DemoOrder.Status.COMPLETED || order.status == DemoOrder.Status.CANCELLED)
+                return false;
+            boolean allowed = (order.status == DemoOrder.Status.PENDING &&
+                    (nextStatus == DemoOrder.Status.DELIVERING || nextStatus == DemoOrder.Status.CANCELLED))
+                    || (order.status == DemoOrder.Status.DELIVERING && nextStatus == DemoOrder.Status.COMPLETED);
+            if (!allowed) return false;
+            order.status = nextStatus;
+            saveOrders(orders);
+            return true;
+        }
+        return false;
+    }
     @Override public synchronized boolean hasReview(String orderId) {
         JSONArray all = load(KEY_REVIEWS);
         for (int i = 0; i < all.length(); i++) {
@@ -155,6 +209,26 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         catch (JSONException e) { throw new IllegalStateException("Không thể lưu đánh giá", e); }
         save(KEY_REVIEWS, data);
     }
+    private synchronized void seedHistoryForDemo() {
+        List<DemoOrder> existing = getOrders();
+        {
+            long baseTime = 1792393200000L; // Demo ngày 19/10/2026
+            if (getOrder("TS1021") == null) existing.add(new DemoOrder("TS1021", baseTime,
+                    Collections.singletonList(new CartLine("matcha-04", "Trà sữa matcha", 91_000L,
+                            CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
+                            Collections.emptyList(), 1)), 91_000L, 0L, "", DemoOrder.Status.COMPLETED));
+            if (getOrder("TS1008") == null) existing.add(new DemoOrder("TS1008", baseTime - 86_400_000L,
+                    Collections.singletonList(new CartLine("fruit-tea-02", "Trà đào cam sả", 42_000L,
+                            CartLine.Size.S, CartLine.Level.P30, CartLine.Level.P50,
+                            Collections.emptyList(), 2)), 84_000L, 0L, "", DemoOrder.Status.COMPLETED));
+            if (getOrder("TS0996") == null) existing.add(new DemoOrder("TS0996", baseTime - 3 * 86_400_000L,
+                    Collections.singletonList(new CartLine("milk-tea-01", "Trà sữa trân châu", 35_000L,
+                            CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
+                            Collections.emptyList(), 1)), 35_000L, 0L, "", DemoOrder.Status.CANCELLED));
+            saveOrders(existing);
+        }
+    }
+
     @Override public synchronized void addDemoProductsForTesting() {
         addToCart(new CartLine("milk-tea-01", "Trà sữa trân châu", 32_000L,
                 CartLine.Size.M, CartLine.Level.P50, CartLine.Level.P70,

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
 <string name="thien_demo_due">Tạm tính: %1$s</string>
 <string name="thien_demo_checkout_btn">Xử lý đơn hàng · %1$s</string>
 <string name="thien_demo_wallet_note">Thanh toán ví chỉ là giao diện mẫu; vui lòng chọn tiền mặt để thử đặt hàng.</string>
-</resources>
+<string name="thien_clear_draft">Xóa đơn hàng</string><string name="thien_clear_draft_title">Xóa giỏ hàng?</string><string name="thien_clear_draft_message">Toàn bộ món đã chọn sẽ bị xóa khỏi đơn đang tạo.</string><string name="thien_confirm_order">Xử lý đơn hàng</string><string name="thien_review_view">Xem đánh giá</string><string name="thien_review_already_sent">Đánh giá đã gửi</string><string name="thien_review_mock_image">Thêm ảnh chỉ là chức năng mô phỏng trong phiên bản này.</string><string name="thien_cart_count_quantity">%1$d món đã chọn</string><string name="thien_cart_after_discount">Tổng sau giảm: %1$s</string><string name="thien_review_finished">Bạn đã gửi đánh giá cho đơn này.</string><string name="thien_review_stars_required">Vui lòng chọn ít nhất 1 sao.</string><string name="thien_order_pending_hint">Đang đợi quán xác nhận đơn</string><string name="thien_order_preparing_hint">Barista đang pha chế</string><string name="thien_order_complete_hint">Cảm ơn bạn đã ủng hộ</string></resources>

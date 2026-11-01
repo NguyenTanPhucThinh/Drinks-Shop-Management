@@ -2,6 +2,7 @@ package com.uitdrinkapp.app.ui.customer.history;
 
 import android.os.Bundle;
 import android.content.res.ColorStateList;
+import com.uitdrinkapp.app.ui.customer.order.BuyerNavBars;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,10 @@ public final class PurchaseHistoryFragment extends Fragment {
         binding.btnThienHistoryCancelled.setOnClickListener(v -> { selected = Filter.CANCELLED; render(); });
         render();
     }
-    @Override public void onResume() { super.onResume(); if (binding != null && repo != null) render(); }
+    @Override public void onResume() {
+        super.onResume(); BuyerNavBars.setVisible(requireActivity(), true);
+        if (binding != null && repo != null) render();
+    }
     private void render() {
         styleFilter(binding.btnThienHistoryAll, selected == Filter.ALL);
         styleFilter(binding.btnThienHistoryCompleted, selected == Filter.COMPLETED);
@@ -53,17 +57,28 @@ public final class PurchaseHistoryFragment extends Fragment {
             row.tvThienHistoryId.setText(getString(R.string.thien_order_label, order.orderId));
             row.tvThienHistoryTime.setText(OrderUiFormat.date(order.createdAt));
             row.tvThienHistoryStatus.setText(OrderUiFormat.status(requireContext(), order.status));
-            row.tvThienHistoryStatus.setTextColor(getResources().getColor(
-                    order.status == DemoOrder.Status.CANCELLED ? R.color.error : R.color.primary,
-                    requireContext().getTheme()));
+            int bg, fg;
+            switch (order.status) {
+                case PENDING: bg = R.drawable.bg_thien_warning_pill; fg = R.color.thien_status_wait_text; break;
+                case CANCELLED: bg = R.drawable.bg_thien_status_cancel; fg = R.color.thien_status_cancel_text; break;
+                default: bg = R.drawable.bg_thien_status_success; fg = R.color.thien_status_success_text; break;
+            }
+            row.tvThienHistoryStatus.setBackgroundResource(bg);
+            row.tvThienHistoryStatus.setTextColor(requireContext().getColor(fg));
             row.tvThienHistoryTotal.setText(OrderUiFormat.money(order.totalAmount()));
-            row.tvThienHistoryProducts.setText(getString(R.string.thien_products_count, order.items.size()));
+            int qty = 0;
+            for (com.uitdrinkapp.app.ui.customer.order.data.CartLine line : order.items) qty += line.quantity;
+            String name = order.items.isEmpty() ? "Đồ uống" : order.items.get(0).productName;
+            row.tvThienHistoryProducts.setText(qty + " món · " + name);
             row.btnThienHistoryDetails.setOnClickListener(v -> {
                 Bundle args = new Bundle(); args.putString("order_id", order.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_history_to_tracking, args);
             });
-            boolean canReview = order.status == DemoOrder.Status.COMPLETED && !repo.hasReview(order.orderId);
+            row.thienHistoryRow.setOnClickListener(v -> row.btnThienHistoryDetails.performClick());
+            boolean canReview = order.status == DemoOrder.Status.COMPLETED;
             row.btnThienHistoryReview.setVisibility(canReview ? View.VISIBLE : View.GONE);
+            row.btnThienHistoryReview.setText(repo.hasReview(order.orderId)
+                    ? R.string.thien_review_view : R.string.thien_review_action);
             row.btnThienHistoryReview.setOnClickListener(v -> {
                 Bundle args = new Bundle(); args.putString("order_id", order.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_history_to_review, args);

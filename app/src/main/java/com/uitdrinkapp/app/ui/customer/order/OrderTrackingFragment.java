@@ -32,6 +32,7 @@ public final class OrderTrackingFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         repo = BuyerOrderRepositoryProvider.get(requireContext());
+        BuyerNavBars.setVisible(requireActivity(), false);
         orderId = getArguments() == null ? null : getArguments().getString("order_id");
         binding.btnThienTrackingBack.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
         binding.btnThienOpenHistory.setOnClickListener(v ->
@@ -48,9 +49,16 @@ public final class OrderTrackingFragment extends Fragment {
         binding.btnThienSimulateComplete.setOnClickListener(v -> {
             repo.simulateComplete(orderId); render();
         });
+        binding.btnThienTrackingReview.setOnClickListener(v -> {
+            Bundle args = new Bundle(); args.putString("order_id", orderId);
+            NavHostFragment.findNavController(this).navigate(R.id.action_thien_tracking_to_review, args);
+        });
         render();
     }
-    @Override public void onResume() { super.onResume(); if (repo != null && binding != null) render(); }
+    @Override public void onResume() {
+        super.onResume(); BuyerNavBars.setVisible(requireActivity(), false);
+        if (repo != null && binding != null) render();
+    }
     private void render() {
         DemoOrder order = orderId == null ? null : repo.getOrder(orderId);
         boolean found = order != null;
@@ -60,16 +68,23 @@ public final class OrderTrackingFragment extends Fragment {
         binding.tvThienTrackingId.setText(getString(R.string.thien_order_label, order.orderId));
         binding.tvThienTrackingTime.setText(OrderUiFormat.date(order.createdAt));
         binding.tvThienTrackingStatus.setText(OrderUiFormat.status(requireContext(), order.status));
-        binding.tvThienTrackingStatus.setTextColor(getResources().getColor(
-                order.status == DemoOrder.Status.CANCELLED ? R.color.error : R.color.primary,
-                requireContext().getTheme()));
+        int bg, fg;
+        switch (order.status) {
+            case PENDING: bg = R.drawable.bg_thien_warning_pill; fg = R.color.thien_status_wait_text; break;
+            case CANCELLED: bg = R.drawable.bg_thien_status_cancel; fg = R.color.thien_status_cancel_text; break;
+            default: bg = R.drawable.bg_thien_status_success; fg = R.color.thien_status_success_text; break;
+        }
+        binding.tvThienTrackingStatus.setBackgroundResource(bg);
+        binding.tvThienTrackingStatus.setTextColor(requireContext().getColor(fg));
         binding.tvThienTrackingTotal.setText(OrderUiFormat.money(order.totalAmount()));
         boolean waiting=order.status==DemoOrder.Status.PENDING;
         boolean finished=order.status==DemoOrder.Status.COMPLETED;
         boolean cancelled=order.status==DemoOrder.Status.CANCELLED;
-        binding.tvThienStepReceived.setText(cancelled?"●  Đơn đã hủy":"●  Đã nhận đơn");
-        binding.tvThienStepPreparing.setText(finished?"✓  Đã pha chế xong":(waiting?"○  Đang chờ pha chế":"●  Đang pha chế"));
-        binding.tvThienStepDone.setText(finished?"✓  Hoàn thành":"○  Hoàn thành");
+        binding.tvThienStepReceived.setText(cancelled ? "●  Đơn đã hủy" :
+                (waiting ? "○  Đang chờ xử lý" : "✓  Đã nhận đơn"));
+        binding.tvThienStepPreparing.setText(finished ? "✓  Đã pha chế xong" :
+                (waiting || cancelled ? "○  Đang pha chế" : "●  Đang pha chế"));
+        binding.tvThienStepDone.setText(finished ? "✓  Hoàn thành" : "○  Hoàn thành");
         binding.tvThienStepDone.setTextColor(requireContext().getColor(finished?R.color.primary:R.color.text_secondary));
         binding.thienTrackingItems.removeAllViews();
         for (CartLine item : order.items) {
@@ -82,8 +97,12 @@ public final class OrderTrackingFragment extends Fragment {
             binding.thienTrackingItems.addView(label);
         }
         binding.btnThienCancelOrder.setVisibility(order.status == DemoOrder.Status.PENDING ? View.VISIBLE : View.GONE);
-        binding.btnThienSimulateComplete.setVisibility(order.status == DemoOrder.Status.PENDING
-                || order.status == DemoOrder.Status.DELIVERING ? View.VISIBLE : View.GONE);
+        // Thao tác mô phỏng trạng thái là công cụ test, không nằm trên UI Figma.
+        binding.btnThienSimulateComplete.setVisibility(View.GONE);
+        binding.btnThienOpenHistory.setVisibility(View.GONE);
+        binding.btnThienTrackingReview.setVisibility(finished ? View.VISIBLE : View.GONE);
+        binding.btnThienTrackingReview.setText(repo.hasReview(order.orderId)
+                ? R.string.thien_review_view : R.string.thien_review_action);
     }
     @Override public void onDestroyView() { super.onDestroyView(); binding = null; }
 }
