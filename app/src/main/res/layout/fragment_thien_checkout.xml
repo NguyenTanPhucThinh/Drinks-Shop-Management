@@ -48,6 +48,21 @@
       <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_032" android:layout_weight="1"/>
       <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_checkout_total" android:textStyle="bold"/>
     </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp"><com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_clear_order" android:layout_width="0dp" android:layout_height="@dimen/button_height" android:layout_weight="1" android:text="@string/thien_clear_draft" android:textSize="@dimen/thien_small_size" android:textAllCaps="false" android:textColor="@color/error" android:insetTop="0dp" android:insetBottom="0dp" app:backgroundTint="@color/thien_white" app:cornerRadius="@dimen/radius_8" app:strokeColor="@color/error" app:strokeWidth="1dp"/><com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_place_order" android:layout_width="0dp" android:layout_height="@dimen/button_height" android:text="@string/thien_confirm_order" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/on_primary" app:backgroundTint="@color/primary" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" android:layout_marginTop="@dimen/spacing_8" android:layout_weight="1.3" android:layout_marginStart="8dp"/>
-  </LinearLayout></LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp"><com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_clear_order" android:layout_width="0dp" android:layout_height="@dimen/button_height" android:layout_weight="1" android:text="@string/thien_clear_draft" android:textSize="@dimen/thien_small_size" android:textAllCaps="false" android:textColor="@color/error" android:insetTop="0dp" android:insetBottom="0dp" app:backgroundTint="@color/thien_white" app:cornerRadius="@dimen/radius_8" app:strokeColor="@color/error" app:strokeWidth="1dp"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/btn_thien_place_order"
+          android:layout_width="0dp"
+          android:layout_height="@dimen/button_height"
+          android:layout_marginStart="8dp"
+          android:layout_weight="1.3"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:text="@string/thien_confirm_order"
+          android:textAllCaps="false"
+          android:textColor="@color/on_primary"
+          android:textSize="@dimen/thien_body_size"
+          app:backgroundTint="@color/primary"
+          app:cornerRadius="@dimen/radius_8" />
+    </LinearLayout></LinearLayout>
 </LinearLayout>

@@ -18,7 +18,7 @@ import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepositoryProvider;
 import com.uitdrinkapp.app.ui.customer.order.data.CartLine;
 import com.uitdrinkapp.app.ui.customer.order.data.DemoOrder;
 
-/** Màn 09: theo dõi, hủy đơn ở trạng thái PENDING; nút demo đổi COMPLETED. */
+/** Màn 09: theo dõi đơn, công cụ demo PENDING -> DELIVERING -> COMPLETED. */
 public final class OrderTrackingFragment extends Fragment {
     private FragmentThienOrderTrackingBinding binding;
     private BuyerOrderRepository repo;
@@ -46,9 +46,15 @@ public final class OrderTrackingFragment extends Fragment {
                         Toast.makeText(requireContext(), R.string.thien_cannot_cancel, Toast.LENGTH_SHORT).show();
                     render();
                 }).show());
-        binding.btnThienSimulateComplete.setOnClickListener(v -> {
-            repo.simulateComplete(orderId); render();
-        });
+        binding.btnThienSimulatePrepare.setOnClickListener(v -> confirmDemo(
+                R.string.thien_demo_confirm_begin, () ->
+                        repo.updateStatus(orderId, DemoOrder.Status.DELIVERING)));
+        binding.btnThienSimulateComplete.setOnClickListener(v -> confirmDemo(
+                R.string.thien_demo_confirm_finish, () ->
+                        repo.updateStatus(orderId, DemoOrder.Status.COMPLETED)));
+        binding.btnThienDemoReset.setOnClickListener(v -> confirmDemo(
+                R.string.thien_demo_confirm_reset, () -> repo.resetDemoOrder(orderId)));
+        binding.btnThienTrackingDetail.setOnClickListener(v -> showOrderDetails());
         binding.btnThienTrackingReview.setOnClickListener(v -> {
             Bundle args = new Bundle(); args.putString("order_id", orderId);
             NavHostFragment.findNavController(this).navigate(R.id.action_thien_tracking_to_review, args);
@@ -97,12 +103,55 @@ public final class OrderTrackingFragment extends Fragment {
             binding.thienTrackingItems.addView(label);
         }
         binding.btnThienCancelOrder.setVisibility(order.status == DemoOrder.Status.PENDING ? View.VISIBLE : View.GONE);
-        // Thao tác mô phỏng trạng thái là công cụ test, không nằm trên UI Figma.
-        binding.btnThienSimulateComplete.setVisibility(View.GONE);
+        // Hai nút luôn hiển thị trong khối demo, chỉ kích hoạt khi bước đó hợp lệ.
+        binding.thienDemoTools.setVisibility(View.VISIBLE);
+        setDemoEnabled(binding.btnThienSimulatePrepare, waiting);
+        setDemoEnabled(binding.btnThienSimulateComplete,
+                order.status == DemoOrder.Status.DELIVERING);
+        setDemoEnabled(binding.btnThienDemoReset,
+                !waiting);
+        binding.btnThienTrackingDetail.setVisibility(finished ? View.VISIBLE : View.GONE);
         binding.btnThienOpenHistory.setVisibility(View.GONE);
         binding.btnThienTrackingReview.setVisibility(finished ? View.VISIBLE : View.GONE);
         binding.btnThienTrackingReview.setText(repo.hasReview(order.orderId)
                 ? R.string.thien_review_view : R.string.thien_review_action);
+    }
+    private interface DemoChange { boolean apply(); }
+
+    private void confirmDemo(int messageId, DemoChange change) {
+        if (repo.getOrder(orderId) == null) return;
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.thien_demo_confirm_title)
+                .setMessage(messageId)
+                .setNegativeButton(R.string.thien_close, null)
+                .setPositiveButton(R.string.thien_demo_confirm_yes, (dialog, which) -> {
+                    if (!change.apply()) Toast.makeText(requireContext(),
+                            R.string.thien_demo_invalid_transition, Toast.LENGTH_SHORT).show();
+                    render();
+                }).show();
+    }
+
+    private void setDemoEnabled(com.google.android.material.button.MaterialButton button, boolean enabled) {
+        button.setEnabled(enabled);
+        button.setAlpha(enabled ? 1f : 0.45f);
+    }
+
+    private void showOrderDetails() {
+        DemoOrder order = repo.getOrder(orderId);
+        if (order == null) return;
+        StringBuilder body = new StringBuilder();
+        for (CartLine line : order.items) {
+            if (body.length() > 0) body.append("\n");
+            body.append(getString(R.string.thien_checkout_item_line,
+                    line.quantity, line.productName, line.size.name(),
+                    OrderUiFormat.money(line.totalPrice())));
+        }
+        body.append("\n\n").append(getString(R.string.thien_demo_details_total,
+                OrderUiFormat.money(order.totalAmount())));
+        new AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.thien_demo_details_title, order.orderId))
+                .setMessage(body.toString())
+                .setPositiveButton(R.string.thien_close, null).show();
     }
     @Override public void onDestroyView() { super.onDestroyView(); binding = null; }
 }

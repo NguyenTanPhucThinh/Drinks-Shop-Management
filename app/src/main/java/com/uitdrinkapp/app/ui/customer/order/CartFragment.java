@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.uitdrinkapp.app.data.model.Product;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -118,6 +120,12 @@ public final class CartFragment extends Fragment {
             row.tvThienCartItemQuantity.setText(String.valueOf(inCart ? item.quantity : 0));
             row.btnThienCartMinus.setEnabled(inCart);
             row.btnThienCartMinus.setAlpha(inCart ? 1f : 0.4f);
+            // Bấm vùng tên/ảnh/thẻ để xem chi tiết; không ảnh hưởng tới nút +/- số lượng.
+            row.getRoot().setContentDescription(getString(R.string.thien_cart_open_detail, item.productName));
+            row.getRoot().setClickable(true);
+            row.getRoot().setFocusable(true);
+            row.getRoot().setOnClickListener(v -> openProductDetails(item));
+            row.tvThienCartItemName.setOnClickListener(v -> openProductDetails(item));
             row.btnThienCartPlus.setOnClickListener(v -> {
                 if (inCart) repo.updateQuantity(item.lineId, item.quantity + 1);
                 else repo.addToCart(item);
@@ -129,6 +137,32 @@ public final class CartFragment extends Fragment {
             });
             binding.thienCartContainer.addView(row.getRoot());
         }
+    }
+    /** Ánh xạ tạm ID demo của Thiên sang ID danh mục chung của nhóm. */
+    private void openProductDetails(CartLine line) {
+        String sharedId;
+        switch (line.productId) {
+            case "milk-tea-01": sharedId = "milk_tea"; break;
+            case "fruit-tea-02": sharedId = "peach_tea"; break;
+            case "coffee-03": sharedId = "salt_coffee"; break;
+            case "matcha-04": sharedId = "matcha"; break;
+            default: sharedId = line.productId;
+        }
+        Product product = RepositoryProvider.get(requireContext()).products().getProductById(sharedId);
+        if (product == null || !product.getName().equalsIgnoreCase(line.productName)) {
+            // Chưa có trong danh mục phía Duyên: vẫn xem được thông tin demo,
+            // không điều hướng tới ID thiếu khiến màn chi tiết lập tức tự đóng.
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(line.productName)
+                    .setMessage(getString(R.string.thien_cart_missing_product_price,
+                            OrderUiFormat.money(line.unitPrice())) + "\n\n" +
+                            getString(R.string.thien_cart_missing_product_note))
+                    .setPositiveButton(R.string.thien_close, null).show();
+            return;
+        }
+        Bundle args = new Bundle();
+        args.putString("product_id", product.getId());
+        NavHostFragment.findNavController(this).navigate(R.id.productDetailFragment, args);
     }
     @Override public void onDestroyView() { super.onDestroyView(); binding = null; }
 }

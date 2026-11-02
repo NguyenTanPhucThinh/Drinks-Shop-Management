@@ -163,6 +163,19 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         }
         return false;
     }
+    /** Thao tác demo độc lập: không ghi vào đơn của người bán hoặc backend. */
+    @Override public synchronized boolean resetDemoOrder(String orderId) {
+        if (orderId == null) return false;
+        List<DemoOrder> orders = getOrders();
+        for (DemoOrder order : orders) {
+            if (!order.orderId.equals(orderId)) continue;
+            if (order.status == DemoOrder.Status.PENDING) return false;
+            order.status = DemoOrder.Status.PENDING;
+            saveOrders(orders);
+            return true;
+        }
+        return false;
+    }
     @Override public synchronized DemoReview getReview(String orderId) {
         if (orderId == null) return null;
         JSONArray all = load(KEY_REVIEWS);

@@ -18,6 +18,8 @@ public interface BuyerOrderRepository {
     List<DemoOrder> getOrders();
     boolean cancelOrder(String orderId);
     boolean simulateComplete(String orderId);
+    /** Chỉ repository demo được phép đặt lại trạng thái; remote mặc định không hỗ trợ. */
+    default boolean resetDemoOrder(String orderId) { return false; }
     /** Dành cho kết nối trạng thái từ người bán/API ở giai đoạn sau. */
     boolean updateStatus(String orderId, DemoOrder.Status nextStatus);
     boolean hasReview(String orderId);
