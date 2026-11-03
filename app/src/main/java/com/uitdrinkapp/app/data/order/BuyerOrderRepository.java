@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.customer.order.data;
+package com.uitdrinkapp.app.data.order;
 
 import java.util.List;
 

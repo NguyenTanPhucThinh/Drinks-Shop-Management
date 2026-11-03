@@ -1,4 +1,4 @@
-package com.uitdrinkapp.app.ui.customer.order.data;
+package com.uitdrinkapp.app.data.order;
 
 import org.json.JSONArray;
 import org.json.JSONException;

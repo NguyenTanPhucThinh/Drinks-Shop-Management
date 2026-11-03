@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienCheckoutBinding;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepository;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.ui.customer.order.data.CartLine;
-import com.uitdrinkapp.app.ui.customer.order.data.DemoOrder;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
+import com.uitdrinkapp.app.data.order.CartLine;
+import com.uitdrinkapp.app.data.order.DemoOrder;
 
 /** Màn 08. Voucher chỉ là danh mục mock tạm thời, sẽ kết nối picker của Duyên. */
 public final class CheckoutFragment extends Fragment {

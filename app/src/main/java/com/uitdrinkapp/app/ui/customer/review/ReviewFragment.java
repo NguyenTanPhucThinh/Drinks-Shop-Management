@@ -14,10 +14,10 @@ import com.google.android.material.chip.Chip;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienReviewBinding;
 import com.uitdrinkapp.app.ui.customer.order.BuyerNavBars;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepository;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.ui.customer.order.data.DemoOrder;
-import com.uitdrinkapp.app.ui.customer.order.data.DemoReview;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
+import com.uitdrinkapp.app.data.order.DemoOrder;
+import com.uitdrinkapp.app.data.order.DemoReview;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.uitdrinkapp.app.ui.customer.order;
 
 import android.content.Context;
 import com.uitdrinkapp.app.R;
-import com.uitdrinkapp.app.ui.customer.order.data.DemoOrder;
+import com.uitdrinkapp.app.data.order.DemoOrder;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

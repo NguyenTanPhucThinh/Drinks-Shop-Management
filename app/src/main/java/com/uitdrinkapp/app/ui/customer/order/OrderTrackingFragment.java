@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienOrderTrackingBinding;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepository;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.ui.customer.order.data.CartLine;
-import com.uitdrinkapp.app.ui.customer.order.data.DemoOrder;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
+import com.uitdrinkapp.app.data.order.CartLine;
+import com.uitdrinkapp.app.data.order.DemoOrder;
 
 /** Màn 09: theo dõi đơn, công cụ demo PENDING -> DELIVERING -> COMPLETED. */
 public final class OrderTrackingFragment extends Fragment {

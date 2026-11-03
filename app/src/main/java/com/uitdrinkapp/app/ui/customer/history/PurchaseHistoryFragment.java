@@ -2,6 +2,8 @@ package com.uitdrinkapp.app.ui.customer.history;
 
 import android.os.Bundle;
 import android.content.res.ColorStateList;
+
+import com.uitdrinkapp.app.data.order.CartLine;
 import com.uitdrinkapp.app.ui.customer.order.BuyerNavBars;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,9 @@ import com.uitdrinkapp.app.databinding.FragmentThienPurchaseHistoryBinding;
 import com.uitdrinkapp.app.databinding.ItemThienHistoryBinding;
 import com.google.android.material.button.MaterialButton;
 import com.uitdrinkapp.app.ui.customer.order.OrderUiFormat;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepository;
-import com.uitdrinkapp.app.ui.customer.order.data.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.ui.customer.order.data.DemoOrder;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
+import com.uitdrinkapp.app.data.order.DemoOrder;
 
 /** Màn 10: lọc Tất cả / Hoàn thành / Đã hủy. */
 public final class PurchaseHistoryFragment extends Fragment {
@@ -67,7 +69,7 @@ public final class PurchaseHistoryFragment extends Fragment {
             row.tvThienHistoryStatus.setTextColor(requireContext().getColor(fg));
             row.tvThienHistoryTotal.setText(OrderUiFormat.money(order.totalAmount()));
             int qty = 0;
-            for (com.uitdrinkapp.app.ui.customer.order.data.CartLine line : order.items) qty += line.quantity;
+            for (CartLine line : order.items) qty += line.quantity;
             String name = order.items.isEmpty() ? "Đồ uống" : order.items.get(0).productName;
             row.tvThienHistoryProducts.setText(qty + " món · " + name);
             row.btnThienHistoryDetails.setOnClickListener(v -> {
