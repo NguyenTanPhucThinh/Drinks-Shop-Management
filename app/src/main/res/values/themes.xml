@@ -26,4 +26,12 @@
         <item name="android:windowBackground">@color/home_background</item>
         <item name="android:colorBackground">@color/home_background</item>
     </style>
+    <!-- Seller uses the agreed light palette even when the device is in night mode. -->
+    <style name="Theme.Seller" parent="Theme.MyApplication">
+        <item name="android:windowBackground">@color/seller_background</item>
+        <item name="android:colorBackground">@color/seller_background</item>
+        <item name="android:textColorPrimary">@color/seller_text_primary</item>
+        <item name="colorPrimary">@color/seller_nav_active</item>
+        <item name="colorSurface">@color/seller_nav_background</item>
+    </style>
 </resources>

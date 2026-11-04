@@ -75,4 +75,12 @@
     <string name="detail_checkout_pending">Thanh toán chưa được triển khai</string>
     <string name="detail_not_found">Không tìm thấy đồ uống này</string>
     <string name="detail_topping_limit">Bạn có thể chọn tối đa 3 topping</string>
+    <string name="seller_title_home">Tổng quan</string>
+    <string name="seller_title_notification">Thông báo</string>
+    <string name="seller_title_orders">Đơn hàng</string>
+    <string name="seller_title_product">Sản phẩm</string>
+    <string name="seller_title_other_features">Chức năng khác</string>
+    <string name="seller_tab_other_features">Khác</string>
+    <string name="seller_title_profile">Cá nhân</string>
+    <string name="seller_notification_unread">Thông báo, có thông báo mới</string>
 </resources>

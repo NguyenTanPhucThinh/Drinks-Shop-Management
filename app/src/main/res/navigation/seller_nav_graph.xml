@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/seller_nav_graph"
+    app:startDestination="@id/sellerHomeFragment">
+    <fragment
+        android:id="@+id/sellerHomeFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.home.SellerHomeFragment"
+        android:label="@string/seller_title_home" />
+    <fragment
+        android:id="@+id/sellerNotificationFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.notification.SellerNotificationFragment"
+        android:label="@string/seller_title_notification" />
+    <fragment
+        android:id="@+id/sellerOrdersFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.orders.OrderManagementFragment"
+        android:label="@string/seller_title_orders" />
+    <fragment
+        android:id="@+id/sellerProductFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.product.ProductManagementFragment"
+        android:label="@string/seller_title_product" />
+    <fragment
+        android:id="@+id/sellerOtherFeaturesFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.otherfeatures.OtherFeaturesFragment"
+        android:label="@string/seller_title_other_features" />
+    <fragment
+        android:id="@+id/sellerProfileFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.profile.SellerProfileFragment"
+        android:label="@string/seller_title_profile" />
+</navigation>

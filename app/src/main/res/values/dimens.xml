@@ -62,4 +62,10 @@
     <dimen name="detail_image_height">208dp</dimen>
     <dimen name="detail_chip_height">32dp</dimen>
     <dimen name="detail_quantity_width">20dp</dimen>
+    <dimen name="seller_nav_height">64dp</dimen>
+    <dimen name="seller_nav_icon">22dp</dimen>
+    <dimen name="seller_nav_icon_container">24dp</dimen>
+    <dimen name="seller_nav_text">10sp</dimen>
+    <dimen name="seller_nav_badge">10dp</dimen>
+    <dimen name="seller_nav_badge_border">1dp</dimen>
 </resources>

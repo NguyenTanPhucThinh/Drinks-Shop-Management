@@ -28,4 +28,13 @@
     <color name="home_badge">#E34B53</color>
     <color name="banner_scrim">#33001E15</color>
 
+    <!-- Seller navigation stays light to match the agreed seller reference. -->
+    <color name="seller_background">#F2F0EB</color>
+    <color name="seller_text_primary">#30251F</color>
+    <color name="seller_nav_background">#FFFFFF</color>
+    <color name="seller_nav_active">#D94A00</color>
+    <color name="seller_nav_inactive">#927B6E</color>
+    <color name="seller_nav_border">#E8DED5</color>
+    <color name="seller_nav_badge">#E34B53</color>
+    <color name="seller_nav_ripple">#1AD94A00</color>
 </resources>
