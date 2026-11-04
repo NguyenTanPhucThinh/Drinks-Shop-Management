@@ -6,6 +6,10 @@ notification dot is mock presentation until real notification data is connected.
 
 ## Open the seller shell
 
+For a quick preview, launch the app normally and tap **Mở trang Seller (tạm)**
+below the greeting on customer Home. Back from seller Overview returns to the
+customer screen. Remove this temporary shortcut when auth routing is connected.
+
 Select the debug build variant and the shared **Seller** run configuration in
 Android Studio. If it has not appeared after project sync, in Run > Edit
 Configurations create an Android App configuration for the app module, select

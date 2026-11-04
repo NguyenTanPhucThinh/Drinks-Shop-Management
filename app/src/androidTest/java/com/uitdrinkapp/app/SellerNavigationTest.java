@@ -142,6 +142,18 @@ public final class SellerNavigationTest {
         assertTrue("Requested orientation should be applied", matches.get());
     }
 
+    @Test
+    public void customerHomeShortcutOpensSellerAndBackReturnsToCustomer() {
+        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+            onView(withId(R.id.btn_home_seller_preview)).check(matches(isCompletelyDisplayed()));
+            onView(withId(R.id.btn_home_seller_preview)).perform(click());
+            checkTab(0);
+            pressBack();
+            onView(withId(R.id.btn_home_seller_preview)).check(matches(isCompletelyDisplayed()));
+            onView(withId(R.id.tv_greeting)).check(matches(isDisplayed()));
+        }
+    }
+
     private void saveScreenshot(String name) throws Exception {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         // Ripples run on the render thread after Espresso considers the UI idle.

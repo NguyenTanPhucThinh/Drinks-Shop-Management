@@ -1,5 +1,6 @@
 package com.uitdrinkapp.app.ui.customer.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import com.uitdrinkapp.app.data.model.Shop;
 import com.uitdrinkapp.app.data.model.ShopSession;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentHomeBinding;
+import com.uitdrinkapp.app.ui.seller.main.SellerMainActivity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,6 +44,9 @@ public final class HomeFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
         repositories = RepositoryProvider.get(requireContext());
+        // Temporary shortcut while the seller authentication route is being built.
+        binding.btnHomeSellerPreview.setOnClickListener(clicked ->
+                startActivity(new Intent(requireContext(), SellerMainActivity.class)));
         binding.btnScanQr.setOnClickListener(clicked -> {
             if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.homeFragment)
                 NavHostFragment.findNavController(this).navigate(R.id.action_home_to_join);
