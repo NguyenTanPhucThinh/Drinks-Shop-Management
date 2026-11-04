@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.uitdrinkapp.app.databinding.HomeActivityBinding;
@@ -36,19 +37,56 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (host == null) throw new IllegalStateException("Missing navigation host");
         nav = host.getNavController();
+
         nav.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            binding.llBottomNav.setVisibility((destination.getId() == R.id.homeFragment || destination.getId() == R.id.vouchersFragment) ? View.VISIBLE : View.GONE);
-            selectTab(binding.btnNavHome, destination.getId() == R.id.homeFragment);
-            selectTab(binding.btnNavVouchers, destination.getId() == R.id.vouchersFragment);
+            int id = destination.getId();
+
+            boolean showBottomNav =
+                    id == R.id.homeFragment ||
+                            id == R.id.vouchersFragment ||
+                            id == R.id.thien_history;
+
+            binding.llBottomNav.setVisibility(
+                    showBottomNav ? View.VISIBLE : View.GONE
+            );
+
+            selectTab(binding.btnNavHome, id == R.id.homeFragment);
+            selectTab(binding.btnNavMenu, id == R.id.thien_cart);
+            selectTab(binding.btnNavHistory, id == R.id.thien_history);
+            selectTab(binding.btnNavVouchers, id == R.id.vouchersFragment);
+
             if (messageBar != null) messageBar.dismiss();
         });
+
         binding.btnNavHome.setOnClickListener(view -> nav.popBackStack(R.id.homeFragment, false));
         binding.btnNavVouchers.setOnClickListener(view -> openVouchers());
+
+        binding.btnNavMenu.setOnClickListener(view ->
+                nav.navigate(R.id.thien_flow));
+
+        binding.btnNavHistory.setOnClickListener(view -> {
+            if (nav.getCurrentDestination() != null &&
+                    nav.getCurrentDestination().getId() == R.id.thien_history) {
+                return;
+            }
+
+            nav.navigate(R.id.thien_flow);
+            nav.navigate(R.id.thien_history, null,
+                    new NavOptions.Builder()
+                            .setPopUpTo(R.id.thien_cart, true)
+                            .build());
+        });
+
     }
+
     public void openVouchers() {
-        if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() == R.id.homeFragment)
+        if (nav.getCurrentDestination() == null) return;
+
+        if (nav.getCurrentDestination().getId() != R.id.vouchersFragment) {
             nav.navigate(R.id.vouchersFragment);
+        }
     }
+
     private void selectTab(ViewGroup tab, boolean selected) {
         tab.setSelected(selected);
         int color = ContextCompat.getColor(this, selected ? R.color.home_green : R.color.home_muted);
