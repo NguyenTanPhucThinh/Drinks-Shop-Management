@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="thien_page_space">14dp</dimen>
+    <dimen name="thien_card_pad">12dp</dimen>
+    <dimen name="thien_card_radius">14dp</dimen>
+    <dimen name="thien_pill_radius">50dp</dimen>
+    <dimen name="thien_chip_height">36dp</dimen>
+    <dimen name="thien_tab_height">40dp</dimen>
+    <dimen name="thien_thumb_size">50dp</dimen>
+    <dimen name="thien_bottom_nav_height">66dp</dimen>
+    <dimen name="thien_nav_icon_size">23dp</dimen>
+    <dimen name="thien_nav_big_size">48dp</dimen>
+    <dimen name="thien_card_gap">10dp</dimen>
+    <dimen name="thien_title_size">18sp</dimen>
+    <dimen name="thien_body_size">14sp</dimen>
+    <dimen name="thien_small_size">12sp</dimen>
+    <dimen name="thien_tiny_size">10sp</dimen>
+    <dimen name="thien_rating_height">54dp</dimen>
+    <dimen name="thien_feedback_height">96dp</dimen>
+</resources>
