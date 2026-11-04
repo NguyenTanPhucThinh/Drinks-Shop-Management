@@ -8,4 +8,5 @@
     <fragment android:id="@+id/productDetailFragment" android:name="com.uitdrinkapp.app.ui.customer.product.ProductDetailFragment" android:label="@string/detail_title">
         <argument android:name="product_id" app:argType="string"/>
     </fragment>
+    <include app:graph="@navigation/nav_graph_thien" />
 </navigation>

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <color name="thien_page">#F4F3EF</color>
+    <color name="thien_white">#FFFFFF</color>
+    <color name="thien_mint">#E5F1EB</color>
+    <color name="thien_muted">#7B9188</color>
+    <color name="thien_border">#E4EAE6</color>
+    <color name="thien_warning">#F3A43B</color>
+    <color name="thien_warning_bg">#FFF3DF</color>
+    <color name="thien_error_bg">#FFEEEE</color>
+<color name="thien_star_gold">#FFB800</color><color name="thien_star_unselected">#DCE5DF</color><color name="thien_status_wait_text">#98601E</color><color name="thien_status_success_text">#146C4D</color><color name="thien_status_cancel_text">#C82014</color></resources>
