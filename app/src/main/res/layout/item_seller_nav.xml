@@ -4,9 +4,9 @@
     android:layout_height="wrap_content"
     android:minHeight="@dimen/seller_nav_height"
     android:orientation="vertical"
-    android:gravity="center"
-    android:paddingTop="@dimen/spacing_8"
-    android:paddingBottom="@dimen/spacing_8"
+    android:gravity="center_horizontal"
+    android:paddingTop="@dimen/spacing_12"
+    android:paddingBottom="@dimen/spacing_12"
     android:background="@drawable/bg_seller_nav_press"
     android:clickable="true"
     android:focusable="true">
@@ -37,6 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_4"
+        android:paddingStart="@dimen/spacing_4"
+        android:paddingEnd="@dimen/spacing_4"
         android:gravity="center"
         android:importantForAccessibility="no"
         android:textAppearance="@style/TextAppearance.Seller.Nav" />

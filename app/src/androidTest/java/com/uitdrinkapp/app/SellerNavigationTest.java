@@ -1,6 +1,9 @@
 package com.uitdrinkapp.app;
 
 import android.graphics.Bitmap;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.os.SystemClock;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.test.core.app.ActivityScenario;
@@ -13,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.Espresso.pressBackUnconditionally;
@@ -109,8 +113,39 @@ public final class SellerNavigationTest {
         }
     }
 
+    @Test
+    public void rotationKeepsSelectedTabAndNavbarVisible() throws Exception {
+        try (ActivityScenario<SellerMainActivity> scenario =
+                     ActivityScenario.launch(SellerMainActivity.class)) {
+            onView(withId(R.id.ll_seller_nav_orders)).perform(click());
+            scenario.onActivity(activity -> activity.setRequestedOrientation(
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+            awaitOrientation(scenario, Configuration.ORIENTATION_LANDSCAPE);
+            checkTab(2);
+            saveScreenshot("orders-landscape");
+            scenario.onActivity(activity -> activity.setRequestedOrientation(
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+            awaitOrientation(scenario, Configuration.ORIENTATION_PORTRAIT);
+            checkTab(2);
+        }
+    }
+
+    private void awaitOrientation(ActivityScenario<SellerMainActivity> scenario, int expected) {
+        long deadline = SystemClock.uptimeMillis() + 5000;
+        AtomicBoolean matches = new AtomicBoolean(false);
+        do {
+            scenario.onActivity(activity -> matches.set(
+                    activity.getResources().getConfiguration().orientation == expected));
+            if (matches.get()) return;
+            SystemClock.sleep(100);
+        } while (SystemClock.uptimeMillis() < deadline);
+        assertTrue("Requested orientation should be applied", matches.get());
+    }
+
     private void saveScreenshot(String name) throws Exception {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        // Ripples run on the render thread after Espresso considers the UI idle.
+        SystemClock.sleep(350);
         Bitmap bitmap = InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();
         File directory = new File(InstrumentationRegistry.getInstrumentation()
                 .getTargetContext().getExternalFilesDir(null), "screenshots");
