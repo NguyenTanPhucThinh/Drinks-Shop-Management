@@ -6,7 +6,7 @@ notification dot is mock presentation until real notification data is connected.
 
 ## Open the seller shell
 
-For a quick preview, launch the app normally and tap **Mở trang Seller (tạm)**
+For a quick preview, launch the app normally and tap **go to seller**
 below the greeting on customer Home. Back from seller Overview returns to the
 customer screen. Remove this temporary shortcut when auth routing is connected.
 
