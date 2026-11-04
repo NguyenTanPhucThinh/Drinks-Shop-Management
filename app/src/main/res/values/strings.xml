@@ -75,4 +75,5 @@
     <string name="detail_checkout_pending">Thanh toán chưa được triển khai</string>
     <string name="detail_not_found">Không tìm thấy đồ uống này</string>
     <string name="detail_topping_limit">Bạn có thể chọn tối đa 3 topping</string>
+    <string name="detail_added_to_cart">Đã thêm vào giỏ hàng</string>
 </resources>

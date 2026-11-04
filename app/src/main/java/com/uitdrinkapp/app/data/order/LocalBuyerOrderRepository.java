@@ -27,7 +27,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         if (!prefs.getBoolean(KEY_SEEDED, false)) {
             prefs.edit().putBoolean(KEY_SEEDED, true).apply();
-            addDemoProductsForTesting();
+            // Không tự động thêm sản phẩm demo vào giỏ hàng ban đầu nữa
         }
         if (!prefs.getBoolean(KEY_HISTORY_SEEDED, false)) {
             seedHistoryForDemo();

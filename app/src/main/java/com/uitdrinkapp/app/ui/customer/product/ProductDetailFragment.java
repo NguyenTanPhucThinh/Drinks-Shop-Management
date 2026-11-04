@@ -18,6 +18,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.uitdrinkapp.app.MainActivity;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.data.model.*;
+import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
+import com.uitdrinkapp.app.data.order.CartLine;
 import com.uitdrinkapp.app.data.repository.ProductRepository;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentProductDetailBinding;
@@ -78,9 +80,47 @@ public final class ProductDetailFragment extends Fragment {
         bindChoice(binding.cgSugar, new int[]{R.id.chip_sugar_0, R.id.chip_sugar_30, R.id.chip_sugar_50, R.id.chip_sugar_70, R.id.chip_sugar_100}, SugarLevel.values(), selection.getSugar(), selection::setSugar);
         bindChoice(binding.cgFulfillment, new int[]{R.id.chip_counter, R.id.chip_takeaway, R.id.chip_delivery}, FulfillmentMethod.values(), selection.getFulfillment(), selection::setFulfillment);
         for (Topping topping : repository.getToppings()) addTopping(topping);
-        binding.btnDetailAddCart.setOnClickListener(null);
-        binding.btnDetailBuy.setOnClickListener(null);
+        binding.btnDetailAddCart.setOnClickListener(clicked -> {
+            CartLine line = buildCartLine();
+            BuyerOrderRepositoryProvider.get(requireContext()).addToCart(line);
+            showMessage(R.string.detail_added_to_cart);
+            NavHostFragment.findNavController(this).popBackStack();
+        });
+        binding.btnDetailBuy.setOnClickListener(clicked -> {
+            CartLine line = buildCartLine();
+            BuyerOrderRepositoryProvider.get(requireContext()).addToCart(line);
+            NavHostFragment.findNavController(this).navigate(R.id.thien_flow);
+        });
         updatePrice();
+    }
+    private CartLine buildCartLine() {
+        ProductRepository repository = RepositoryProvider.get(requireContext()).products();
+        String id = getArguments() == null ? null : getArguments().getString(ARG_PRODUCT_ID);
+        Product product = repository.getProductById(id);
+        String productId = product != null ? product.getId() : (id != null ? id : "unknown");
+        String productName = product != null ? product.getName() : binding.tvDetailName.getText().toString();
+        long basePrice = product != null ? product.getPrice() : 35_000L;
+
+        CartLine.Size cartSize;
+        switch (selection.getSize()) {
+            case M: cartSize = CartLine.Size.M; break;
+            case L: cartSize = CartLine.Size.L; break;
+            default: cartSize = CartLine.Size.S; break;
+        }
+        CartLine.Level cartSugar;
+        switch (selection.getSugar()) {
+            case P0: cartSugar = CartLine.Level.P0; break;
+            case P30: cartSugar = CartLine.Level.P30; break;
+            case P70: cartSugar = CartLine.Level.P70; break;
+            case P100: cartSugar = CartLine.Level.P100; break;
+            default: cartSugar = CartLine.Level.P50; break;
+        }
+        CartLine.Level cartIce = selection.getTemperature() == Temperature.HOT ? CartLine.Level.P0 : CartLine.Level.P50;
+        List<CartLine.Topping> cartToppings = new ArrayList<>();
+        for (Topping t : selection.getToppings()) {
+            cartToppings.add(new CartLine.Topping(t.getName(), t.getPrice()));
+        }
+        return new CartLine(productId, productName, basePrice, cartSize, cartSugar, cartIce, cartToppings, selection.getQuantity());
     }
     private <T extends Enum<T>> void bindChoice(ChipGroup group, int[] ids, T[] values, T selected, Consumer<T> setter) {
         group.check(ids[selected.ordinal()]);

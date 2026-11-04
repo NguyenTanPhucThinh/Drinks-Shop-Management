@@ -20,10 +20,8 @@ import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
 import com.uitdrinkapp.app.data.order.CartLine;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 /** Màn 06: danh sách món hiện có; chọn số lượng để đưa vào giỏ, không dùng nút Thêm món khác. */
 public final class CartFragment extends Fragment {
@@ -82,11 +80,8 @@ public final class CartFragment extends Fragment {
     private void render() {
         List<CartLine> chosen = repo.getCart();
         List<CartLine> visible = new ArrayList<>(chosen);
-        Set<String> alreadyAdded = new HashSet<>();
         int count = 0;
-        for (CartLine row : chosen) { alreadyAdded.add(row.productId); count += row.quantity; }
-        for (CartLine catalogItem : repo.getAvailableProducts())
-            if (!alreadyAdded.contains(catalogItem.productId)) visible.add(catalogItem);
+        for (CartLine row : chosen) { count += row.quantity; }
         binding.thienCartContainer.removeAllViews();
         binding.tvThienCartEmpty.setVisibility(visible.isEmpty() ? View.VISIBLE : View.GONE);
         filter(binding.btnThienFilterAll, category == 0);
@@ -107,7 +102,6 @@ public final class CartFragment extends Fragment {
         binding.btnThienCheckout.setEnabled(!chosen.isEmpty());
         for (CartLine item : visible) {
             if (!matches(item)) continue;
-            boolean inCart = alreadyAdded.contains(item.productId);
             ItemThienCartBinding row = ItemThienCartBinding.inflate(getLayoutInflater(),
                     binding.thienCartContainer, false);
             row.tvThienCartItemName.setText(item.productName);
@@ -117,9 +111,9 @@ public final class CartFragment extends Fragment {
             row.tvThienCartItemTopping.setText(item.toppings.isEmpty() ? "" :
                     getString(R.string.thien_topping_label, item.toppingLabel()));
             row.tvThienCartItemPrice.setText(OrderUiFormat.money(item.unitPrice()));
-            row.tvThienCartItemQuantity.setText(String.valueOf(inCart ? item.quantity : 0));
-            row.btnThienCartMinus.setEnabled(inCart);
-            row.btnThienCartMinus.setAlpha(inCart ? 1f : 0.4f);
+            row.tvThienCartItemQuantity.setText(String.valueOf(item.quantity));
+            row.btnThienCartMinus.setEnabled(true);
+            row.btnThienCartMinus.setAlpha(1f);
             // Bấm vùng tên/ảnh/thẻ để xem chi tiết; không ảnh hưởng tới nút +/- số lượng.
             row.getRoot().setContentDescription(getString(R.string.thien_cart_open_detail, item.productName));
             row.getRoot().setClickable(true);
@@ -127,12 +121,11 @@ public final class CartFragment extends Fragment {
             row.getRoot().setOnClickListener(v -> openProductDetails(item));
             row.tvThienCartItemName.setOnClickListener(v -> openProductDetails(item));
             row.btnThienCartPlus.setOnClickListener(v -> {
-                if (inCart) repo.updateQuantity(item.lineId, item.quantity + 1);
-                else repo.addToCart(item);
+                repo.updateQuantity(item.lineId, item.quantity + 1);
                 render();
             });
             row.btnThienCartMinus.setOnClickListener(v -> {
-                if (inCart) repo.updateQuantity(item.lineId, item.quantity - 1);
+                repo.updateQuantity(item.lineId, item.quantity - 1);
                 render();
             });
             binding.thienCartContainer.addView(row.getRoot());
