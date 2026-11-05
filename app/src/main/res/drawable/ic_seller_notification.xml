@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/seller_nav_icon"
+    android:height="@dimen/seller_nav_icon"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/seller_nav_inactive"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M18,8 C18,4.7 15.3,3 12,3 C8.7,3 6,4.7 6,8 L6,13 L4,17 L20,17 L18,13 Z M10,21 L14,21 M12,1 L12,3" />
+</vector>

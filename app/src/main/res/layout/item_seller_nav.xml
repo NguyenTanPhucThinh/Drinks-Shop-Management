@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/seller_nav_height"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingTop="@dimen/spacing_12"
+    android:paddingBottom="@dimen/spacing_12"
+    android:background="@drawable/bg_seller_nav_press"
+    android:clickable="true"
+    android:focusable="true">
+
+    <FrameLayout
+        android:layout_width="@dimen/seller_nav_icon_container"
+        android:layout_height="@dimen/seller_nav_icon_container"
+        android:importantForAccessibility="noHideDescendants">
+
+        <ImageView
+            android:id="@+id/iv_seller_nav_icon"
+            android:layout_width="@dimen/seller_nav_icon"
+            android:layout_height="@dimen/seller_nav_icon"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no" />
+
+        <View
+            android:id="@+id/v_seller_nav_badge"
+            android:layout_width="@dimen/seller_nav_badge"
+            android:layout_height="@dimen/seller_nav_badge"
+            android:layout_gravity="top|end"
+            android:background="@drawable/bg_seller_nav_badge"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_seller_nav_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:paddingStart="@dimen/spacing_4"
+        android:paddingEnd="@dimen/spacing_4"
+        android:gravity="center"
+        android:importantForAccessibility="no"
+        android:textAppearance="@style/TextAppearance.Seller.Nav" />
+</LinearLayout>
