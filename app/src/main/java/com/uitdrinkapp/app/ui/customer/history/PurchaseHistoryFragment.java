@@ -3,7 +3,6 @@ package com.uitdrinkapp.app.ui.customer.history;
 import android.os.Bundle;
 import android.content.res.ColorStateList;
 
-import com.uitdrinkapp.app.data.order.CartLine;
 import com.uitdrinkapp.app.ui.customer.order.BuyerNavBars;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,9 @@ import com.google.android.material.button.MaterialButton;
 import com.uitdrinkapp.app.ui.customer.order.OrderUiFormat;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.data.order.DemoOrder;
+import com.uitdrinkapp.app.data.model.Order;
+import com.uitdrinkapp.app.data.model.OrderItem;
+import com.uitdrinkapp.app.data.model.OrderStatus;
 
 /** Màn 10: lọc Tất cả / Hoàn thành / Đã hủy. */
 public final class PurchaseHistoryFragment extends Fragment {
@@ -51,9 +52,10 @@ public final class PurchaseHistoryFragment extends Fragment {
         styleFilter(binding.btnThienHistoryCancelled, selected == Filter.CANCELLED);
         binding.thienHistoryContainer.removeAllViews();
         int visibleCount = 0;
-        for (DemoOrder order : repo.getOrders()) {
-            if ((selected == Filter.COMPLETED && order.status != DemoOrder.Status.COMPLETED)
-                    || (selected == Filter.CANCELLED && order.status != DemoOrder.Status.CANCELLED)) continue;
+        for (Order order : repo.getOrders()) {
+            if ((selected == Filter.COMPLETED && order.status != OrderStatus.COMPLETED)
+                    || (selected == Filter.CANCELLED && order.status != OrderStatus.CANCELLED
+                            && order.status != OrderStatus.REJECTED)) continue;
             visibleCount++;
             ItemThienHistoryBinding row = ItemThienHistoryBinding.inflate(getLayoutInflater(), binding.thienHistoryContainer, false);
             row.tvThienHistoryId.setText(getString(R.string.thien_order_label, order.orderId));
@@ -62,6 +64,7 @@ public final class PurchaseHistoryFragment extends Fragment {
             int bg, fg;
             switch (order.status) {
                 case PENDING: bg = R.drawable.bg_thien_warning_pill; fg = R.color.thien_status_wait_text; break;
+                case REJECTED:
                 case CANCELLED: bg = R.drawable.bg_thien_status_cancel; fg = R.color.thien_status_cancel_text; break;
                 default: bg = R.drawable.bg_thien_status_success; fg = R.color.thien_status_success_text; break;
             }
@@ -69,7 +72,7 @@ public final class PurchaseHistoryFragment extends Fragment {
             row.tvThienHistoryStatus.setTextColor(requireContext().getColor(fg));
             row.tvThienHistoryTotal.setText(OrderUiFormat.money(order.totalAmount()));
             int qty = 0;
-            for (CartLine line : order.items) qty += line.quantity;
+            for (OrderItem line : order.items) qty += line.quantity;
             String name = order.items.isEmpty() ? "Đồ uống" : order.items.get(0).productName;
             row.tvThienHistoryProducts.setText(qty + " món · " + name);
             row.btnThienHistoryDetails.setOnClickListener(v -> {
@@ -77,7 +80,7 @@ public final class PurchaseHistoryFragment extends Fragment {
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_history_to_tracking, args);
             });
             row.thienHistoryRow.setOnClickListener(v -> row.btnThienHistoryDetails.performClick());
-            boolean canReview = order.status == DemoOrder.Status.COMPLETED;
+            boolean canReview = order.status == OrderStatus.COMPLETED;
             row.btnThienHistoryReview.setVisibility(canReview ? View.VISIBLE : View.GONE);
             row.btnThienHistoryReview.setText(repo.hasReview(order.orderId)
                     ? R.string.thien_review_view : R.string.thien_review_action);

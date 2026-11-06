@@ -7,6 +7,7 @@ public final class RepositoryProvider {
     private final VoucherRepository vouchers = new FakeVoucherRepository();
     private final HomeRepository home = new FakeHomeRepository();
     private final ShopRepository shops = new FakeShopRepository();
+    private final NotificationRepository notifications = new FakeNotificationRepository();
     private final ShopSessionRepository sessions;
     private RepositoryProvider(Context context) { sessions = new PreferencesShopSessionRepository(context, shops); }
     public static synchronized RepositoryProvider get(Context context) {
@@ -17,5 +18,6 @@ public final class RepositoryProvider {
     public VoucherRepository vouchers() { return vouchers; }
     public HomeRepository home() { return home; }
     public ShopRepository shops() { return shops; }
+    public NotificationRepository notifications() { return notifications; }
     public ShopSessionRepository sessions() { return sessions; }
 }

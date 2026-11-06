@@ -15,8 +15,9 @@ import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienOrderTrackingBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.data.order.CartLine;
-import com.uitdrinkapp.app.data.order.DemoOrder;
+import com.uitdrinkapp.app.data.model.Order;
+import com.uitdrinkapp.app.data.model.OrderItem;
+import com.uitdrinkapp.app.data.model.OrderStatus;
 
 /** Màn 09: theo dõi đơn, công cụ demo PENDING -> DELIVERING -> COMPLETED. */
 public final class OrderTrackingFragment extends Fragment {
@@ -48,10 +49,10 @@ public final class OrderTrackingFragment extends Fragment {
                 }).show());
         binding.btnThienSimulatePrepare.setOnClickListener(v -> confirmDemo(
                 R.string.thien_demo_confirm_begin, () ->
-                        repo.updateStatus(orderId, DemoOrder.Status.DELIVERING)));
+                        repo.updateStatus(orderId, OrderStatus.DELIVERING)));
         binding.btnThienSimulateComplete.setOnClickListener(v -> confirmDemo(
                 R.string.thien_demo_confirm_finish, () ->
-                        repo.updateStatus(orderId, DemoOrder.Status.COMPLETED)));
+                        repo.updateStatus(orderId, OrderStatus.COMPLETED)));
         binding.btnThienDemoReset.setOnClickListener(v -> confirmDemo(
                 R.string.thien_demo_confirm_reset, () -> repo.resetDemoOrder(orderId)));
         binding.btnThienTrackingDetail.setOnClickListener(v -> showOrderDetails());
@@ -66,7 +67,7 @@ public final class OrderTrackingFragment extends Fragment {
         if (repo != null && binding != null) render();
     }
     private void render() {
-        DemoOrder order = orderId == null ? null : repo.getOrder(orderId);
+        Order order = orderId == null ? null : repo.getOrder(orderId);
         boolean found = order != null;
         binding.thienTrackingContent.setVisibility(found ? View.VISIBLE : View.GONE);
         binding.tvThienTrackingNotFound.setVisibility(found ? View.GONE : View.VISIBLE);
@@ -77,15 +78,16 @@ public final class OrderTrackingFragment extends Fragment {
         int bg, fg;
         switch (order.status) {
             case PENDING: bg = R.drawable.bg_thien_warning_pill; fg = R.color.thien_status_wait_text; break;
+            case REJECTED:
             case CANCELLED: bg = R.drawable.bg_thien_status_cancel; fg = R.color.thien_status_cancel_text; break;
             default: bg = R.drawable.bg_thien_status_success; fg = R.color.thien_status_success_text; break;
         }
         binding.tvThienTrackingStatus.setBackgroundResource(bg);
         binding.tvThienTrackingStatus.setTextColor(requireContext().getColor(fg));
         binding.tvThienTrackingTotal.setText(OrderUiFormat.money(order.totalAmount()));
-        boolean waiting=order.status==DemoOrder.Status.PENDING;
-        boolean finished=order.status==DemoOrder.Status.COMPLETED;
-        boolean cancelled=order.status==DemoOrder.Status.CANCELLED;
+        boolean waiting=order.status==OrderStatus.PENDING;
+        boolean finished=order.status==OrderStatus.COMPLETED;
+        boolean cancelled=order.status==OrderStatus.CANCELLED || order.status==OrderStatus.REJECTED;
         binding.tvThienStepReceived.setText(cancelled ? "●  Đơn đã hủy" :
                 (waiting ? "○  Đang chờ xử lý" : "✓  Đã nhận đơn"));
         binding.tvThienStepPreparing.setText(finished ? "✓  Đã pha chế xong" :
@@ -93,21 +95,21 @@ public final class OrderTrackingFragment extends Fragment {
         binding.tvThienStepDone.setText(finished ? "✓  Hoàn thành" : "○  Hoàn thành");
         binding.tvThienStepDone.setTextColor(requireContext().getColor(finished?R.color.primary:R.color.text_secondary));
         binding.thienTrackingItems.removeAllViews();
-        for (CartLine item : order.items) {
+        for (OrderItem item : order.items) {
             TextView label = new TextView(requireContext());
             label.setText(getString(R.string.thien_checkout_item_line,
-                    item.quantity, item.productName, item.size.name(), OrderUiFormat.money(item.totalPrice())));
+                    item.quantity, item.productName, item.size, OrderUiFormat.money(item.totalPrice())));
             label.setTextColor(getResources().getColor(R.color.text_primary, requireContext().getTheme()));
             label.setPadding(0, getResources().getDimensionPixelSize(R.dimen.spacing_8),
                     0, getResources().getDimensionPixelSize(R.dimen.spacing_8));
             binding.thienTrackingItems.addView(label);
         }
-        binding.btnThienCancelOrder.setVisibility(order.status == DemoOrder.Status.PENDING ? View.VISIBLE : View.GONE);
+        binding.btnThienCancelOrder.setVisibility(order.status == OrderStatus.PENDING ? View.VISIBLE : View.GONE);
         // Hai nút luôn hiển thị trong khối demo, chỉ kích hoạt khi bước đó hợp lệ.
         binding.thienDemoTools.setVisibility(View.VISIBLE);
         setDemoEnabled(binding.btnThienSimulatePrepare, waiting);
         setDemoEnabled(binding.btnThienSimulateComplete,
-                order.status == DemoOrder.Status.DELIVERING);
+                order.status == OrderStatus.DELIVERING);
         setDemoEnabled(binding.btnThienDemoReset,
                 !waiting);
         binding.btnThienTrackingDetail.setVisibility(finished ? View.VISIBLE : View.GONE);
@@ -137,13 +139,13 @@ public final class OrderTrackingFragment extends Fragment {
     }
 
     private void showOrderDetails() {
-        DemoOrder order = repo.getOrder(orderId);
+        Order order = repo.getOrder(orderId);
         if (order == null) return;
         StringBuilder body = new StringBuilder();
-        for (CartLine line : order.items) {
+        for (OrderItem line : order.items) {
             if (body.length() > 0) body.append("\n");
             body.append(getString(R.string.thien_checkout_item_line,
-                    line.quantity, line.productName, line.size.name(),
+                    line.quantity, line.productName, line.size,
                     OrderUiFormat.money(line.totalPrice())));
         }
         body.append("\n\n").append(getString(R.string.thien_demo_details_total,
