@@ -1,4 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
+<fragment android:id="@+id/profileFragment"
+    android:name="com.uitdrinkapp.app.ui.customer.profile.ProfileFragment"
+    android:label="@string/home_tab_profile"/>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph" app:startDestination="@id/homeFragment">
     <fragment android:id="@+id/homeFragment" android:name="com.uitdrinkapp.app.ui.customer.home.HomeFragment" android:label="@string/home_tab_home">
         <action android:id="@+id/action_home_to_join" app:destination="@id/joinShopFragment"/>
