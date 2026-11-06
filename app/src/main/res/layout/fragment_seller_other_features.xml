@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_seller_other_features_title"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="@dimen/screen_padding"
-    android:text="@string/seller_title_other_features"
-    android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+    android:orientation="vertical"
+    android:background="@color/seller_background"
+    android:paddingHorizontal="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/btn_seller_features_back"
+            android:layout_width="32dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/seller_back"
+            android:padding="6dp"
+            android:src="@drawable/ic_back" />
+        <TextView
+            android:id="@+id/tv_seller_other_features_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seller_title_other_features"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include
+            android:id="@+id/card_seller_statistic"
+            layout="@layout/item_seller_feature"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp" />
+        <include
+            android:id="@+id/card_seller_sales_history"
+            layout="@layout/item_seller_feature"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp" />
+        <include
+            android:id="@+id/card_seller_vouchers"
+            layout="@layout/item_seller_feature"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+    </LinearLayout>
+</LinearLayout>

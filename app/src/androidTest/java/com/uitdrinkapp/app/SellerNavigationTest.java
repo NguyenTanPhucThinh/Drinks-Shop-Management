@@ -63,6 +63,7 @@ public final class SellerNavigationTest {
                      ActivityScenario.launch(SellerMainActivity.class)) {
             checkTab(0);
             for (int i = 0; i < TABS.length; i++) {
+                final int currentTab = i;
                 onView(withId(TABS[i])).perform(click());
                 onView(withId(TABS[i])).perform(click());
                 checkTab(i);
@@ -71,7 +72,11 @@ public final class SellerNavigationTest {
                             .findFragmentById(R.id.fcv_seller_nav_host);
                     assertEquals(1, host.getChildFragmentManager().getFragments().size());
                     Fragment screen = host.getChildFragmentManager().getPrimaryNavigationFragment();
-                    assertTrue(screen.requireView() instanceof android.widget.TextView);
+                    if (currentTab == 4) {
+                        assertTrue(screen.requireView() instanceof android.view.ViewGroup);
+                    } else {
+                        assertTrue(screen.requireView() instanceof android.widget.TextView);
+                    }
                 });
                 saveScreenshot(SCREENSHOTS[i]);
             }

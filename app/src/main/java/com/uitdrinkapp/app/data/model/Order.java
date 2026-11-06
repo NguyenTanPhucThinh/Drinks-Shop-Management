@@ -11,6 +11,7 @@ public final class Order {
     public final String orderId;
     public final long createdAt;
     public final String tableNumber;
+    public final String customerName;
     public final List<OrderItem> items;
     public final long subtotal;
     public final long discount;
@@ -19,9 +20,16 @@ public final class Order {
 
     public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
                  long subtotal, long discount, String voucherCode, OrderStatus status) {
+        this(orderId, createdAt, tableNumber, items, subtotal, discount, voucherCode, status, "");
+    }
+
+    public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
+                 long subtotal, long discount, String voucherCode, OrderStatus status,
+                 String customerName) {
         this.orderId = orderId == null ? "" : orderId;
         this.createdAt = createdAt;
         this.tableNumber = tableNumber == null ? "" : tableNumber;
+        this.customerName = customerName == null ? "" : customerName;
         List<OrderItem> safeItems = new ArrayList<>();
         if (items != null) for (OrderItem item : items) if (item != null) safeItems.add(item.copy());
         this.items = Collections.unmodifiableList(safeItems);
@@ -38,6 +46,7 @@ public final class Order {
         value.put("orderId", orderId);
         value.put("createdAt", createdAt);
         value.put("tableNumber", tableNumber);
+        value.put("customerName", customerName);
         value.put("subtotal", subtotal);
         value.put("discount", discount);
         value.put("voucherCode", voucherCode);
@@ -62,6 +71,17 @@ public final class Order {
         catch (IllegalArgumentException ignored) { status = OrderStatus.PENDING; }
         return new Order(value.optString("orderId"), value.optLong("createdAt"),
                 value.optString("tableNumber"), items, value.optLong("subtotal"),
-                value.optLong("discount"), value.optString("voucherCode"), status);
+                value.optLong("discount"), value.optString("voucherCode"), status,
+                value.optString("customerName"));
+    }
+
+    public Order withCustomerName(String name) {
+        return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
+                voucherCode, status, name);
+    }
+
+    public Order withCreatedAt(long timestamp) {
+        return new Order(orderId, timestamp, tableNumber, items, subtotal, discount,
+                voucherCode, status, customerName);
     }
 }
