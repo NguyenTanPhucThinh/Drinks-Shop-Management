@@ -16,8 +16,10 @@ import com.uitdrinkapp.app.databinding.FragmentThienReviewBinding;
 import com.uitdrinkapp.app.ui.customer.order.BuyerNavBars;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
-import com.uitdrinkapp.app.data.order.DemoOrder;
-import com.uitdrinkapp.app.data.order.DemoReview;
+import com.uitdrinkapp.app.data.model.Order;
+import com.uitdrinkapp.app.data.model.OrderStatus;
+import com.uitdrinkapp.app.data.model.OrderItem;
+import com.uitdrinkapp.app.data.model.Review;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public final class ReviewFragment extends Fragment {
     private FragmentThienReviewBinding binding;
     private BuyerOrderRepository repo;
     private String orderId;
-    private DemoReview savedReview;
+    private Review savedReview;
 
     @Nullable @Override public View onCreateView(@NonNull LayoutInflater inflater,
                                                    @Nullable ViewGroup container,
@@ -37,9 +39,9 @@ public final class ReviewFragment extends Fragment {
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
         repo = BuyerOrderRepositoryProvider.get(requireContext());
         orderId = getArguments() == null ? null : getArguments().getString("order_id");
-        DemoOrder order = orderId == null ? null : repo.getOrder(orderId);
+        Order order = orderId == null ? null : repo.getOrder(orderId);
         savedReview = orderId == null ? null : repo.getReview(orderId);
-        boolean eligible = order != null && order.status == DemoOrder.Status.COMPLETED;
+        boolean eligible = order != null && order.status == OrderStatus.COMPLETED;
         binding.thienReviewContent.setVisibility(eligible ? View.VISIBLE : View.GONE);
         binding.tvThienReviewUnavailable.setVisibility(eligible ? View.GONE : View.VISIBLE);
         if (order != null) {
@@ -67,10 +69,10 @@ public final class ReviewFragment extends Fragment {
     @Override public void onResume() {
         super.onResume(); BuyerNavBars.setVisible(requireActivity(), false);
     }
-    private void renderSavedReview(DemoReview review) {
-        binding.ratingThienStars.setRating(review.stars);
+    private void renderSavedReview(Review review) {
+        binding.ratingThienStars.setRating(review.rating);
         binding.ratingThienStars.setIsIndicator(true);
-        binding.etThienReviewNote.setText(review.note);
+        binding.etThienReviewNote.setText(review.comment);
         binding.etThienReviewNote.setEnabled(false);
         for (int i = 0; i < binding.thienReviewTagGroup.getChildCount(); i++) {
             View child = binding.thienReviewTagGroup.getChildAt(i);
@@ -105,7 +107,12 @@ public final class ReviewFragment extends Fragment {
         String note = binding.etThienReviewNote.getText() == null ? "" :
                 binding.etThienReviewNote.getText().toString().trim();
         try {
-            repo.submitReview(new DemoReview(orderId, stars, tags, note, ""));
+            Order order = repo.getOrder(orderId);
+            OrderItem item = order == null || order.items.isEmpty() ? null : order.items.get(0);
+            repo.submitReview(new Review(orderId,
+                    item == null ? "" : item.productId,
+                    item == null ? "" : item.productName,
+                    getString(R.string.home_user_name), stars, tags, note, new ArrayList<>()));
             Toast.makeText(requireContext(), R.string.thien_review_saved, Toast.LENGTH_SHORT).show();
             NavHostFragment.findNavController(this).navigate(R.id.action_thien_review_to_history);
         } catch (IllegalStateException | IllegalArgumentException e) {

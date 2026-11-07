@@ -1,5 +1,8 @@
 package com.uitdrinkapp.app.data.order;
 
+import com.uitdrinkapp.app.data.model.Order;
+import com.uitdrinkapp.app.data.model.OrderStatus;
+import com.uitdrinkapp.app.data.model.Review;
 import java.util.List;
 
 /** Giao diện tạm trong phạm vi Thiên, không chỉnh data.repository dùng chung. */
@@ -13,17 +16,17 @@ public interface BuyerOrderRepository {
     void removeFromCart(String lineId);
     long getSubtotal();
     long calculateDiscount(String voucherCode, long subtotal);
-    DemoOrder placeOrder(String voucherCode);
-    DemoOrder getOrder(String orderId);
-    List<DemoOrder> getOrders();
+    Order placeOrder(String voucherCode);
+    Order getOrder(String orderId);
+    List<Order> getOrders();
     boolean cancelOrder(String orderId);
     boolean simulateComplete(String orderId);
     /** Chỉ repository demo được phép đặt lại trạng thái; remote mặc định không hỗ trợ. */
     default boolean resetDemoOrder(String orderId) { return false; }
     /** Dành cho kết nối trạng thái từ người bán/API ở giai đoạn sau. */
-    boolean updateStatus(String orderId, DemoOrder.Status nextStatus);
+    boolean updateStatus(String orderId, OrderStatus nextStatus);
     boolean hasReview(String orderId);
-    DemoReview getReview(String orderId);
-    void submitReview(DemoReview review);
+    Review getReview(String orderId);
+    void submitReview(Review review);
     void addDemoProductsForTesting();
 }
