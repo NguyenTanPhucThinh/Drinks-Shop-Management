@@ -57,7 +57,9 @@ public final class CheckoutFragment extends Fragment {
                 Bundle args = new Bundle(); args.putString("order_id", newOrder.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_checkout_to_tracking, args);
             } catch (IllegalStateException ex) {
-                Toast.makeText(requireContext(), R.string.thien_cart_empty, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), ex.getMessage() == null
+                        ? getString(R.string.thien_cart_empty) : ex.getMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
         render();

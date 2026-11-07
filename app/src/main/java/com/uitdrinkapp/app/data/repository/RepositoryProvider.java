@@ -3,13 +3,16 @@ import android.content.Context;
 
 public final class RepositoryProvider {
     private static RepositoryProvider instance;
-    private final ProductRepository products = new FakeProductRepository();
+    private final ProductRepository products;
     private final VoucherRepository vouchers = new FakeVoucherRepository();
     private final HomeRepository home = new FakeHomeRepository();
     private final ShopRepository shops = new FakeShopRepository();
     private final NotificationRepository notifications = new FakeNotificationRepository();
     private final ShopSessionRepository sessions;
-    private RepositoryProvider(Context context) { sessions = new PreferencesShopSessionRepository(context, shops); }
+    private RepositoryProvider(Context context) {
+        products = new LocalProductRepository(context);
+        sessions = new PreferencesShopSessionRepository(context, shops);
+    }
     public static synchronized RepositoryProvider get(Context context) {
         if (instance == null) instance = new RepositoryProvider(context.getApplicationContext());
         return instance;

@@ -8,6 +8,7 @@ import com.uitdrinkapp.app.data.model.OrderStatus;
 import com.uitdrinkapp.app.data.model.PaymentMethod;
 import com.uitdrinkapp.app.data.model.Review;
 import com.uitdrinkapp.app.data.model.ShopSession;
+import com.uitdrinkapp.app.data.model.Product;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.data.repository.ShopSessionRepository;
 import org.json.JSONArray;
@@ -32,6 +33,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
     private static LocalBuyerOrderRepository instance;
     private final SharedPreferences prefs;
     private final ShopSessionRepository sessions;
+    private final Context applicationContext;
 
     private LocalBuyerOrderRepository(Context context) {
         this(context, PREFS);
@@ -39,6 +41,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
 
     /** Package-private constructor for isolated Android instrumentation tests. */
     LocalBuyerOrderRepository(Context context, String prefsName) {
+        applicationContext = context.getApplicationContext();
         prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
         sessions = RepositoryProvider.get(context).sessions();
         if (!prefs.getBoolean(KEY_SEEDED, false)) {
@@ -104,28 +107,24 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         return lines;
     }
     @Override public List<CartLine> getAvailableProducts() {
-        // Demo: các món đang có trạng thái "hiển thị". Backend thật sẽ cấp danh sách này.
-        List<CartLine> products = new ArrayList<>();
-        products.add(new CartLine("milk-tea-01", "Trà sữa trân châu", 32_000L,
-                CartLine.Size.M, CartLine.Level.P50, CartLine.Level.P70,
-                Arrays.asList(new CartLine.Topping("Trân châu đen", 5_000L)), 1));
-        products.add(new CartLine("fruit-tea-02", "Trà đào cam sả", 35_000L,
-                CartLine.Size.S, CartLine.Level.P30, CartLine.Level.P50,
-                Collections.emptyList(), 1));
-        products.add(new CartLine("coffee-03", "Cà phê muối", 39_000L,
-                CartLine.Size.M, CartLine.Level.P50, CartLine.Level.P50,
-                Collections.emptyList(), 1));
-        products.add(new CartLine("matcha-04", "Trà sữa matcha", 42_000L,
-                CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
-                Collections.emptyList(), 1));
-        products.add(new CartLine("fruit-tea-05", "Trà vải", 37_000L,
-                CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
-                Collections.emptyList(), 1));
-        return products;
+        List<CartLine> result = new ArrayList<>();
+        for (Product p : RepositoryProvider.get(applicationContext).products().getProducts()) {
+            if (!p.isAvailable() || p.getTemperatures().isEmpty()
+                    || p.getSugarLevels().isEmpty()) continue;
+            CartLine.Level sugar = CartLine.Level.valueOf(p.getSugarLevels().get(0).name());
+            CartLine.Level ice = (p.getTemperatures().size() == 1
+                    && p.getTemperatures().get(0) == com.uitdrinkapp.app.data.model.Temperature.HOT)
+                    ? CartLine.Level.P0 : CartLine.Level.P50;
+            result.add(new CartLine(p.getId(), p.getName(), p.getPrice(),
+                    CartLine.Size.S, sugar, ice,
+                    Collections.emptyList(), 1, p.getPriceS()));
+        }
+        return result;
     }
     @Override public synchronized void clearCart() { saveCart(Collections.emptyList()); }
 
     @Override public synchronized void addToCart(CartLine line) {
+        validateCurrentProduct(line);
         List<CartLine> cart = getCart();
         for (CartLine existing : cart) {
             if (existing.sameConfiguration(line)) {
@@ -134,6 +133,16 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
             }
         }
         cart.add(line.copy()); saveCart(cart);
+    }
+    /** A new cart snapshot must still be sellable; legacy imported/demo lines remain readable. */
+    private void validateCurrentProduct(CartLine line) {
+        if (line == null) throw new IllegalArgumentException("Thiếu sản phẩm");
+        if (!line.hasSizePriceSnapshot()) return;
+        Product product = RepositoryProvider.get(applicationContext).products()
+                .getProductForSeller(line.productId);
+        if (product == null || !product.isVisible() || !product.isAvailable()
+                || product.getTemperatures().isEmpty() || product.getSugarLevels().isEmpty())
+            throw new IllegalStateException("Có món đã hết hàng hoặc bị ẩn. Vui lòng xóa món đó khỏi giỏ.");
     }
     @Override public synchronized void updateQuantity(String lineId, int quantity) {
         List<CartLine> cart = getCart();
@@ -168,6 +177,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
             String customerName, PaymentMethod paymentMethod) {
         List<CartLine> cart = getCart();
         if (cart.isEmpty()) throw new IllegalStateException("Giỏ hàng đang trống");
+        for (CartLine line : cart) validateCurrentProduct(line);
         long subtotal = getSubtotal();
         long discount = calculateDiscount(voucherCode, subtotal);
         String id = "DH" + UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase(Locale.ROOT);

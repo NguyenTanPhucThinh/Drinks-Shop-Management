@@ -36,24 +36,37 @@ public final class CartLine {
     public final String productId;
     public final String productName;
     public final long basePrice;
+    /** Selected size price captured at add-to-cart; -1 means a legacy cart line. */
+    public final long sizePrice;
     public final Size size;
     public final Level sugar;
     public final Level ice;
     public final List<Topping> toppings;
     public int quantity;
 
+    /** Existing callers and saved carts use the historic fixed size surcharge. */
     public CartLine(String productId, String productName, long basePrice,
                     Size size, Level sugar, Level ice, List<Topping> toppings, int quantity) {
         this(UUID.randomUUID().toString(), productId, productName, basePrice,
-                size, sugar, ice, toppings, quantity);
+                size, sugar, ice, toppings, quantity, -1L);
+    }
+
+    /** Snapshot a seller-configured price for this size; later edits do not reprice orders. */
+    public CartLine(String productId, String productName, long basePrice,
+                    Size size, Level sugar, Level ice, List<Topping> toppings,
+                    int quantity, long sizePrice) {
+        this(UUID.randomUUID().toString(), productId, productName, basePrice,
+                size, sugar, ice, toppings, quantity, sizePrice);
     }
 
     private CartLine(String lineId, String productId, String productName, long basePrice,
-                     Size size, Level sugar, Level ice, List<Topping> toppings, int quantity) {
+                     Size size, Level sugar, Level ice, List<Topping> toppings,
+                     int quantity, long sizePrice) {
         this.lineId = lineId;
         this.productId = productId;
         this.productName = productName;
         this.basePrice = Math.max(0L, basePrice);
+        this.sizePrice = sizePrice >= 0L ? sizePrice : -1L;
         this.size = size;
         this.sugar = sugar;
         this.ice = ice;
@@ -61,8 +74,9 @@ public final class CartLine {
         this.quantity = Math.max(1, quantity);
     }
 
+    public boolean hasSizePriceSnapshot() { return sizePrice >= 0L; }
     public long unitPrice() {
-        long result = basePrice + size.extraPrice;
+        long result = hasSizePriceSnapshot() ? sizePrice : basePrice + size.extraPrice;
         for (Topping topping : toppings) result += topping.price;
         return result;
     }
@@ -77,10 +91,13 @@ public final class CartLine {
         return s.toString();
     }
     public CartLine copy() {
-        return new CartLine(lineId, productId, productName, basePrice, size, sugar, ice, toppings, quantity);
+        return new CartLine(lineId, productId, productName, basePrice, size, sugar, ice,
+                toppings, quantity, sizePrice);
     }
     public boolean sameConfiguration(CartLine other) {
+        // Never merge a newly priced selection into a cart entry at an old price.
         if (!productId.equals(other.productId) || size != other.size ||
+                basePrice != other.basePrice || sizePrice != other.sizePrice ||
                 sugar != other.sugar || ice != other.ice || toppings.size() != other.toppings.size()) return false;
         for (int i = 0; i < toppings.size(); i++) {
             Topping a = toppings.get(i), b = other.toppings.get(i);
@@ -92,6 +109,7 @@ public final class CartLine {
         JSONObject o = new JSONObject();
         o.put("lineId", lineId); o.put("productId", productId);
         o.put("productName", productName); o.put("basePrice", basePrice);
+        if (hasSizePriceSnapshot()) o.put("sizePrice", sizePrice);
         o.put("size", size.name()); o.put("sugar", sugar.name()); o.put("ice", ice.name());
         o.put("quantity", quantity);
         JSONArray arr = new JSONArray();
@@ -108,7 +126,8 @@ public final class CartLine {
         return new CartLine(o.optString("lineId", UUID.randomUUID().toString()),
                 o.optString("productId"), o.optString("productName"), o.optLong("basePrice"),
                 safeSize(o.optString("size")), safeLevel(o.optString("sugar")),
-                safeLevel(o.optString("ice")), toppings, o.optInt("quantity", 1));
+                safeLevel(o.optString("ice")), toppings, o.optInt("quantity", 1),
+                o.optLong("sizePrice", -1L));
     }
     private static Size safeSize(String value) {
         try { return Size.valueOf(value); } catch (IllegalArgumentException e) { return Size.M; }
