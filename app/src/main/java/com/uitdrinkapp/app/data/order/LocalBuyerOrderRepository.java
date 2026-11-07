@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderItem;
 import com.uitdrinkapp.app.data.model.OrderStatus;
+import com.uitdrinkapp.app.data.model.PaymentMethod;
 import com.uitdrinkapp.app.data.model.Review;
 import com.uitdrinkapp.app.data.model.ShopSession;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
@@ -27,12 +28,18 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
     private static final String KEY_REVIEWS = "reviews";
     private static final String KEY_SEEDED = "seeded";
     private static final String KEY_HISTORY_SEEDED = "history_seeded_v2";
+    private static final String KEY_SELLER_SEEDED = "seller_seeded_task02_pr12";
     private static LocalBuyerOrderRepository instance;
     private final SharedPreferences prefs;
     private final ShopSessionRepository sessions;
 
     private LocalBuyerOrderRepository(Context context) {
-        prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        this(context, PREFS);
+    }
+
+    /** Package-private constructor for isolated Android instrumentation tests. */
+    LocalBuyerOrderRepository(Context context, String prefsName) {
+        prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
         sessions = RepositoryProvider.get(context).sessions();
         if (!prefs.getBoolean(KEY_SEEDED, false)) {
             prefs.edit().putBoolean(KEY_SEEDED, true).apply();
@@ -41,6 +48,10 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         if (!prefs.getBoolean(KEY_HISTORY_SEEDED, false)) {
             seedHistoryForDemo();
             prefs.edit().putBoolean(KEY_HISTORY_SEEDED, true).apply();
+        }
+        if (!prefs.getBoolean(KEY_SELLER_SEEDED, false)) {
+            seedSellerOrdersForDemo();
+            prefs.edit().putBoolean(KEY_SELLER_SEEDED, true).apply();
         }
     }
     public static synchronized LocalBuyerOrderRepository getInstance(Context context) {
@@ -149,14 +160,21 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         return 0L;
     }
     @Override public synchronized Order placeOrder(String voucherCode) {
+        return placeOrder(voucherCode, currentTableNumber(), "Khách",
+                PaymentMethod.UNSPECIFIED);
+    }
+
+    @Override public synchronized Order placeOrder(String voucherCode, String tableNumber,
+            String customerName, PaymentMethod paymentMethod) {
         List<CartLine> cart = getCart();
         if (cart.isEmpty()) throw new IllegalStateException("Giỏ hàng đang trống");
         long subtotal = getSubtotal();
         long discount = calculateDiscount(voucherCode, subtotal);
         String id = "DH" + UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase(Locale.ROOT);
-        Order order = new Order(id, System.currentTimeMillis(), currentTableNumber(),
+        Order order = new Order(id, System.currentTimeMillis(), tableNumber,
                 snapshotOrderItems(cart), subtotal, discount,
-                voucherCode == null ? "" : voucherCode, OrderStatus.PENDING);
+                voucherCode == null ? "" : voucherCode, OrderStatus.PENDING,
+                customerName, paymentMethod, true);
         List<Order> orders = getOrders();
         orders.add(0, order);
         saveOrders(orders);
@@ -179,7 +197,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
     @Override public synchronized boolean cancelOrder(String orderId) {
         List<Order> orders = getOrders();
         for (Order order : orders) if (order.orderId.equals(orderId)) {
-            if (order.status != OrderStatus.PENDING) return false;
+            if (!OrderTransitions.canBuyerCancel(order.status)) return false;
             order.status = OrderStatus.CANCELLED; saveOrders(orders); return true;
         }
         return false;
@@ -199,7 +217,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         List<Order> orders = getOrders();
         for (Order order : orders) {
             if (!order.orderId.equals(orderId)) continue;
-            if (order.status == OrderStatus.PENDING) return false;
+            if (!order.isDemo || order.status == OrderStatus.PENDING) return false;
             order.status = OrderStatus.PENDING;
             saveOrders(orders);
             return true;
@@ -233,14 +251,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
             if (order.status == OrderStatus.COMPLETED || order.status == OrderStatus.CANCELLED
                     || order.status == OrderStatus.REJECTED)
                 return false;
-            boolean allowed = (order.status == OrderStatus.PENDING &&
-                    (nextStatus == OrderStatus.ACCEPTED || nextStatus == OrderStatus.DELIVERING
-                            || nextStatus == OrderStatus.REJECTED || nextStatus == OrderStatus.CANCELLED))
-                    || (order.status == OrderStatus.ACCEPTED && nextStatus == OrderStatus.PREPARING)
-                    || (order.status == OrderStatus.PREPARING && nextStatus == OrderStatus.READY)
-                    || (order.status == OrderStatus.READY &&
-                            (nextStatus == OrderStatus.DELIVERING || nextStatus == OrderStatus.COMPLETED))
-                    || (order.status == OrderStatus.DELIVERING && nextStatus == OrderStatus.COMPLETED);
+            boolean allowed = OrderTransitions.canSellerTransition(order.status, nextStatus);
             if (!allowed) return false;
             order.status = nextStatus;
             saveOrders(orders);
@@ -274,16 +285,50 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
             if (getOrder("TS1021") == null) existing.add(new Order("TS1021", baseTime, "",
                     snapshotOrderItems(Collections.singletonList(new CartLine("matcha-04", "Trà sữa matcha", 91_000L,
                             CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
-                            Collections.emptyList(), 1))), 91_000L, 0L, "", OrderStatus.COMPLETED));
+                            Collections.emptyList(), 1))), 91_000L, 0L, "", OrderStatus.COMPLETED, "Khách", PaymentMethod.UNSPECIFIED, true));
             if (getOrder("TS1008") == null) existing.add(new Order("TS1008", baseTime - 86_400_000L, "",
                     snapshotOrderItems(Collections.singletonList(new CartLine("fruit-tea-02", "Trà đào cam sả", 42_000L,
                             CartLine.Size.S, CartLine.Level.P30, CartLine.Level.P50,
-                            Collections.emptyList(), 2))), 84_000L, 0L, "", OrderStatus.COMPLETED));
+                            Collections.emptyList(), 2))), 84_000L, 0L, "", OrderStatus.COMPLETED, "Khách", PaymentMethod.UNSPECIFIED, true));
             if (getOrder("TS0996") == null) existing.add(new Order("TS0996", baseTime - 3 * 86_400_000L, "",
                     snapshotOrderItems(Collections.singletonList(new CartLine("milk-tea-01", "Trà sữa trân châu", 35_000L,
                             CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
-                            Collections.emptyList(), 1))), 35_000L, 0L, "", OrderStatus.CANCELLED));
+                            Collections.emptyList(), 1))), 35_000L, 0L, "", OrderStatus.CANCELLED, "Khách", PaymentMethod.UNSPECIFIED, true));
             saveOrders(existing);
+        }
+    }
+
+    /** Additional Seller mock orders; never replace existing orders or reviews. */
+    private synchronized void seedSellerOrdersForDemo() {
+        List<Order> orders = getOrders();
+        boolean added = false;
+        long now = System.currentTimeMillis();
+        if (getOrder("TS1025") == null) {
+            orders.add(0, new Order("TS1025", now - 15 * 60_000L, "07",
+                    snapshotOrderItems(Collections.singletonList(new CartLine("milk-tea-01",
+                            "Trà sữa trân châu", 35_000L, CartLine.Size.S,
+                            CartLine.Level.P50, CartLine.Level.P50,
+                            Collections.emptyList(), 1))), 35_000L, 0L, "",
+                    OrderStatus.PENDING, "Khách", PaymentMethod.UNSPECIFIED, true));
+            added = true;
+        }
+        if (getOrder("TS1024") == null) {
+            orders.add(0, new Order("TS1024", now - 45 * 60_000L, "05",
+                    snapshotOrderItems(Collections.singletonList(new CartLine("fruit-tea-02",
+                            "Trà đào cam sả", 42_000L, CartLine.Size.S,
+                            CartLine.Level.P30, CartLine.Level.P50,
+                            Collections.emptyList(), 2))), 84_000L, 0L, "",
+                    OrderStatus.DELIVERING, "Khách", PaymentMethod.UNSPECIFIED, true));
+            added = true;
+        }
+        if (added) saveOrders(orders);
+        if (!hasReview("TS1008") && getOrder("TS1008") != null) {
+            JSONArray all = load(KEY_REVIEWS);
+            Review review = new Review("TS1008", "fruit-tea-02", "Trà đào cam sả",
+                    "Khách", 5, Collections.singletonList("Ngon"),
+                    "Đồ uống ngon", Collections.emptyList());
+            try { all.put(review.toJson()); save(KEY_REVIEWS, all); }
+            catch (JSONException ignored) { /* Fail closed: never delete earlier reviews. */ }
         }
     }
 

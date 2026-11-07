@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="thien_seller_orders_filter_height">36dp</dimen>
+    <dimen name="thien_seller_orders_quick_height">32dp</dimen>
+</resources>
