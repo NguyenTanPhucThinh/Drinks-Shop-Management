@@ -53,8 +53,7 @@ public final class HomeFragment extends Fragment {
         });
         binding.rvFeatured.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.rvRecommended.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        binding.rvFeatured.setAdapter(new ProductAdapter(products(repositories.home().getFeaturedProductIds()), this::openProduct));
-        binding.rvRecommended.setAdapter(new ProductAdapter(products(repositories.home().getRecommendedProductIds()), this::openProduct));
+        refreshProductGrids();
         int bannerCount = repositories.home().getBanners().size();
         binding.vpBanners.setAdapter(new BannerAdapter(repositories.home().getBanners(), () -> ((MainActivity) requireActivity()).openVouchers()));
         if (bannerCount > 1) {
@@ -81,6 +80,14 @@ public final class HomeFragment extends Fragment {
         }
         return result;
     }
+    /** Show every visible catalog entry, including drinks newly created by the Seller. */
+    private void refreshProductGrids() {
+        if (binding == null || repositories == null) return;
+        binding.rvFeatured.setAdapter(new ProductAdapter(
+                products(repositories.home().getFeaturedProductIds()), this::openProduct));
+        binding.rvRecommended.setAdapter(new ProductAdapter(
+                repositories.products().getProducts(), this::openProduct));
+    }
     private void scheduleBannerAdvance() {
         bannerHandler.removeCallbacks(advanceBanner);
         if (binding != null && isResumed() && repositories.home().getBanners().size() > 1) {
@@ -97,6 +104,7 @@ public final class HomeFragment extends Fragment {
     }
     @Override public void onResume() {
         super.onResume();
+        refreshProductGrids();
         scheduleBannerAdvance();
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         binding.tvGreeting.setText(hour < 12 ? R.string.home_greeting_morning : hour < 18 ? R.string.home_greeting_afternoon : R.string.home_greeting_evening);

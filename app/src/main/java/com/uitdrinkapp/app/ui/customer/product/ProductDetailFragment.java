@@ -54,8 +54,21 @@ public final class ProductDetailFragment extends Fragment {
             return;
         }
         selection = new DrinkSelection(product);
-        restoreSelection(state, repository.getToppings());
+        List<Topping> allowedToppings = new ArrayList<>();
+        for (Topping t : repository.getToppings()) {
+            if (product.getToppingIds().isEmpty() || product.getToppingIds().contains(t.getId()))
+                allowedToppings.add(t);
+        }
+        restoreSelection(state, allowedToppings);
+        if (!product.getTemperatures().isEmpty() &&
+                !product.getTemperatures().contains(selection.getTemperature()))
+            selection.setTemperature(product.getTemperatures().get(0));
+        if (!product.getSugarLevels().isEmpty() &&
+                !product.getSugarLevels().contains(selection.getSugar()))
+            selection.setSugar(product.getSugarLevels().get(0));
         binding.btnDetailBack.setOnClickListener(clicked -> NavHostFragment.findNavController(this).popBackStack());
+        binding.tvDetailStockStatus.setText(product.isAvailable() ?
+                R.string.detail_available : R.string.thien_buyer_out_of_stock);
         binding.tvDetailName.setText(product.getName());
         binding.tvDetailDescription.setText(product.getDescription());
         binding.ivDetailImage.setContentDescription(getString(R.string.detail_image, product.getName()));
@@ -75,23 +88,38 @@ public final class ProductDetailFragment extends Fragment {
         binding.btnQuantityPlus.setOnClickListener(clicked -> { selection.setQuantity(selection.getQuantity() + 1); updatePrice(); });
         binding.btnQuantityMinus.setOnClickListener(clicked -> { selection.setQuantity(selection.getQuantity() - 1); updatePrice(); });
         bindChoice(binding.cgTemperature, new int[]{R.id.chip_iced, R.id.chip_hot}, Temperature.values(), selection.getTemperature(), selection::setTemperature);
-        bindSizeLabels();
+        restrictOptions(new int[]{R.id.chip_iced, R.id.chip_hot}, Temperature.values(), product.getTemperatures());
+        bindSizeLabels(product);
         bindChoice(binding.cgSize, new int[]{R.id.chip_size_s, R.id.chip_size_m, R.id.chip_size_l}, Size.values(), selection.getSize(), selection::setSize);
         bindChoice(binding.cgSugar, new int[]{R.id.chip_sugar_0, R.id.chip_sugar_30, R.id.chip_sugar_50, R.id.chip_sugar_70, R.id.chip_sugar_100}, SugarLevel.values(), selection.getSugar(), selection::setSugar);
+        restrictOptions(new int[]{R.id.chip_sugar_0, R.id.chip_sugar_30, R.id.chip_sugar_50, R.id.chip_sugar_70, R.id.chip_sugar_100}, SugarLevel.values(), product.getSugarLevels());
         bindChoice(binding.cgFulfillment, new int[]{R.id.chip_counter, R.id.chip_takeaway, R.id.chip_delivery}, FulfillmentMethod.values(), selection.getFulfillment(), selection::setFulfillment);
-        for (Topping topping : repository.getToppings()) addTopping(topping);
-        binding.btnDetailAddCart.setOnClickListener(clicked -> {
-            CartLine line = buildCartLine();
-            BuyerOrderRepositoryProvider.get(requireContext()).addToCart(line);
+        for (Topping topping : allowedToppings) addTopping(topping);
+        binding.btnDetailAddCart.setOnClickListener(clicked -> addSelectedToCart(false));
+        binding.btnDetailBuy.setOnClickListener(clicked -> addSelectedToCart(true));
+        updatePrice();
+    }
+    private void addSelectedToCart(boolean checkout) {
+        String id = getArguments() == null ? null : getArguments().getString(ARG_PRODUCT_ID);
+        Product fresh = RepositoryProvider.get(requireContext()).products().getProductById(id);
+        if (fresh == null || !fresh.isAvailable() || fresh.getTemperatures().isEmpty()
+                || fresh.getSugarLevels().isEmpty()
+                || !fresh.getTemperatures().contains(selection.getTemperature())
+                || !fresh.getSugarLevels().contains(selection.getSugar())) {
+            showMessage(R.string.thien_buyer_unavailable);
+            return;
+        }
+        try {
+            BuyerOrderRepositoryProvider.get(requireContext()).addToCart(buildCartLine());
+        } catch (IllegalStateException ex) {
+            showMessage(R.string.thien_buyer_unavailable);
+            return;
+        }
+        if (checkout) NavHostFragment.findNavController(this).navigate(R.id.thien_flow);
+        else {
             showMessage(R.string.detail_added_to_cart);
             NavHostFragment.findNavController(this).popBackStack();
-        });
-        binding.btnDetailBuy.setOnClickListener(clicked -> {
-            CartLine line = buildCartLine();
-            BuyerOrderRepositoryProvider.get(requireContext()).addToCart(line);
-            NavHostFragment.findNavController(this).navigate(R.id.thien_flow);
-        });
-        updatePrice();
+        }
     }
     private CartLine buildCartLine() {
         ProductRepository repository = RepositoryProvider.get(requireContext()).products();
@@ -120,7 +148,8 @@ public final class ProductDetailFragment extends Fragment {
         for (Topping t : selection.getToppings()) {
             cartToppings.add(new CartLine.Topping(t.getName(), t.getPrice()));
         }
-        return new CartLine(productId, productName, basePrice, cartSize, cartSugar, cartIce, cartToppings, selection.getQuantity());
+        return new CartLine(productId, productName, basePrice, cartSize, cartSugar, cartIce,
+                cartToppings, selection.getQuantity(), product.getPriceFor(selection.getSize()));
     }
     private <T extends Enum<T>> void bindChoice(ChipGroup group, int[] ids, T[] values, T selected, Consumer<T> setter) {
         group.check(ids[selected.ordinal()]);
@@ -130,10 +159,16 @@ public final class ProductDetailFragment extends Fragment {
             }
         });
     }
-    private void bindSizeLabels() {
-        binding.chipSizeS.setText(getString(R.string.detail_size_s));
-        binding.chipSizeM.setText(getString(R.string.detail_size_with_extra, Size.M.name(), money(Size.M.getExtraPrice())));
-        binding.chipSizeL.setText(getString(R.string.detail_size_with_extra, Size.L.name(), money(Size.L.getExtraPrice())));
+    private <T extends Enum<T>> void restrictOptions(int[] ids, T[] values, List<T> allowed) {
+        for (int i = 0; i < ids.length; i++) {
+            View chip = binding.getRoot().findViewById(ids[i]);
+            if (chip != null) chip.setVisibility(allowed.contains(values[i]) ? View.VISIBLE : View.GONE);
+        }
+    }
+    private void bindSizeLabels(Product product) {
+        binding.chipSizeS.setText(getString(R.string.thien_buyer_size_price, "S", money(product.getPriceFor(Size.S))));
+        binding.chipSizeM.setText(getString(R.string.thien_buyer_size_price, "M", money(product.getPriceFor(Size.M))));
+        binding.chipSizeL.setText(getString(R.string.thien_buyer_size_price, "L", money(product.getPriceFor(Size.L))));
     }
     private void addTopping(Topping topping) {
         ItemDetailToppingBinding row = ItemDetailToppingBinding.inflate(getLayoutInflater(), binding.llToppings, false);
@@ -162,7 +197,15 @@ public final class ProductDetailFragment extends Fragment {
         binding.tvQuantity.setContentDescription(getString(R.string.detail_quantity, selection.getQuantity()));
         binding.btnQuantityMinus.setEnabled(selection.getQuantity() > 1);
         binding.btnQuantityPlus.setEnabled(selection.getQuantity() < 99);
-        binding.btnDetailBuy.setText(getString(R.string.detail_buy_price, money(selection.getTotalPrice())));
+        String id = getArguments() == null ? null : getArguments().getString(ARG_PRODUCT_ID);
+        Product fresh = RepositoryProvider.get(requireContext()).products().getProductById(id);
+        boolean canBuy = fresh != null && fresh.isAvailable()
+                && !fresh.getTemperatures().isEmpty() && !fresh.getSugarLevels().isEmpty();
+        binding.btnDetailAddCart.setEnabled(canBuy);
+        binding.btnDetailBuy.setEnabled(canBuy);
+        binding.btnDetailBuy.setText(canBuy
+                ? getString(R.string.detail_buy_price, money(selection.getTotalPrice()))
+                : getString(R.string.thien_buyer_out_of_stock));
     }
     private String money(long value) {
         return getString(R.string.home_price, NumberFormat.getIntegerInstance(Locale.forLanguageTag("vi-VN")).format(value));

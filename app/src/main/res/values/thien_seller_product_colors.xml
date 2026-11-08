@@ -1,0 +1,10 @@
+<resources>
+    <color name="thien_seller_product_accent">#D94A00</color>
+    <color name="thien_seller_product_on_accent">#FFFFFF</color>
+    <color name="thien_seller_product_card">#FFFFFF</color>
+    <color name="thien_seller_product_border">#E8DED5</color>
+    <color name="thien_seller_product_text">#30251F</color>
+    <color name="thien_seller_product_muted">#88796F</color>
+    <color name="thien_seller_product_success">#147D4B</color>
+    <color name="thien_seller_product_warning">#BE3933</color>
+</resources>

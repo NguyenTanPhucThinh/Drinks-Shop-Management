@@ -1,0 +1,45 @@
+<resources>
+    <string name="thien_editor_title_new">Thêm đồ uống</string>
+    <string name="thien_editor_title_edit">Sửa đồ uống</string>
+    <string name="thien_editor_back">Đóng màn hình</string>
+    <string name="thien_editor_image">Hình minh họa đồ uống</string>
+    <string name="thien_editor_choose_image">Chọn ảnh đồ uống</string>
+    <string name="thien_editor_image_note">GD07: chọn ảnh minh họa có sẵn trong ứng dụng. Ảnh từ thư viện thiết bị sẽ được tích hợp sau.</string>
+    <string-array name="thien_editor_sample_images">
+        <item>Trà sữa</item><item>Matcha</item><item>Trà đào</item><item>Cà phê muối</item>
+    </string-array>
+    <string name="thien_editor_name">Tên đồ uống *</string>
+    <string name="thien_editor_description">Giới thiệu</string>
+    <string name="thien_editor_category">Danh mục *</string>
+    <string name="thien_editor_prices">Giá bán từng size (VNĐ) *</string>
+    <string name="thien_editor_size_s">Size S</string>
+    <string name="thien_editor_size_m">Size M</string>
+    <string name="thien_editor_size_l">Size L</string>
+    <string name="thien_editor_temperatures">Nhiệt độ *</string>
+    <string name="thien_editor_hot">Nóng</string>
+    <string name="thien_editor_iced">Lạnh</string>
+    <string name="thien_editor_sugar">Mức đường *</string>
+    <string name="thien_editor_availability">Trạng thái đồ uống</string>
+    <string name="thien_editor_in_stock">Còn hàng (tắt = hết hàng)</string>
+    <string name="thien_editor_visible">Hiển thị cho người mua (tắt = ẩn món)</string>
+    <string name="thien_editor_toppings">Topping đi kèm</string>
+    <string name="thien_editor_all_toppings">Cho phép tất cả topping đang bán</string>
+    <string name="thien_editor_topping_option">%1$s · +%2$sđ %3$s</string>
+    <string name="thien_editor_topping_unavailable">(hết hàng)</string>
+    <string name="thien_editor_add_topping">+ Tạo topping mới</string>
+    <string name="thien_editor_topping_name_hint">Tên topping</string>
+    <string name="thien_editor_topping_price_hint">Giá topping (đ)</string>
+    <string name="thien_editor_create_topping">Tạo</string>
+    <string name="thien_editor_topping_invalid">Nhập tên và giá topping từ 0 đến 999.999.999đ.</string>
+    <string name="thien_editor_delete">Xóa</string>
+    <string name="thien_editor_cancel">Hủy</string>
+    <string name="thien_editor_save">Lưu thay đổi</string>
+    <string name="thien_editor_error_name">Vui lòng nhập tên đồ uống.</string>
+    <string name="thien_editor_error_category">Vui lòng chọn danh mục hợp lệ.</string>
+    <string name="thien_editor_error_price">Nhập đủ giá S, M, L bằng số nguyên từ 1 đến 999.999.999đ.</string>
+    <string name="thien_editor_error_temperature">Chọn ít nhất một loại nhiệt độ.</string>
+    <string name="thien_editor_error_sugar">Chọn ít nhất một mức đường.</string>
+    <string name="thien_editor_error_topping">Chọn ít nhất một topping hoặc bật “Cho phép tất cả”.</string>
+    <string name="thien_editor_save_failed">Không thể lưu. Vui lòng kiểm tra dữ liệu và thử lại.</string>
+    <string name="thien_editor_missing">Sản phẩm đã bị xóa hoặc không còn tồn tại.</string>
+</resources>

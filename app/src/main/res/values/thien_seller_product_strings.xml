@@ -1,0 +1,22 @@
+<resources>
+    <string name="thien_seller_product_title">Sản phẩm</string>
+    <string name="thien_seller_product_back">Quay lại</string>
+    <string name="thien_seller_product_search">Tìm tên món hoặc danh mục…</string>
+    <string name="thien_seller_product_all">Tất cả</string>
+    <string name="thien_seller_product_count">Hiển thị %1$d / %2$d sản phẩm</string>
+    <string name="thien_seller_product_price">Từ %1$sđ</string>
+    <string name="thien_seller_product_image">Ảnh đồ uống</string>
+    <string name="thien_seller_product_available">Còn hàng</string>
+    <string name="thien_seller_product_out_of_stock">Hết hàng</string>
+    <string name="thien_seller_product_hidden">Đang ẩn</string>
+    <string name="thien_seller_product_edit">Sửa</string>
+    <string name="thien_seller_product_delete">Xóa</string>
+    <string name="thien_seller_product_add">+ Thêm đồ uống mới</string>
+    <string name="thien_seller_product_empty">Không có sản phẩm phù hợp</string>
+    <string name="thien_seller_product_delete_title">Xóa đồ uống?</string>
+    <string name="thien_seller_product_delete_body">Xóa “%1$s” khỏi danh mục? Thao tác không thể hoàn tác và sản phẩm sẽ không còn xuất hiện ở phía Buyer. Các đơn hàng đã đặt vẫn giữ thông tin món tại thời điểm đặt.</string>
+    <string name="thien_seller_product_cancel">Hủy</string>
+    <string name="thien_seller_product_delete_confirm">Xóa sản phẩm</string>
+    <string name="thien_seller_product_delete_failed">Không xóa được sản phẩm. Hãy tải lại danh sách.</string>
+    <string name="thien_seller_product_editor_pending">Màn Thêm/Sửa đồ uống sẽ được xây dựng ở GD07 và nối điều hướng trong đợt tích hợp. Danh mục hiện tại vẫn có thể xem, tìm kiếm, lọc và xóa.</string>
+</resources>

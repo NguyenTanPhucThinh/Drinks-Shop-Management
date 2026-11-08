@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/seller_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageButton
+                android:id="@+id/btn_seller_detail_back"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back"
+                app:tint="@color/seller_text_primary"
+                android:contentDescription="@string/thien_seller_detail_back" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_4"
+                android:text="@string/thien_seller_detail_title"
+                android:textAppearance="@style/TextAppearance.Seller.ScreenTitle"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_seller_detail_not_found"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:text="@string/thien_seller_detail_not_found"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_14"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/seller_detail_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="@dimen/radius_12"
+                app:cardElevation="@dimen/card_elevation"
+                app:strokeColor="@color/seller_nav_border"
+                app:strokeWidth="@dimen/divider_height">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_12">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/tv_seller_detail_order_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/text_16"
+                            android:textStyle="bold"
+                            android:textColor="@color/seller_text_primary" />
+                        <TextView
+                            android:id="@+id/tv_seller_detail_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/spacing_12"
+                            android:paddingEnd="@dimen/spacing_12"
+                            android:paddingTop="@dimen/spacing_4"
+                            android:paddingBottom="@dimen/spacing_4"
+                            android:background="@drawable/bg_thien_seller_detail_status"
+                            android:textColor="@color/thien_seller_detail_pending_text"
+                            android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+                    <!-- Four rows share the same simple label/value hierarchy. -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="horizontal">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_date" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                        <TextView android:id="@+id/tv_seller_detail_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="horizontal">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_customer" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                        <TextView android:id="@+id/tv_seller_detail_customer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/spacing_8" android:maxWidth="@dimen/thien_seller_detail_value_max_width" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" android:gravity="end" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="horizontal">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_table" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                        <TextView android:id="@+id/tv_seller_detail_table" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="horizontal">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_payment" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                        <TextView android:id="@+id/tv_seller_detail_payment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/spacing_8" android:maxWidth="@dimen/thien_seller_detail_value_max_width" android:gravity="end" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="@dimen/radius_12"
+                app:cardElevation="@dimen/card_elevation"
+                app:strokeColor="@color/seller_nav_border"
+                app:strokeWidth="@dimen/divider_height">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_12"
+                    android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/thien_seller_detail_items_title" android:textSize="@dimen/text_14" android:textStyle="bold" android:textColor="@color/seller_text_primary" />
+                        <TextView android:id="@+id/tv_seller_detail_item_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/spacing_4" android:textSize="@dimen/text_14" android:textStyle="bold" android:textColor="@color/seller_text_primary" />
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/ll_seller_detail_items" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="vertical" />
+                    <TextView android:id="@+id/tv_seller_detail_empty_items" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/thien_seller_detail_no_items" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" android:visibility="gone" />
+                    <LinearLayout android:id="@+id/ll_seller_detail_discount" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:visibility="gone" android:layout_marginBottom="@dimen/spacing_8">
+                        <TextView android:id="@+id/tv_seller_detail_discount_title" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                        <TextView android:id="@+id/tv_seller_detail_discount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/seller_nav_active" android:textSize="@dimen/text_12" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_total" android:textStyle="bold" android:textSize="@dimen/text_14" android:textColor="@color/seller_text_primary" />
+                        <TextView android:id="@+id/tv_seller_detail_total" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="@dimen/text_16" android:textColor="@color/seller_nav_active" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_seller_detail_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="@dimen/radius_12"
+                app:cardElevation="@dimen/card_elevation"
+                app:strokeColor="@color/seller_nav_border"
+                app:strokeWidth="@dimen/divider_height">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/spacing_12" android:orientation="vertical">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/thien_seller_detail_review_title" android:textSize="@dimen/text_14" android:textStyle="bold" android:textColor="@color/seller_text_primary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:id="@+id/tv_seller_detail_stars" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/thien_seller_detail_stars" android:textSize="@dimen/text_20" android:contentDescription="@string/thien_seller_detail_review_title" />
+                        <TextView android:id="@+id/tv_seller_detail_rating" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/spacing_8" android:textColor="@color/seller_text_primary" android:textStyle="bold" android:textSize="@dimen/text_14" />
+                    </LinearLayout>
+                    <TextView android:id="@+id/tv_seller_detail_review_customer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" android:textStyle="bold" />
+                    <TextView android:id="@+id/tv_seller_detail_review_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_4" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                    <TextView android:id="@+id/tv_seller_detail_review_tags" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
+                    <TextView android:id="@+id/tv_seller_detail_review_comment" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_14" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/tv_seller_detail_no_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:text="@string/thien_seller_detail_no_review"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
