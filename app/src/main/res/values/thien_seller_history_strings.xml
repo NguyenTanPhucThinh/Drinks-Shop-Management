@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="seller_history_back">Quay lại</string>
+    <string name="seller_history_search_hint">Tìm kiếm mã đơn hàng</string>
+    <string name="seller_history_filter_all">Tất cả (%1$d)</string>
+    <string name="seller_history_filter_completed">Hoàn thành (%1$d)</string>
+    <string name="seller_history_filter_cancelled">Đã hủy (%1$d)</string>
+    <string name="seller_history_filter_rejected">Bị từ chối (%1$d)</string>
+    <string name="seller_history_month">Tháng %1$d/%2$d</string>
+    <string name="seller_history_month_count">%1$d đơn hàng</string>
+    <string name="seller_history_empty">Chưa có đơn hàng đã kết thúc.</string>
+    <string name="seller_history_no_search_results">Không tìm thấy đơn hàng phù hợp.</string>
+    <string name="seller_history_clear_search">Xóa từ khóa tìm kiếm</string>
+    <string name="seller_history_order_code">#%1$s</string>
+    <string name="seller_history_customer_table">%1$s · %2$s</string>
+    <string name="seller_history_table">Bàn %1$s</string>
+    <string name="seller_history_no_table">Chưa có bàn</string>
+    <string name="seller_history_item_summary">%1$s × %2$d</string>
+    <string name="seller_history_more_items"> · +%1$d món</string>
+    <string name="seller_history_no_items">Không có món trong đơn.</string>
+    <string name="seller_history_money">%1$sđ</string>
+    <string name="seller_history_status_completed">Hoàn thành</string>
+    <string name="seller_history_status_cancelled">Đã hủy</string>
+    <string name="seller_history_status_rejected">Đã từ chối</string>
+    <string name="seller_history_not_reviewed">Chưa đánh giá</string>
+    <string name="seller_history_reviewed">Đã đánh giá · %1$d/5 sao</string>
+    <string name="seller_history_details">Chi tiết</string>
+</resources>

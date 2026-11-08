@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voucher_add_symbol">+</string>
+    <string name="voucher_add_content_description">Tạo voucher mới</string>
+    <string name="voucher_empty_running">Chưa có voucher đang chạy</string>
+    <string name="voucher_empty_expired">Chưa có voucher hết hạn</string>
+    <string name="voucher_expiry_format">Hết hạn: %1$s</string>
+    <string name="voucher_no_expiry">—</string>
+    <string name="voucher_toggle_content_description">Kích hoạt %1$s</string>
+    <string name="voucher_description_money">Giảm %1$sđ</string>
+    <string name="voucher_description_money_minimum">Giảm %1$sđ · Đơn từ %2$sđ</string>
+    <string name="voucher_description_percent">Giảm %1$s%% tối đa %2$sđ</string>
+    <string name="voucher_description_topping">Tặng topping miễn phí</string>
+    <string name="voucher_description_terms">%1$s · %2$s</string>
+</resources>

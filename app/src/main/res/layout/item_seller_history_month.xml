@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/spacing_4"
+    android:paddingBottom="@dimen/spacing_8">
+    <TextView
+        android:id="@+id/tv_seller_history_month"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/seller_text_primary"
+        android:textSize="@dimen/text_14"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tv_seller_history_month_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/thien_seller_orders_muted"
+        android:textSize="@dimen/text_12" />
+</LinearLayout>

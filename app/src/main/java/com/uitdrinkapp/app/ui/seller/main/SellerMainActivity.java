@@ -45,10 +45,12 @@ public final class SellerMainActivity extends AppCompatActivity {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
                     | WindowInsetsCompat.Type.displayCutout());
             bottomSystemInset = bars.bottom;
-            boolean hiddenBottomNav = nav != null && isBottomNavHidden(
-                    nav.getCurrentDestination() == null ? -1 : nav.getCurrentDestination().getId());
+            int active = nav == null || nav.getCurrentDestination() == null ? -1
+                    : nav.getCurrentDestination().getId();
+            boolean hiddenBottomNav = nav != null && isBottomNavHidden(active);
             view.setPadding(bars.left, bars.top, bars.right,
-                    hiddenBottomNav ? bottomSystemInset : 0);
+                    hiddenBottomNav && active != R.id.sellerVouchersFragment
+                            ? bottomSystemInset : 0);
             binding.llSellerBottomNav.setPadding(0, 0, 0, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
@@ -84,9 +86,16 @@ public final class SellerMainActivity extends AppCompatActivity {
             binding.llSellerBottomNav.setVisibility(hiddenBottomNav ? View.GONE : View.VISIBLE);
             binding.getRoot().setPadding(binding.getRoot().getPaddingLeft(),
                     binding.getRoot().getPaddingTop(), binding.getRoot().getPaddingRight(),
-                    hiddenBottomNav ? bottomSystemInset : 0);
-            // Detail is a full-screen child of Seller Orders, not a seventh bottom tab.
+                    hiddenBottomNav && active != R.id.sellerVouchersFragment
+                            ? bottomSystemInset : 0);
+            // Detail inherits the tab of the screen it was opened from.
             int selectedDestination = getParentTab(active);
+            if (active == R.id.sellerOrderDetailFragment) {
+                androidx.navigation.NavBackStackEntry previous = controller.getPreviousBackStackEntry();
+                if (previous != null) {
+                    selectedDestination = getParentTab(previous.getDestination().getId());
+                }
+            }
             int selectedColor = ContextCompat.getColor(this, R.color.seller_nav_active);
             int idleColor = ContextCompat.getColor(this, R.color.seller_nav_inactive);
             for (Map.Entry<Integer, ItemSellerNavBinding> entry : tabs.entrySet()) {

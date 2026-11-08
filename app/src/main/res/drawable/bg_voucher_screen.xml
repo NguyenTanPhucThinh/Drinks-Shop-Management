@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/seller_surface" />
+    <item
+        android:drawable="@color/seller_background"
+        android:gravity="top"
+        android:height="@dimen/voucher_top_system_bar_scrim_height" />
+</layer-list>

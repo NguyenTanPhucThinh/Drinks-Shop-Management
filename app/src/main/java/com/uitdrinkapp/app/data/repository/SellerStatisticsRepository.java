@@ -34,7 +34,7 @@ public final class SellerStatisticsRepository {
             start.set(Calendar.DAY_OF_MONTH, 1);
             previousStart.set(Calendar.DAY_OF_MONTH, 1);
             previousStart.add(Calendar.MONTH, -1);
-            bucketCount = 6;
+            bucketCount = 5;
         } else {
             start.set(Calendar.DAY_OF_YEAR, 1);
             previousStart.set(Calendar.DAY_OF_YEAR, 1);
@@ -67,7 +67,9 @@ public final class SellerStatisticsRepository {
                     || order.createdAt > now.getTimeInMillis()) continue;
             revenue += order.totalAmount();
             int bucket = bucketFor(order.createdAt, period, start, bucketCount);
-            if (bucket >= 0 && bucket < bucketCount) bucketRevenue[bucket] += order.totalAmount();
+            if (bucket >= 0 && bucket < bucketCount) {
+                bucketRevenue[bucket] += order.totalAmount();
+            }
 
             for (OrderItem item : order.items) {
                 String key = item.productId.isEmpty() ? item.productName : item.productId;
@@ -112,11 +114,9 @@ public final class SellerStatisticsRepository {
                 label = new String[] {"CN", "T2", "T3", "T4", "T5", "T6", "T7"}[day - 1];
                 cursor.add(Calendar.DAY_OF_YEAR, 1);
             } else if (period == 1) {
-                int daysInMonth = cursor.getActualMaximum(Calendar.DAY_OF_MONTH);
-                label = String.valueOf(1 + i * daysInMonth / bucketCount);
+                label = String.valueOf(1 + i * 7);
             } else {
-                label = "T" + (cursor.get(Calendar.MONTH) + 1);
-                cursor.add(Calendar.MONTH, 1);
+                label = "T" + (i + 1);
             }
             int height = max == 0 ? 0 : Math.max(12, Math.round(bucketRevenue[i] * 100f / max));
             chart.add(new ChartPoint(label, height));
@@ -137,10 +137,7 @@ public final class SellerStatisticsRepository {
         if (period == 0) {
             return (int) ((date.getTimeInMillis() - start.getTimeInMillis()) / 86_400_000L);
         }
-        if (period == 1) {
-            return (date.get(Calendar.DAY_OF_MONTH) - 1) * bucketCount
-                    / date.getActualMaximum(Calendar.DAY_OF_MONTH);
-        }
+        if (period == 1) return (date.get(Calendar.DAY_OF_MONTH) - 1) / 7;
         int months = (date.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12
                 + date.get(Calendar.MONTH) - start.get(Calendar.MONTH);
         return Math.max(0, Math.min(bucketCount - 1, months));

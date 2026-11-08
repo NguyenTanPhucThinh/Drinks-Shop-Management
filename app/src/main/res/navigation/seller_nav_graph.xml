@@ -26,15 +26,6 @@
         <argument android:name="order_id" app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/sellerOrderDetailFragment"
-        android:name="com.uitdrinkapp.app.ui.seller.orders.SellerOrderDetailFragment"
-        android:label="@string/seller_title_orders">
-        <argument
-            android:name="order_id"
-            app:argType="string"
-            android:defaultValue="" />
-    </fragment>
-    <fragment
         android:id="@+id/sellerProductFragment"
         android:name="com.uitdrinkapp.app.ui.seller.product.ProductManagementFragment"
         android:label="@string/seller_title_product" />
@@ -54,7 +45,11 @@
     <fragment
         android:id="@+id/sellerHistoryFragment"
         android:name="com.uitdrinkapp.app.ui.seller.otherfeatures.SellerSalesHistoryFragment"
-        android:label="@string/seller_feature_sales_history" />
+        android:label="@string/seller_feature_sales_history">
+        <action
+            android:id="@+id/action_sellerHistory_to_orderDetail"
+            app:destination="@id/sellerOrderDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/sellerStatisticFragment"
         android:name="com.uitdrinkapp.app.ui.seller.statistic.StatisticFragment"

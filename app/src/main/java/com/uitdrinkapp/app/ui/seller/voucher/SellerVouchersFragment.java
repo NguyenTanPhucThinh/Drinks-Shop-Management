@@ -1,12 +1,12 @@
 package com.uitdrinkapp.app.ui.seller.voucher;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,11 +14,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.data.model.SellerVoucher;
 import com.uitdrinkapp.app.data.repository.SellerVoucherRepository;
 import com.uitdrinkapp.app.databinding.FragmentSellerVouchersBinding;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public final class SellerVouchersFragment extends Fragment {
     private FragmentSellerVouchersBinding binding;
@@ -47,7 +50,7 @@ public final class SellerVouchersFragment extends Fragment {
         if (binding == null) return;
         binding.chipVoucherRunning.setSelected(!showExpired);
         binding.chipVoucherExpired.setSelected(showExpired);
-        int active = ContextCompat.getColor(requireContext(), android.R.color.white);
+        int active = ContextCompat.getColor(requireContext(), R.color.white);
         int idle = ContextCompat.getColor(requireContext(), R.color.seller_text_primary);
         binding.chipVoucherRunning.setTextColor(showExpired ? idle : active);
         binding.chipVoucherExpired.setTextColor(showExpired ? active : idle);
@@ -61,11 +64,13 @@ public final class SellerVouchersFragment extends Fragment {
         }
         if (count == 0) {
             TextView empty = new TextView(requireContext());
-            empty.setText(showExpired ? "Chưa có voucher hết hạn" : "Chưa có voucher đang chạy");
+            empty.setText(showExpired ? R.string.voucher_empty_expired : R.string.voucher_empty_running);
             empty.setTextColor(ContextCompat.getColor(requireContext(), R.color.seller_text_secondary));
-            empty.setTextSize(13);
+            empty.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(R.dimen.voucher_description_text_size));
             empty.setGravity(Gravity.CENTER);
-            empty.setPadding(0, dp(32), 0, dp(32));
+            int emptyPadding = dimension(R.dimen.voucher_empty_vertical_padding);
+            empty.setPadding(0, emptyPadding, 0, emptyPadding);
             binding.llSellerVoucherCards.addView(empty);
         }
     }
@@ -73,56 +78,78 @@ public final class SellerVouchersFragment extends Fragment {
     private View createCard(SellerVoucher voucher) {
         LinearLayout card = new LinearLayout(requireContext());
         card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(dp(10), dp(10), dp(10), dp(9));
-        card.setBackgroundResource(R.drawable.bg_seller_surface_card);
+        card.setPadding(dimension(R.dimen.voucher_card_padding_horizontal),
+                dimension(R.dimen.voucher_card_padding_top),
+                dimension(R.dimen.voucher_card_padding_horizontal),
+                dimension(R.dimen.voucher_card_padding_bottom));
+        card.setBackgroundResource(R.drawable.bg_voucher_card);
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(-1, -2);
-        cardParams.bottomMargin = dp(9);
+        cardParams.bottomMargin = dimension(R.dimen.voucher_card_bottom_margin);
         card.setLayoutParams(cardParams);
 
         LinearLayout top = new LinearLayout(requireContext());
         top.setGravity(Gravity.CENTER_VERTICAL);
         card.addView(top);
-        TextView code = text(voucher.code, 10, R.color.seller_nav_active, true);
-        code.setBackgroundResource(R.drawable.bg_seller_icon_circle);
-        code.setPadding(dp(8), dp(4), dp(8), dp(4));
-        top.addView(code, new LinearLayout.LayoutParams(0, -2, 1f));
-        Switch toggle = new Switch(requireContext());
+        TextView code = text(voucher.code, R.dimen.voucher_code_text_size,
+                R.color.voucher_primary, true);
+        code.setBackgroundResource(R.drawable.bg_voucher_badge);
+        int badgeHorizontalPadding = dimension(R.dimen.voucher_badge_padding_horizontal);
+        int badgeVerticalPadding = dimension(R.dimen.voucher_badge_padding_vertical);
+        code.setPadding(badgeHorizontalPadding, badgeVerticalPadding,
+                badgeHorizontalPadding, badgeVerticalPadding);
+        top.addView(code, new LinearLayout.LayoutParams(-2, -2));
+        View spacer = new View(requireContext());
+        top.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+        MaterialSwitch toggle = new MaterialSwitch(requireContext());
         toggle.setChecked(voucher.active);
         toggle.setEnabled(!voucher.expired);
-        toggle.setContentDescription("Kích hoạt " + voucher.code);
+        toggle.setContentDescription(getString(R.string.voucher_toggle_content_description,
+                voucher.code));
+        toggle.setMinimumWidth(dimension(R.dimen.voucher_switch_min_width));
+        toggle.setMinimumHeight(dimension(R.dimen.voucher_switch_min_height));
+        toggle.setPadding(0, 0, 0, 0);
+        toggle.setScaleX(getResources().getFraction(R.fraction.voucher_switch_scale_x, 1, 1));
+        toggle.setScaleY(getResources().getFraction(R.fraction.voucher_switch_scale_y, 1, 1));
         toggle.setThumbTintList(android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(requireContext(), android.R.color.white)));
+                ContextCompat.getColor(requireContext(), R.color.white)));
         toggle.setTrackTintList(new android.content.res.ColorStateList(
                 new int[][]{new int[]{android.R.attr.state_checked}, new int[]{}},
-                new int[]{ContextCompat.getColor(requireContext(), R.color.seller_nav_active),
-                        ContextCompat.getColor(requireContext(), R.color.seller_surface_border)}));
-        top.addView(toggle);
+                new int[]{ContextCompat.getColor(requireContext(), R.color.voucher_primary),
+                        ContextCompat.getColor(requireContext(), R.color.voucher_switch_inactive)}));
+        toggle.setTrackDecorationTintList(android.content.res.ColorStateList.valueOf(
+                android.graphics.Color.TRANSPARENT));
+        top.addView(toggle, new LinearLayout.LayoutParams(-2,
+                dimension(R.dimen.voucher_switch_view_height)));
         toggle.setOnCheckedChangeListener((button, checked) ->
                 SellerVoucherRepository.get().setActive(voucher.id, checked));
 
-        TextView description = text(voucher.description(), 12, R.color.seller_text_primary, true);
+        TextView description = text(description(voucher), R.dimen.voucher_description_text_size,
+                R.color.seller_text_primary, true);
         LinearLayout.LayoutParams descriptionParams = new LinearLayout.LayoutParams(-1, -2);
-        descriptionParams.topMargin = dp(5);
+        descriptionParams.topMargin = dimension(R.dimen.voucher_description_margin_top);
         card.addView(description, descriptionParams);
-        TextView expiry = text("Hết hạn: " + (voucher.expiryDate.isEmpty() ? "—" : voucher.expiryDate),
-                10, R.color.seller_text_secondary, false);
+        TextView expiry = text(getString(R.string.voucher_expiry_format,
+                        voucher.expiryDate.isEmpty()
+                                ? getString(R.string.voucher_no_expiry) : voucher.expiryDate),
+                R.dimen.voucher_expiry_text_size, R.color.seller_text_secondary, false);
         LinearLayout.LayoutParams expiryParams = new LinearLayout.LayoutParams(-1, -2);
-        expiryParams.topMargin = dp(3);
+        expiryParams.topMargin = dimension(R.dimen.voucher_expiry_margin_top);
         card.addView(expiry, expiryParams);
         if (voucher.expiryDate.isEmpty()) expiry.setVisibility(View.GONE);
 
         LinearLayout actions = new LinearLayout(requireContext());
         actions.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams actionsParams = new LinearLayout.LayoutParams(-1, dp(34));
-        actionsParams.topMargin = dp(5);
+        LinearLayout.LayoutParams actionsParams = new LinearLayout.LayoutParams(-1,
+                dimension(R.dimen.voucher_action_row_height));
+        actionsParams.topMargin = dimension(R.dimen.voucher_action_row_margin_top);
         card.addView(actions, actionsParams);
-        TextView edit = action(getString(R.string.seller_voucher_edit), R.drawable.bg_seller_outline_button,
-                R.color.seller_nav_active);
-        TextView delete = action(getString(R.string.seller_voucher_delete), R.drawable.bg_seller_danger_button,
+        TextView edit = action(getString(R.string.seller_voucher_edit), R.drawable.bg_voucher_action_edit,
+                R.color.voucher_primary);
+        TextView delete = action(getString(R.string.seller_voucher_delete), R.drawable.bg_voucher_action_delete,
                 R.color.seller_danger);
         actions.addView(edit, new LinearLayout.LayoutParams(0, -1, 1f));
         LinearLayout.LayoutParams deleteParams = new LinearLayout.LayoutParams(0, -1, 1f);
-        deleteParams.leftMargin = dp(6);
+        deleteParams.leftMargin = dimension(R.dimen.voucher_action_gap);
         actions.addView(delete, deleteParams);
         edit.setOnClickListener(v -> openForm(voucher));
         delete.setOnClickListener(v -> confirmDelete(voucher));
@@ -145,8 +172,34 @@ public final class SellerVouchersFragment extends Fragment {
         NavHostFragment.findNavController(this).navigate(R.id.sellerVoucherFormFragment, args);
     }
 
+    private String description(SellerVoucher voucher) {
+        String result;
+        if (getString(R.string.seller_voucher_type_topping).equals(voucher.type)) {
+            result = getString(R.string.voucher_description_topping);
+        } else if (getString(R.string.seller_voucher_type_percent).equals(voucher.type)) {
+            result = getString(R.string.voucher_description_percent,
+                    formatAmount(voucher.value), formatAmount(voucher.maximumDiscount));
+        } else if (voucher.minimumOrder.isEmpty()) {
+            result = getString(R.string.voucher_description_money, formatAmount(voucher.value));
+        } else {
+            result = getString(R.string.voucher_description_money_minimum,
+                    formatAmount(voucher.value), formatAmount(voucher.minimumOrder));
+        }
+        return voucher.terms.isEmpty() ? result
+                : getString(R.string.voucher_description_terms, result, voucher.terms);
+    }
+
+    private String formatAmount(String value) {
+        try {
+            NumberFormat formatter = NumberFormat.getIntegerInstance(new Locale("vi", "VN"));
+            return formatter.format(Long.parseLong(value));
+        } catch (NumberFormatException ignored) {
+            return value;
+        }
+    }
+
     private TextView action(String value, int background, int color) {
-        TextView button = text(value, 12, color, false);
+        TextView button = text(value, R.dimen.voucher_action_text_size, color, false);
         button.setGravity(Gravity.CENTER);
         button.setBackgroundResource(background);
         button.setClickable(true);
@@ -154,15 +207,15 @@ public final class SellerVouchersFragment extends Fragment {
         return button;
     }
 
-    private TextView text(String value, int size, int color, boolean bold) {
+    private TextView text(String value, int textSize, int color, boolean bold) {
         TextView result = new TextView(requireContext());
         result.setText(value);
-        result.setTextSize(size);
+        result.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(textSize));
         result.setTextColor(ContextCompat.getColor(requireContext(), color));
         if (bold) result.setTypeface(null, android.graphics.Typeface.BOLD);
         return result;
     }
 
-    private int dp(int value) { return Math.round(value * getResources().getDisplayMetrics().density); }
+    private int dimension(int resourceId) { return Math.round(getResources().getDimension(resourceId)); }
     @Override public void onDestroyView() { binding = null; super.onDestroyView(); }
 }

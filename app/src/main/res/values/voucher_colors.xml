@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="voucher_primary">#BF5216</color>
+    <color name="voucher_badge_background">#F7E9E0</color>
+    <color name="voucher_switch_inactive">#D7CDC2</color>
+</resources>
