@@ -12,26 +12,24 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.data.model.Order;
-import com.uitdrinkapp.app.data.model.OrderItem;
 import com.uitdrinkapp.app.data.model.OrderStatus;
 import com.uitdrinkapp.app.data.order.OrderRepository;
 import com.uitdrinkapp.app.data.order.OrderRepositoryProvider;
 import com.uitdrinkapp.app.data.order.OrderTransitions;
 import com.uitdrinkapp.app.databinding.FragmentSellerOrdersBinding;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
-/** Task02 GD04 CORE. Seller order list/actions; full detail navigation is intentionally deferred. */
+/** Seller order list/actions, with navigation into the shared read-only order detail screen. */
 public final class OrderManagementFragment extends Fragment {
     private static final String STATE_FILTER = "thien_seller_filter";
-    private static final Locale VI = Locale.forLanguageTag("vi-VN");
 
     private FragmentSellerOrdersBinding binding;
     private OrderRepository orders;
@@ -53,7 +51,7 @@ public final class OrderManagementFragment extends Fragment {
             catch (IllegalArgumentException ignored) { filter = SellerOrderUiPolicy.Filter.ALL; }
         }
         orders = OrderRepositoryProvider.get(requireContext());
-        adapter = new SellerOrderAdapter(this::confirmTransition, this::openQuickSummary);
+        adapter = new SellerOrderAdapter(this::confirmTransition, this::openDetail);
         binding.rvThienSellerOrders.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvThienSellerOrders.setAdapter(adapter);
         binding.btnThienSellerOrdersBack.setOnClickListener(clicked ->
@@ -147,29 +145,20 @@ public final class OrderManagementFragment extends Fragment {
         }
     }
 
-    /** Standalone quick view; navigating to GD03 OrderDetailFragment is a later integration. */
-    private void openQuickSummary(String id) {
-        Order order = orders.getOrder(id);
-        if (order == null) {
-            Toast.makeText(requireContext(), R.string.thien_seller_orders_not_found, Toast.LENGTH_SHORT).show();
+    /** Navigate from Seller Orders to the shared read-only detail; never cache a stale order. */
+    private void openDetail(String id) {
+        if (orders.getOrder(id) == null) {
+            Toast.makeText(requireContext(), R.string.thien_seller_orders_not_found,
+                    Toast.LENGTH_SHORT).show();
             refresh();
             return;
         }
-        StringBuilder lines = new StringBuilder();
-        for (OrderItem item : order.items) {
-            if (lines.length() > 0) lines.append("\n");
-            lines.append(item.quantity).append(" × ").append(item.productName)
-                    .append(" · ").append(item.size);
-        }
-        if (lines.length() == 0) lines.append(getString(R.string.thien_seller_orders_no_products));
-        String table = order.tableNumber == null || order.tableNumber.trim().isEmpty()
-                ? getString(R.string.thien_seller_orders_no_table)
-                : getString(R.string.thien_seller_orders_table, order.tableNumber);
-        String total = NumberFormat.getIntegerInstance(VI).format(order.totalAmount());
-        new AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.thien_seller_orders_quick_title, order.orderId))
-                .setMessage(getString(R.string.thien_seller_orders_quick_body, table, lines.toString(), total))
-                .setPositiveButton(R.string.thien_seller_orders_close, null).show();
+        NavController controller = NavHostFragment.findNavController(this);
+        if (controller.getCurrentDestination() == null
+                || controller.getCurrentDestination().getId() != R.id.sellerOrdersFragment) return;
+        Bundle args = new Bundle();
+        args.putString("order_id", id);
+        controller.navigate(R.id.action_sellerOrders_to_detail, args);
     }
 
     @Override public void onSaveInstanceState(@NonNull Bundle state) {

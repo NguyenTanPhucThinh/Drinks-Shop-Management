@@ -14,7 +14,17 @@
     <fragment
         android:id="@+id/sellerOrdersFragment"
         android:name="com.uitdrinkapp.app.ui.seller.orders.OrderManagementFragment"
-        android:label="@string/seller_title_orders" />
+        android:label="@string/seller_title_orders">
+        <action
+            android:id="@+id/action_sellerOrders_to_detail"
+            app:destination="@id/sellerOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sellerOrderDetailFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.reviews.OrderDetailFragment"
+        android:label="@string/thien_seller_detail_title">
+        <argument android:name="order_id" app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/sellerProductFragment"
         android:name="com.uitdrinkapp.app.ui.seller.product.ProductManagementFragment"

@@ -75,10 +75,14 @@ public final class SellerMainActivity extends AppCompatActivity {
 
         nav.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int active = destination.getId();
+            // Detail is a full-screen child of Seller Orders, not a seventh bottom tab.
+            boolean isOrderDetail = active == R.id.sellerOrderDetailFragment;
+            binding.llSellerBottomNav.setVisibility(isOrderDetail ? View.GONE : View.VISIBLE);
+            int selectedTab = isOrderDetail ? R.id.sellerOrdersFragment : active;
             int selectedColor = ContextCompat.getColor(this, R.color.seller_nav_active);
             int idleColor = ContextCompat.getColor(this, R.color.seller_nav_inactive);
             for (Map.Entry<Integer, ItemSellerNavBinding> entry : tabs.entrySet()) {
-                boolean selected = entry.getKey() == active;
+                boolean selected = entry.getKey() == selectedTab;
                 ItemSellerNavBinding tab = entry.getValue();
                 tab.getRoot().setSelected(selected);
                 int color = selected ? selectedColor : idleColor;
@@ -90,6 +94,12 @@ public final class SellerMainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                // Preserve the immediate parent on detail pages; tab roots retain old Home behavior.
+                if (nav.getCurrentDestination() != null
+                        && nav.getCurrentDestination().getId() == R.id.sellerOrderDetailFragment) {
+                    if (!nav.popBackStack()) openTab(R.id.sellerOrdersFragment);
+                    return;
+                }
                 if (nav.getCurrentDestination() != null
                         && nav.getCurrentDestination().getId() != R.id.sellerHomeFragment) {
                     if (!nav.popBackStack(R.id.sellerHomeFragment, false)) {

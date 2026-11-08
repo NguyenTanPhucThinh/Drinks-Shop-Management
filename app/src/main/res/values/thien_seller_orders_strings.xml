@@ -34,7 +34,7 @@
     <string name="thien_seller_orders_updated">Đã cập nhật trạng thái đơn hàng</string>
     <string name="thien_seller_orders_invalid">Đơn đã đổi trạng thái hoặc không thể xử lý</string>
     <string name="thien_seller_orders_not_found">Không tìm thấy đơn hàng</string>
-    <string name="thien_seller_orders_quick">Xem nhanh</string>
+    <string name="thien_seller_orders_quick">Xem chi tiết</string>
     <string name="thien_seller_orders_quick_title">Đơn hàng #%1$s</string>
     <string name="thien_seller_orders_quick_body">%1$s\n\n%2$s\n\nTổng cộng: %3$sđ</string>
 </resources>
