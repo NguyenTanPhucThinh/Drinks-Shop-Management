@@ -39,7 +39,7 @@ public final class DrinkSelection {
         return true;
     }
     public long getTotalPrice() {
-        long unitPrice = product.getPrice() + size.getExtraPrice();
+        long unitPrice = product.getPriceFor(size);
         for (Topping topping : toppings) unitPrice += topping.getPrice();
         return unitPrice * quantity;
     }

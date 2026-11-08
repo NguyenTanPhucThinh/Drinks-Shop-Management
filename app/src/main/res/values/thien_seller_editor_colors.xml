@@ -1,0 +1,8 @@
+<resources>
+    <color name="thien_editor_text">#30251F</color>
+    <color name="thien_editor_muted">#927B6E</color>
+    <color name="thien_editor_border">#E8DED5</color>
+    <color name="thien_editor_white">#FFFFFF</color>
+    <color name="thien_editor_accent">#C74B0C</color>
+    <color name="thien_editor_error">#C82014</color>
+</resources>

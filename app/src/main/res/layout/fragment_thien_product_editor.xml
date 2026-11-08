@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/seller_background">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center_vertical" android:paddingHorizontal="16dp" android:paddingVertical="8dp">
+        <TextView android:id="@+id/btn_thien_editor_back" android:layout_width="48dp"
+            android:layout_height="48dp" android:gravity="center" android:text="‹" android:textSize="32sp"
+            android:background="?attr/selectableItemBackground" android:clickable="true"
+            android:focusable="true" android:contentDescription="@string/thien_editor_back"/>
+        <TextView android:id="@+id/tv_thien_editor_title" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="@string/thien_editor_title_new" android:textSize="20sp"
+            android:textStyle="bold" android:textColor="@color/thien_editor_text"/>
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView android:id="@+id/sv_thien_editor_fields" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" android:fillViewport="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp" android:paddingBottom="24dp" android:orientation="vertical">
+            <TextView android:id="@+id/tv_thien_editor_error" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textColor="@color/thien_editor_error"
+                android:textStyle="bold" android:paddingVertical="8dp" android:visibility="gone"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="176dp"
+                app:cardCornerRadius="16dp" app:cardElevation="0dp"
+                app:strokeWidth="1dp" app:strokeColor="@color/thien_editor_border">
+                <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView android:id="@+id/iv_thien_editor_photo" android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:scaleType="centerCrop"
+                        android:contentDescription="@string/thien_editor_image"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_thien_editor_photo"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal" android:layout_margin="10dp"
+                        android:text="@string/thien_editor_choose_image"/>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <TextView style="@style/TextAppearance.Material3.LabelSmall"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="6dp" android:text="@string/thien_editor_image_note"
+                android:textColor="@color/thien_editor_muted"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:hint="@string/thien_editor_name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_thien_editor_name" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="textCapSentences"
+                    android:maxLength="100" android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:hint="@string/thien_editor_description">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_thien_editor_description" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:gravity="top" android:minLines="2"
+                    android:maxLines="5" android:inputType="textMultiLine|textCapSentences"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView style="@style/TextAppearance.Material3.TitleSmall"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="14dp" android:text="@string/thien_editor_category"
+                android:textColor="@color/thien_editor_text"/>
+            <Spinner android:id="@+id/sp_thien_editor_category" android:layout_width="match_parent"
+                android:layout_height="50dp" android:background="@drawable/bg_thien_editor_input"
+                android:paddingHorizontal="12dp" android:contentDescription="@string/thien_editor_category"/>
+            <TextView style="@style/TextAppearance.Material3.TitleSmall" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="14dp"
+                android:text="@string/thien_editor_prices" android:textColor="@color/thien_editor_text"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:baselineAligned="false">
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:hint="@string/thien_editor_size_s">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_thien_editor_price_s" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:inputType="number" android:maxLength="9"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <Space android:layout_width="8dp" android:layout_height="1dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:hint="@string/thien_editor_size_m">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_thien_editor_price_m" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:inputType="number" android:maxLength="9"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <Space android:layout_width="8dp" android:layout_height="1dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:hint="@string/thien_editor_size_l">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_thien_editor_price_l" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:inputType="number" android:maxLength="9"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <TextView style="@style/TextAppearance.Material3.TitleSmall" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="14dp"
+                android:text="@string/thien_editor_temperatures" android:textColor="@color/thien_editor_text"/>
+            <com.google.android.material.chip.ChipGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:singleSelection="false">
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_hot"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/thien_editor_hot"/>
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_iced"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/thien_editor_iced"/>
+            </com.google.android.material.chip.ChipGroup>
+            <TextView style="@style/TextAppearance.Material3.TitleSmall" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="12dp"
+                android:text="@string/thien_editor_sugar" android:textColor="@color/thien_editor_text"/>
+            <com.google.android.material.chip.ChipGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:singleSelection="false">
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_sugar0"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="0%"/>
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_sugar30"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="30%"/>
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_sugar50"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="50%"/>
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_sugar70"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="70%"/>
+                <com.google.android.material.chip.Chip android:id="@+id/chip_thien_editor_sugar100"
+                    style="@style/Widget.Material3.Chip.Filter" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="100%"/>
+            </com.google.android.material.chip.ChipGroup>
+            <TextView style="@style/TextAppearance.Material3.TitleSmall" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="12dp"
+                android:text="@string/thien_editor_availability" android:textColor="@color/thien_editor_text"/>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/sw_thien_editor_in_stock" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:checked="true"
+                android:text="@string/thien_editor_in_stock"/>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/sw_thien_editor_visible" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:checked="true"
+                android:text="@string/thien_editor_visible"/>
+            <TextView style="@style/TextAppearance.Material3.TitleSmall" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="12dp"
+                android:text="@string/thien_editor_toppings" android:textColor="@color/thien_editor_text"/>
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_thien_editor_all_toppings" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/thien_editor_all_toppings"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_thien_editor_add_topping"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/thien_editor_add_topping"/>
+            <LinearLayout android:id="@+id/ll_thien_editor_toppings"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+        android:background="@color/thien_editor_border"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="12dp" android:gravity="center" android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_thien_editor_delete"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/thien_editor_delete" android:visibility="gone"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_thien_editor_cancel"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:layout_marginHorizontal="6dp" android:text="@string/thien_editor_cancel"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_thien_editor_save" style="@style/Widget.Material3.Button"
+            android:layout_width="0dp" android:layout_weight="1.3" android:layout_height="wrap_content"
+            android:layout_marginHorizontal="6dp" android:text="@string/thien_editor_save"
+            android:textColor="@color/thien_editor_white"
+            app:backgroundTint="@color/thien_editor_accent"/>
+    </LinearLayout>
+</LinearLayout>

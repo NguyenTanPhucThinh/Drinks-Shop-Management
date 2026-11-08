@@ -24,12 +24,17 @@ final class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Holder> {
         Product product = products.get(position);
         ItemHomeProductBinding b = holder.binding;
         b.tvProductName.setText(product.getName());
-        b.tvProductPrice.setText(b.getRoot().getContext().getString(R.string.home_price,
-                NumberFormat.getIntegerInstance(Locale.forLanguageTag("vi-VN")).format(product.getPrice())));
+        String price = b.getRoot().getContext().getString(R.string.home_price,
+                NumberFormat.getIntegerInstance(Locale.forLanguageTag("vi-VN")).format(product.getPrice()));
+        b.tvProductPrice.setText(product.isAvailable() ? price :
+                price + " · " + b.getRoot().getContext().getString(R.string.thien_buyer_out_of_stock));
+        b.btnAddProduct.setEnabled(product.isAvailable());
         b.btnAddProduct.setContentDescription(b.getRoot().getContext().getString(R.string.home_add_product, product.getName()));
         Glide.with(b.ivProductImage).load(LocalImages.resolve(product.getImageUrl())).centerCrop().into(b.ivProductImage);
         b.getRoot().setOnClickListener(view -> onProductClick.accept(product.getId()));
-        b.btnAddProduct.setOnClickListener(view -> onProductClick.accept(product.getId()));
+        b.btnAddProduct.setOnClickListener(view -> {
+            if (product.isAvailable()) onProductClick.accept(product.getId());
+        });
     }
     @Override public int getItemCount() { return products.size(); }
     static final class Holder extends RecyclerView.ViewHolder {

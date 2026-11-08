@@ -85,6 +85,7 @@ public final class SellerMainActivity extends AppCompatActivity {
             binding.getRoot().setPadding(binding.getRoot().getPaddingLeft(),
                     binding.getRoot().getPaddingTop(), binding.getRoot().getPaddingRight(),
                     hiddenBottomNav ? bottomSystemInset : 0);
+            // Detail is a full-screen child of Seller Orders, not a seventh bottom tab.
             int selectedDestination = getParentTab(active);
             int selectedColor = ContextCompat.getColor(this, R.color.seller_nav_active);
             int idleColor = ContextCompat.getColor(this, R.color.seller_nav_inactive);
@@ -103,6 +104,11 @@ public final class SellerMainActivity extends AppCompatActivity {
             public void handleOnBackPressed() {
                 int current = nav.getCurrentDestination() == null ? -1
                         : nav.getCurrentDestination().getId();
+                // Detail pages return to Orders; other secondary screens return to their parent tab.
+                if (current == R.id.sellerOrderDetailFragment) {
+                    if (!nav.popBackStack()) openTab(R.id.sellerOrdersFragment);
+                    return;
+                }
                 if (current == R.id.sellerHomeFragment || current == -1) {
                     finish();
                 } else if (isPrimaryTab(current)) {

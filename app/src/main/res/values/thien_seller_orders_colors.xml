@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="thien_seller_orders_accent">#C65316</color>
+    <color name="thien_seller_orders_on_accent">#FFFFFF</color>
+    <color name="thien_seller_orders_card">#FFFFFF</color>
+    <color name="thien_seller_orders_border">#EAE1D8</color>
+    <color name="thien_seller_orders_text">#392D24</color>
+    <color name="thien_seller_orders_muted">#887E77</color>
+    <color name="thien_seller_orders_danger">#BA5B64</color>
+    <color name="thien_seller_orders_status_new_bg">#FFF0D9</color>
+    <color name="thien_seller_orders_status_new_text">#A45E14</color>
+    <color name="thien_seller_orders_status_preparing_bg">#FFE7D4</color>
+    <color name="thien_seller_orders_status_preparing_text">#A34F22</color>
+    <color name="thien_seller_orders_status_success_bg">#DDF4E6</color>
+    <color name="thien_seller_orders_status_success_text">#216B49</color>
+    <color name="thien_seller_orders_status_cancel_bg">#FFE6E9</color>
+    <color name="thien_seller_orders_status_cancel_text">#9A2F47</color>
+</resources>

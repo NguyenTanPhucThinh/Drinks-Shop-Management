@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="thien_seller_detail_pending_bg">#FFF0E4</color>
+    <color name="thien_seller_detail_pending_text">#A94B15</color>
+    <color name="thien_seller_detail_success_bg">#E3F3E8</color>
+    <color name="thien_seller_detail_success_text">#20633D</color>
+    <color name="thien_seller_detail_danger_bg">#FCE6E4</color>
+    <color name="thien_seller_detail_danger_text">#B13631</color>
+    <color name="thien_seller_detail_stars">#F2B200</color>
+</resources>

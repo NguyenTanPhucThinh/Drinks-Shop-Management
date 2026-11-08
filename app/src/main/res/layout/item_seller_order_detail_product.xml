@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/spacing_8"
+    android:paddingBottom="@dimen/spacing_12">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top">
+        <TextView
+            android:id="@+id/tv_seller_detail_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="@dimen/text_14"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_seller_detail_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_8"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="@dimen/text_14"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_seller_detail_item_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_12" />
+    <TextView
+        android:id="@+id/tv_seller_detail_item_toppings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_12" />
+    <TextView
+        android:id="@+id/tv_seller_detail_item_unit_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_12" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/spacing_12"
+        android:background="@color/seller_nav_border" />
+</LinearLayout>

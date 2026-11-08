@@ -13,9 +13,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;                       // THÊM MỚI
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider; // THÊM MỚI
 import com.uitdrinkapp.app.databinding.HomeActivityBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,13 +40,22 @@ public class MainActivity extends AppCompatActivity {
         if (host == null) throw new IllegalStateException("Missing navigation host");
         nav = host.getNavController();
 
+        // THÊM MỚI: chưa đăng nhập thì mở màn Login, đã đăng nhập thì mở Home
+        if (savedInstanceState == null) {
+            NavGraph graph = nav.getNavInflater().inflate(R.navigation.nav_graph);
+            boolean loggedIn = RepositoryProvider.get(this).auth().isLoggedIn();
+            graph.setStartDestination(loggedIn ? R.id.homeFragment : R.id.loginFragment);
+            nav.setGraph(graph);
+        }
+
         nav.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int id = destination.getId();
 
             boolean showBottomNav =
                     id == R.id.homeFragment ||
                             id == R.id.vouchersFragment ||
-                            id == R.id.thien_history;
+                            id == R.id.thien_history ||
+                            id == R.id.profileFragment;
 
             binding.llBottomNav.setVisibility(
                     showBottomNav ? View.VISIBLE : View.GONE
@@ -54,12 +65,13 @@ public class MainActivity extends AppCompatActivity {
             selectTab(binding.btnNavMenu, id == R.id.thien_cart);
             selectTab(binding.btnNavHistory, id == R.id.thien_history);
             selectTab(binding.btnNavVouchers, id == R.id.vouchersFragment);
-
+            selectTab(binding.btnNavProfile, id == R.id.profileFragment);
             if (messageBar != null) messageBar.dismiss();
         });
 
         binding.btnNavHome.setOnClickListener(view -> nav.popBackStack(R.id.homeFragment, false));
         binding.btnNavVouchers.setOnClickListener(view -> openVouchers());
+        binding.btnNavProfile.setOnClickListener(view -> openProfile());
 
         binding.btnNavMenu.setOnClickListener(view ->
                 nav.navigate(R.id.thien_flow));
@@ -84,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (nav.getCurrentDestination().getId() != R.id.vouchersFragment) {
             nav.navigate(R.id.vouchersFragment);
+        }
+    }
+    public void openProfile() {
+        if (nav.getCurrentDestination() == null) return;
+
+        if (nav.getCurrentDestination().getId() != R.id.profileFragment) {
+            nav.navigate(R.id.profileFragment);
         }
     }
 

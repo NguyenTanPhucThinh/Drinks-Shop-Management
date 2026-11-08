@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thien_seller_orders_back">Quay lại Trang chủ Seller</string>
+    <string name="thien_seller_orders_filter_all_default">Tất cả</string>
+    <string name="thien_seller_orders_filter_new_default">Mới</string>
+    <string name="thien_seller_orders_filter_preparing_default">Đang pha</string>
+    <string name="thien_seller_orders_filter_all">Tất cả (%1$d)</string>
+    <string name="thien_seller_orders_filter_new">Mới (%1$d)</string>
+    <string name="thien_seller_orders_filter_preparing">Đang pha (%1$d)</string>
+    <string name="thien_seller_orders_empty">Chưa có đơn hàng trong mục này.</string>
+    <string name="thien_seller_orders_code">#%1$s</string>
+    <string name="thien_seller_orders_table">Bàn %1$s</string>
+    <string name="thien_seller_orders_no_table">Chưa có số bàn</string>
+    <string name="thien_seller_orders_no_products">Không có món trong đơn.</string>
+    <string name="thien_seller_orders_total">Tổng cộng</string>
+    <string name="thien_seller_orders_money">%1$sđ</string>
+    <string name="thien_seller_orders_status_new">Mới</string>
+    <string name="thien_seller_orders_status_accepted">Đã nhận</string>
+    <string name="thien_seller_orders_status_preparing">Đang pha</string>
+    <string name="thien_seller_orders_status_ready">Sẵn sàng</string>
+    <string name="thien_seller_orders_status_completed">Hoàn thành</string>
+    <string name="thien_seller_orders_status_cancelled">Đã hủy</string>
+    <string name="thien_seller_orders_status_rejected">Đã từ chối</string>
+    <string name="thien_seller_orders_accept">Nhận đơn</string>
+    <string name="thien_seller_orders_reject">Từ chối</string>
+    <string name="thien_seller_orders_cancel">Hủy</string>
+    <string name="thien_seller_orders_finish">Đã pha xong</string>
+    <string name="thien_seller_orders_start_preparing">Bắt đầu pha</string>
+    <string name="thien_seller_orders_mark_ready">Sẵn sàng giao</string>
+    <string name="thien_seller_orders_confirm_title">Xác nhận xử lý đơn</string>
+    <string name="thien_seller_orders_confirm_body">Bạn muốn thực hiện “%2$s” với đơn #%1$s?</string>
+    <string name="thien_seller_orders_confirm_yes">Đồng ý</string>
+    <string name="thien_seller_orders_close">Đóng</string>
+    <string name="thien_seller_orders_updated">Đã cập nhật trạng thái đơn hàng</string>
+    <string name="thien_seller_orders_invalid">Đơn đã đổi trạng thái hoặc không thể xử lý</string>
+    <string name="thien_seller_orders_not_found">Không tìm thấy đơn hàng</string>
+    <string name="thien_seller_orders_quick">Xem chi tiết</string>
+    <string name="thien_seller_orders_quick_title">Đơn hàng #%1$s</string>
+    <string name="thien_seller_orders_quick_body">%1$s\n\n%2$s\n\nTổng cộng: %3$sđ</string>
+</resources>

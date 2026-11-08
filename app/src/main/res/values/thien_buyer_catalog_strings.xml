@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thien_buyer_out_of_stock">Hết hàng</string>
+    <string name="thien_buyer_unavailable">Sản phẩm hiện không thể đặt. Vui lòng chọn món khác.</string>
+    <string name="thien_buyer_size_price">%1$s · %2$s</string>
+</resources>

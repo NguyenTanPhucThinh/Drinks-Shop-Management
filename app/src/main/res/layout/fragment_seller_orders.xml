@@ -1,9 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_seller_orders_title"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="@dimen/screen_padding"
-    android:text="@string/seller_title_orders"
-    android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+    android:background="@color/seller_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/screen_padding"
+        android:paddingEnd="@dimen/screen_padding"
+        android:paddingTop="@dimen/spacing_16"
+        android:paddingBottom="@dimen/spacing_12">
+        <ImageButton
+            android:id="@+id/btn_thien_seller_orders_back"
+            android:layout_width="@dimen/home_touch_target"
+            android:layout_height="@dimen/home_touch_target"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/thien_seller_orders_back"
+            android:padding="@dimen/spacing_12"
+            android:src="@drawable/ic_back"
+            app:tint="@color/seller_text_primary" />
+        <TextView
+            android:id="@+id/tv_thien_seller_orders_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/spacing_8"
+            android:text="@string/seller_title_orders"
+            android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/screen_padding"
+            android:paddingEnd="@dimen/screen_padding"
+            android:paddingBottom="@dimen/spacing_12">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_thien_seller_filter_all"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/thien_seller_orders_filter_height"
+                android:text="@string/thien_seller_orders_filter_all_default"
+                android:textAllCaps="false"
+                android:minHeight="@dimen/thien_seller_orders_filter_height"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="@dimen/radius_pill"
+                app:strokeWidth="@dimen/divider_height" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_thien_seller_filter_new"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/thien_seller_orders_filter_height"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:text="@string/thien_seller_orders_filter_new_default"
+                android:textAllCaps="false"
+                android:minHeight="@dimen/thien_seller_orders_filter_height"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="@dimen/radius_pill"
+                app:strokeWidth="@dimen/divider_height" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_thien_seller_filter_preparing"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/thien_seller_orders_filter_height"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:text="@string/thien_seller_orders_filter_preparing_default"
+                android:textAllCaps="false"
+                android:minHeight="@dimen/thien_seller_orders_filter_height"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="@dimen/radius_pill"
+                app:strokeWidth="@dimen/divider_height" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_thien_seller_orders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/screen_padding"
+            android:paddingEnd="@dimen/screen_padding"
+            android:paddingBottom="@dimen/spacing_16"
+            android:clipToPadding="false" />
+        <TextView
+            android:id="@+id/tv_thien_seller_orders_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/spacing_24"
+            android:text="@string/thien_seller_orders_empty"
+            android:textAppearance="@style/TextAppearance.Drink.Muted"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

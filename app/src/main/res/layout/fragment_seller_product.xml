@@ -1,9 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_seller_product_title"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="@dimen/screen_padding"
-    android:text="@string/seller_title_product"
-    android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/seller_background" android:orientation="vertical"
+    android:paddingHorizontal="@dimen/screen_padding">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center_vertical" android:orientation="horizontal"
+        android:paddingVertical="@dimen/spacing_12">
+        <TextView android:id="@+id/btn_thien_seller_product_back"
+            android:layout_width="48dp" android:layout_height="48dp"
+            android:gravity="center" android:text="‹" android:textSize="32sp"
+            android:contentDescription="@string/thien_seller_product_back"
+            android:background="?attr/selectableItemBackground" android:clickable="true" android:focusable="true"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="@string/thien_seller_product_title"
+            android:textSize="20sp" android:textStyle="bold"
+            android:textColor="@color/thien_seller_product_text"/>
+    </LinearLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        app:boxCornerRadiusTopStart="12dp" app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp" app:boxCornerRadiusBottomEnd="12dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_thien_seller_product_search"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:singleLine="true" android:inputType="text"
+            android:hint="@string/thien_seller_product_search"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:fillViewport="false" android:scrollbars="none"
+        android:layout_marginTop="@dimen/spacing_8">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cg_thien_seller_product_categories"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            app:singleLine="true" app:singleSelection="true"/>
+    </HorizontalScrollView>
+    <TextView android:id="@+id/tv_thien_seller_product_count"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="@color/thien_seller_product_muted"/>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:layout_marginTop="@dimen/spacing_8">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_thien_seller_products"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:clipToPadding="false" android:paddingBottom="8dp"/>
+        <TextView android:id="@+id/tv_thien_seller_product_empty"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:gravity="center"
+            android:padding="24dp" android:visibility="gone"
+            android:text="@string/thien_seller_product_empty"
+            android:textColor="@color/thien_seller_product_muted"/>
+    </FrameLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_thien_seller_product_add"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_8"
+        android:text="@string/thien_seller_product_add"
+        android:textColor="@color/thien_seller_product_on_accent"
+        app:backgroundTint="@color/thien_seller_product_accent"/>
+</LinearLayout>

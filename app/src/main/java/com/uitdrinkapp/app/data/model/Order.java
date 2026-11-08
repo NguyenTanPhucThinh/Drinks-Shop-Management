@@ -12,6 +12,9 @@ public final class Order {
     public final long createdAt;
     public final String tableNumber;
     public final String customerName;
+    public final PaymentMethod paymentMethod;
+    /** True only for newly created local demo orders and explicit demo seeds. */
+    public final boolean isDemo;
     public final List<OrderItem> items;
     public final long subtotal;
     public final long discount;
@@ -20,16 +23,27 @@ public final class Order {
 
     public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
                  long subtotal, long discount, String voucherCode, OrderStatus status) {
-        this(orderId, createdAt, tableNumber, items, subtotal, discount, voucherCode, status, "");
+        this(orderId, createdAt, tableNumber, items, subtotal, discount, voucherCode, status,
+                "Khách", PaymentMethod.UNSPECIFIED, false);
     }
 
     public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
                  long subtotal, long discount, String voucherCode, OrderStatus status,
                  String customerName) {
+        this(orderId, createdAt, tableNumber, items, subtotal, discount, voucherCode, status,
+                customerName, PaymentMethod.UNSPECIFIED, false);
+    }
+
+    public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
+                 long subtotal, long discount, String voucherCode, OrderStatus status,
+                 String customerName, PaymentMethod paymentMethod, boolean isDemo) {
         this.orderId = orderId == null ? "" : orderId;
         this.createdAt = createdAt;
         this.tableNumber = tableNumber == null ? "" : tableNumber;
-        this.customerName = customerName == null ? "" : customerName;
+        this.customerName = customerName == null || customerName.trim().isEmpty()
+                ? "Khách" : customerName;
+        this.paymentMethod = paymentMethod == null ? PaymentMethod.UNSPECIFIED : paymentMethod;
+        this.isDemo = isDemo;
         List<OrderItem> safeItems = new ArrayList<>();
         if (items != null) for (OrderItem item : items) if (item != null) safeItems.add(item.copy());
         this.items = Collections.unmodifiableList(safeItems);
@@ -47,6 +61,8 @@ public final class Order {
         value.put("createdAt", createdAt);
         value.put("tableNumber", tableNumber);
         value.put("customerName", customerName);
+        value.put("paymentMethod", paymentMethod.name());
+        value.put("isDemo", isDemo);
         value.put("subtotal", subtotal);
         value.put("discount", discount);
         value.put("voucherCode", voucherCode);
@@ -72,16 +88,23 @@ public final class Order {
         return new Order(value.optString("orderId"), value.optLong("createdAt"),
                 value.optString("tableNumber"), items, value.optLong("subtotal"),
                 value.optLong("discount"), value.optString("voucherCode"), status,
-                value.optString("customerName"));
+                value.optString("customerName", "Khách"),
+                PaymentMethod.fromStorage(value.optString("paymentMethod", "UNSPECIFIED")),
+                value.optBoolean("isDemo", false));
     }
 
     public Order withCustomerName(String name) {
         return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
-                voucherCode, status, name);
+                voucherCode, status, name, paymentMethod, isDemo);
     }
 
     public Order withCreatedAt(long timestamp) {
         return new Order(orderId, timestamp, tableNumber, items, subtotal, discount,
-                voucherCode, status, customerName);
+                voucherCode, status, customerName, paymentMethod, isDemo);
+    }
+
+    public Order withDemo(boolean demo) {
+        return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
+                voucherCode, status, customerName, paymentMethod, demo);
     }
 }
