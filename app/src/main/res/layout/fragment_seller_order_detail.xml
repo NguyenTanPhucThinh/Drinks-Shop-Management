@@ -23,7 +23,7 @@
                 android:layout_height="@dimen/button_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_back"
-                android:tint="@color/seller_text_primary"
+                app:tint="@color/seller_text_primary"
                 android:contentDescription="@string/thien_seller_detail_back" />
             <TextView
                 android:layout_width="0dp"
