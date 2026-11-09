@@ -17,7 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.data.model.SellerVoucher;
-import com.uitdrinkapp.app.data.repository.SellerVoucherRepository;
+import com.uitdrinkapp.app.data.repository.SellerVoucherRepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentSellerVouchersBinding;
 import java.text.NumberFormat;
 import java.util.List;
@@ -55,7 +55,7 @@ public final class SellerVouchersFragment extends Fragment {
         binding.chipVoucherRunning.setTextColor(showExpired ? idle : active);
         binding.chipVoucherExpired.setTextColor(showExpired ? active : idle);
         binding.llSellerVoucherCards.removeAllViews();
-        List<SellerVoucher> all = SellerVoucherRepository.get().getAll();
+        List<SellerVoucher> all = SellerVoucherRepositoryProvider.get(requireContext()).getAll();
         int count = 0;
         for (SellerVoucher voucher : all) {
             if (voucher.expired != showExpired) continue;
@@ -121,7 +121,7 @@ public final class SellerVouchersFragment extends Fragment {
         top.addView(toggle, new LinearLayout.LayoutParams(-2,
                 dimension(R.dimen.voucher_switch_view_height)));
         toggle.setOnCheckedChangeListener((button, checked) ->
-                SellerVoucherRepository.get().setActive(voucher.id, checked));
+                SellerVoucherRepositoryProvider.get(requireContext()).setActive(voucher.id, checked));
 
         TextView description = text(description(voucher), R.dimen.voucher_description_text_size,
                 R.color.seller_text_primary, true);
@@ -161,7 +161,7 @@ public final class SellerVouchersFragment extends Fragment {
                 .setMessage(getString(R.string.seller_voucher_delete_confirm, voucher.code))
                 .setNegativeButton(R.string.seller_voucher_cancel, null)
                 .setPositiveButton(R.string.seller_voucher_delete, (dialog, which) -> {
-                    SellerVoucherRepository.get().delete(voucher.id);
+                    SellerVoucherRepositoryProvider.get(requireContext()).delete(voucher.id);
                     refresh();
                 }).show();
     }

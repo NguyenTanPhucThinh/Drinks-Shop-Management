@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.data.model.SellerVoucher;
-import com.uitdrinkapp.app.data.repository.SellerVoucherRepository;
+import com.uitdrinkapp.app.data.repository.SellerVoucherRepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentSellerVoucherFormBinding;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +38,7 @@ public final class SellerVoucherFormFragment extends Fragment {
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
         Bundle args = getArguments();
         voucherId = args == null ? "" : args.getString("voucher_id", "");
-        SellerVoucher voucher = SellerVoucherRepository.get().getById(voucherId);
+        SellerVoucher voucher = SellerVoucherRepositoryProvider.get(requireContext()).getById(voucherId);
         binding.btnVoucherFormBack.setOnClickListener(v -> goBack());
         binding.btnSellerVoucherCancel.setOnClickListener(v -> goBack());
         binding.btnSellerVoucherSave.setOnClickListener(v -> save());
@@ -134,7 +134,7 @@ public final class SellerVoucherFormFragment extends Fragment {
                 return;
             }
         }
-        SellerVoucherRepository.get().save(voucherId, code, selectedType, amount,
+        SellerVoucherRepositoryProvider.get(requireContext()).save(voucherId, code, selectedType, amount,
                 value(binding.etSellerVoucherMinimum), value(binding.etSellerVoucherMaximum),
                 start, end, value(binding.etSellerVoucherTerms), binding.switchSellerVoucherActive.isChecked());
         Toast.makeText(requireContext(), R.string.seller_voucher_saved, Toast.LENGTH_SHORT).show();

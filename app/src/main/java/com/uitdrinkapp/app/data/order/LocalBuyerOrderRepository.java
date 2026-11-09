@@ -10,6 +10,7 @@ import com.uitdrinkapp.app.data.model.Review;
 import com.uitdrinkapp.app.data.model.ShopSession;
 import com.uitdrinkapp.app.data.model.Product;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
+import com.uitdrinkapp.app.data.repository.SellerVoucherRepositoryProvider;
 import com.uitdrinkapp.app.data.repository.ShopSessionRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -162,11 +163,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         return amount;
     }
     @Override public long calculateDiscount(String code, long subtotal) {
-        String normalized = code == null ? "" : code.trim().toUpperCase(Locale.ROOT);
-        if ("WELCOME10".equals(normalized)) return Math.min(30_000L, subtotal / 10L);
-        if ("GIAM10".equals(normalized)) return Math.min(10_000L,subtotal);
-        if ("GIAM15K".equals(normalized) && subtotal >= 80_000L) return 15_000L;
-        return 0L;
+        return SellerVoucherRepositoryProvider.get(applicationContext).calculateDiscount(code, subtotal);
     }
     @Override public synchronized Order placeOrder(String voucherCode) {
         return placeOrder(voucherCode, currentTableNumber(), "Khách",

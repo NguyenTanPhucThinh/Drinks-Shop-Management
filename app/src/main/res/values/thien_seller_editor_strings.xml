@@ -4,7 +4,9 @@
     <string name="thien_editor_back">Đóng màn hình</string>
     <string name="thien_editor_image">Hình minh họa đồ uống</string>
     <string name="thien_editor_choose_image">Chọn ảnh đồ uống</string>
-    <string name="thien_editor_image_note">GD07: chọn ảnh minh họa có sẵn trong ứng dụng. Ảnh từ thư viện thiết bị sẽ được tích hợp sau.</string>
+    <string name="thien_editor_pick_device">Chọn ảnh từ thư viện thiết bị</string>
+    <string name="thien_editor_pick_sample">Chọn ảnh mẫu có sẵn</string>
+    <string name="thien_editor_image_note">Chọn ảnh minh họa từ thư viện thiết bị hoặc kho ảnh mẫu của ứng dụng.</string>
     <string-array name="thien_editor_sample_images">
         <item>Trà sữa</item><item>Matcha</item><item>Trà đào</item><item>Cà phê muối</item>
     </string-array>

@@ -1,5 +1,7 @@
 package com.uitdrinkapp.app.ui.seller.product;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -54,6 +58,20 @@ public final class ProductEditorDialogFragment extends DialogFragment {
     private String imageKey;
     private List<Category> categories;
     private final List<ToppingChoice> toppings = new ArrayList<>();
+    private final ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) {
+                    try {
+                        requireContext().getContentResolver().takePersistableUriPermission(
+                                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        );
+                    } catch (Exception ignored) {}
+                    imageKey = uri.toString();
+                    updateImage();
+                }
+            }
+    );
 
     public static ProductEditorDialogFragment create(@Nullable String productId) {
         ProductEditorDialogFragment editor = new ProductEditorDialogFragment();
@@ -87,7 +105,7 @@ public final class ProductEditorDialogFragment extends DialogFragment {
         imageKey = original == null ? IMAGE_KEYS[0] : original.getImageUrl();
         if (state != null) imageKey = state.getString(STATE_IMAGE, imageKey);
         updateImage();
-        binding.btnThienEditorPhoto.setOnClickListener(clicked -> pickPresetImage());
+        binding.btnThienEditorPhoto.setOnClickListener(clicked -> chooseImageSource());
         binding.btnThienEditorBack.setOnClickListener(clicked -> dismiss());
         binding.btnThienEditorCancel.setOnClickListener(clicked -> dismiss());
         binding.btnThienEditorSave.setOnClickListener(clicked -> save());
@@ -229,14 +247,32 @@ public final class ProductEditorDialogFragment extends DialogFragment {
         }));
         dialog.show();
     }
+    private void chooseImageSource() {
+        String[] options = {
+                getString(R.string.thien_editor_pick_device),
+                getString(R.string.thien_editor_pick_sample)
+        };
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.thien_editor_choose_image)
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        imagePickerLauncher.launch("image/*");
+                    } else {
+                        pickPresetImage();
+                    }
+                }).show();
+    }
     private void pickPresetImage() {
         String[] choices = getResources().getStringArray(R.array.thien_editor_sample_images);
         new AlertDialog.Builder(requireContext()).setTitle(R.string.thien_editor_choose_image)
                 .setItems(choices, (dialog, which) -> { imageKey = IMAGE_KEYS[which]; updateImage(); }).show();
     }
     private void updateImage() {
-        Glide.with(this).load(LocalImages.resolve(imageKey))
-                .centerCrop().into(binding.ivThienEditorPhoto);
+        if (imageKey != null && (imageKey.startsWith("content://") || imageKey.startsWith("file://") || imageKey.startsWith("http"))) {
+            Glide.with(this).load(Uri.parse(imageKey)).centerCrop().into(binding.ivThienEditorPhoto);
+        } else {
+            Glide.with(this).load(LocalImages.resolve(imageKey)).centerCrop().into(binding.ivThienEditorPhoto);
+        }
     }
     private List<Temperature> chosenTemperatures() {
         List<Temperature> result = new ArrayList<>();
