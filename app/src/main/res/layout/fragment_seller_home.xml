@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_seller_home_title"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="@dimen/screen_padding"
-    android:text="@string/seller_title_home"
-    android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+    android:background="@color/seller_background"
+    android:orientation="vertical"
+    android:padding="@dimen/screen_padding">
+
+    <TextView
+        android:id="@+id/tv_seller_home_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/seller_title_home"
+        android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:text="@string/seller_home_recent_orders"
+        android:textAppearance="@style/TextAppearance.Drink.Section" />
+
+    <TextView
+        android:id="@+id/tv_seller_home_orders_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_12"
+        android:text="@string/seller_home_orders_empty"
+        android:textAppearance="@style/TextAppearance.Drink.Muted"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_seller_home_orders"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_12"
+        android:layout_weight="1"
+        android:clipToPadding="false" />
+</LinearLayout>

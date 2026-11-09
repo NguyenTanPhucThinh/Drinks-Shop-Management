@@ -17,6 +17,9 @@ import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
 import com.uitdrinkapp.app.data.order.CartLine;
 import com.uitdrinkapp.app.data.model.Order;
+import com.uitdrinkapp.app.data.model.PaymentMethod;
+import com.uitdrinkapp.app.data.model.User;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 
 /** Màn 08. Voucher chỉ là danh mục mock tạm thời, sẽ kết nối picker của Duyên. */
 public final class CheckoutFragment extends Fragment {
@@ -53,7 +56,11 @@ public final class CheckoutFragment extends Fragment {
             if (binding.rbThienWallet.isChecked())
                 Toast.makeText(requireContext(),R.string.thien_demo_wallet_note,Toast.LENGTH_SHORT).show();
             try {
-                Order newOrder = repo.placeOrder(voucher);
+                User buyer = RepositoryProvider.get(requireContext()).auth().getCurrentUser();
+                String customerName = buyer == null ? "" : buyer.fullName;
+                PaymentMethod paymentMethod = binding.rbThienWallet.isChecked()
+                        ? PaymentMethod.EWALLET : PaymentMethod.CASH;
+                Order newOrder = repo.placeOrder(voucher, customerName, paymentMethod);
                 Bundle args = new Bundle(); args.putString("order_id", newOrder.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_checkout_to_tracking, args);
             } catch (IllegalStateException ex) {

@@ -72,7 +72,7 @@ public final class SellerNavigationTest {
                             .findFragmentById(R.id.fcv_seller_nav_host);
                     assertEquals(1, host.getChildFragmentManager().getFragments().size());
                     Fragment screen = host.getChildFragmentManager().getPrimaryNavigationFragment();
-                    if (currentTab == 4) {
+                    if (currentTab == 0 || currentTab == 1 || currentTab == 4) {
                         assertTrue(screen.requireView() instanceof android.view.ViewGroup);
                     } else {
                         assertTrue(screen.requireView() instanceof android.widget.TextView);

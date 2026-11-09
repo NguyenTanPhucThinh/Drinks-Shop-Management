@@ -6,11 +6,19 @@
     <fragment
         android:id="@+id/sellerHomeFragment"
         android:name="com.uitdrinkapp.app.ui.seller.home.SellerHomeFragment"
-        android:label="@string/seller_title_home" />
+        android:label="@string/seller_title_home">
+        <action
+            android:id="@+id/action_sellerHome_to_orderDetail"
+            app:destination="@id/sellerOrderDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/sellerNotificationFragment"
         android:name="com.uitdrinkapp.app.ui.seller.notification.SellerNotificationFragment"
-        android:label="@string/seller_title_notification" />
+        android:label="@string/seller_title_notification">
+        <action
+            android:id="@+id/action_sellerNotification_to_orderDetail"
+            app:destination="@id/sellerOrderDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/sellerOrdersFragment"
         android:name="com.uitdrinkapp.app.ui.seller.orders.OrderManagementFragment"

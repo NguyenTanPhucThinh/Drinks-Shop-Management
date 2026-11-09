@@ -29,6 +29,12 @@ public final class NotificationRowAdapter extends RecyclerView.Adapter<Notificat
         this.listener = listener;
     }
 
+    public void replace(List<Row> value) {
+        rows.clear();
+        if (value != null) rows.addAll(value);
+        notifyDataSetChanged();
+    }
+
     @NonNull @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(ItemNotificationBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));

@@ -28,10 +28,17 @@ public final class SellerOrderAdapter extends RecyclerView.Adapter<SellerOrderAd
     private final List<Order> items = new ArrayList<>();
     private final TransitionListener transitions;
     private final QuickViewListener quickView;
+    private final boolean showActions;
 
     public SellerOrderAdapter(TransitionListener transitions, QuickViewListener quickView) {
+        this(transitions, quickView, true);
+    }
+
+    public SellerOrderAdapter(TransitionListener transitions, QuickViewListener quickView,
+            boolean showActions) {
         this.transitions = transitions;
         this.quickView = quickView;
+        this.showActions = showActions;
     }
 
     public void submit(List<Order> value) {
@@ -95,11 +102,12 @@ public final class SellerOrderAdapter extends RecyclerView.Adapter<SellerOrderAd
                 R.string.thien_seller_orders_money,
                 NumberFormat.getIntegerInstance(VI).format(order.totalAmount())));
         b.btnThienSellerOrderQuickView.setOnClickListener(v -> quickView.onQuickView(order.orderId));
+        b.getRoot().setOnClickListener(v -> quickView.onQuickView(order.orderId));
 
         OrderStatus primary = SellerOrderUiPolicy.primaryNext(order.status);
         OrderStatus secondary = SellerOrderUiPolicy.secondaryNext(order.status);
-        b.llThienSellerOrderActions.setVisibility(
-                primary == null && secondary == null ? View.GONE : View.VISIBLE);
+        b.llThienSellerOrderActions.setVisibility(!showActions || primary == null && secondary == null
+                ? View.GONE : View.VISIBLE);
         b.btnThienSellerOrderPrimary.setVisibility(primary == null ? View.GONE : View.VISIBLE);
         b.btnThienSellerOrderSecondary.setVisibility(secondary == null ? View.GONE : View.VISIBLE);
         if (primary != null) {
