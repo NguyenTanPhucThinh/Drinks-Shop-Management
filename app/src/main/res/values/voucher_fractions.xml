@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <fraction name="voucher_switch_scale_x">85%</fraction>
+    <fraction name="voucher_switch_scale_y">75%</fraction>
+</resources>

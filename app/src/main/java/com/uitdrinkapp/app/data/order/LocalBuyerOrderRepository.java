@@ -28,7 +28,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
     private static final String KEY_ORDERS = "orders";
     private static final String KEY_REVIEWS = "reviews";
     private static final String KEY_SEEDED = "seeded";
-    private static final String KEY_HISTORY_SEEDED = "history_seeded_v2";
+    private static final String KEY_HISTORY_SEEDED = "history_seeded_v4";
     private static final String KEY_SELLER_SEEDED = "seller_seeded_task02_pr12";
     private static LocalBuyerOrderRepository instance;
     private final SharedPreferences prefs;
@@ -287,25 +287,81 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         try { data.put(review.toJson()); }
         catch (JSONException e) { throw new IllegalStateException("Không thể lưu đánh giá", e); }
         save(KEY_REVIEWS, data);
+        if (order.customerName.isEmpty() && !review.customerName.isEmpty()) {
+            List<Order> orders = getOrders();
+            for (int i = 0; i < orders.size(); i++) {
+                if (orders.get(i).orderId.equals(order.orderId)) {
+                    orders.set(i, order.withCustomerName(review.customerName));
+                    saveOrders(orders);
+                    break;
+                }
+            }
+        }
     }
     private synchronized void seedHistoryForDemo() {
         List<Order> existing = getOrders();
         {
-            long baseTime = 1792393200000L; // Demo ngày 19/10/2026
+            long baseTime = System.currentTimeMillis() - 60 * 60 * 1000L;
             if (getOrder("TS1021") == null) existing.add(new Order("TS1021", baseTime, "",
                     snapshotOrderItems(Collections.singletonList(new CartLine("matcha-04", "Trà sữa matcha", 91_000L,
                             CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
-                            Collections.emptyList(), 1))), 91_000L, 0L, "", OrderStatus.COMPLETED, "Khách", PaymentMethod.UNSPECIFIED, true));
+                            Collections.emptyList(), 1))), 91_000L, 0L, "", OrderStatus.COMPLETED,
+                    "Nguyễn Văn A", PaymentMethod.UNSPECIFIED, true));
             if (getOrder("TS1008") == null) existing.add(new Order("TS1008", baseTime - 86_400_000L, "",
                     snapshotOrderItems(Collections.singletonList(new CartLine("fruit-tea-02", "Trà đào cam sả", 42_000L,
                             CartLine.Size.S, CartLine.Level.P30, CartLine.Level.P50,
-                            Collections.emptyList(), 2))), 84_000L, 0L, "", OrderStatus.COMPLETED, "Khách", PaymentMethod.UNSPECIFIED, true));
+                            Collections.emptyList(), 2))), 84_000L, 0L, "", OrderStatus.COMPLETED,
+                    "Trần Thị B", PaymentMethod.UNSPECIFIED, true));
             if (getOrder("TS0996") == null) existing.add(new Order("TS0996", baseTime - 3 * 86_400_000L, "",
                     snapshotOrderItems(Collections.singletonList(new CartLine("milk-tea-01", "Trà sữa trân châu", 35_000L,
                             CartLine.Size.S, CartLine.Level.P50, CartLine.Level.P50,
-                            Collections.emptyList(), 1))), 35_000L, 0L, "", OrderStatus.CANCELLED, "Khách", PaymentMethod.UNSPECIFIED, true));
+                            Collections.emptyList(), 1))), 35_000L, 0L, "", OrderStatus.CANCELLED,
+                    "Lê Văn C", PaymentMethod.UNSPECIFIED, true));
+            for (int i = 0; i < existing.size(); i++) {
+                Order order = existing.get(i);
+                String customerName = demoCustomerName(order.orderId);
+                long createdAt = demoOrderTime(order.orderId, baseTime);
+                if (customerName != null) {
+                    existing.set(i, order.withCustomerName(customerName)
+                            .withCreatedAt(createdAt).withDemo(true));
+                }
+            }
             saveOrders(existing);
+            seedDemoReviews();
         }
+    }
+
+    private String demoCustomerName(String orderId) {
+        if ("TS1021".equals(orderId)) return "Nguyễn Văn A";
+        if ("TS1008".equals(orderId)) return "Trần Thị B";
+        if ("TS0996".equals(orderId)) return "Lê Văn C";
+        return null;
+    }
+
+    private long demoOrderTime(String orderId, long baseTime) {
+        if ("TS1021".equals(orderId)) return baseTime;
+        if ("TS1008".equals(orderId)) return baseTime - 86_400_000L;
+        if ("TS0996".equals(orderId)) return baseTime - 3 * 86_400_000L;
+        return 0L;
+    }
+
+    private void seedDemoReviews() {
+        JSONArray data = load(KEY_REVIEWS);
+        if (!hasReview("TS1021")) {
+            try {
+                data.put(new Review("TS1021", "matcha-04", "Trà sữa matcha",
+                        "Nguyễn Văn A", 5, Collections.singletonList("Ngon"),
+                        "Vị trà thơm, vừa miệng.", Collections.emptyList()).toJson());
+            } catch (JSONException ignored) { }
+        }
+        if (!hasReview("TS1008")) {
+            try {
+                data.put(new Review("TS1008", "fruit-tea-02", "Trà đào cam sả",
+                        "Trần Thị B", 4, Collections.singletonList("Đóng gói cẩn thận"),
+                        "Đồ uống ngon, giao hàng nhanh.", Collections.emptyList()).toJson());
+            } catch (JSONException ignored) { }
+        }
+        save(KEY_REVIEWS, data);
     }
 
     /** Additional Seller mock orders; never replace existing orders or reviews. */

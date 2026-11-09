@@ -37,4 +37,11 @@
     <color name="seller_nav_border">#E8DED5</color>
     <color name="seller_nav_badge">#E34B53</color>
     <color name="seller_nav_ripple">#1AD94A00</color>
+    <color name="seller_surface">#FFFFFF</color>
+    <color name="seller_surface_border">#E8DED5</color>
+    <color name="seller_text_secondary">#927B6E</color>
+    <color name="seller_input_hint">#B09C8D</color>
+    <color name="seller_chart_bar">#D9A177</color>
+    <color name="seller_chart_bar_highlight">#C44F0B</color>
+    <color name="seller_danger">#F04444</color>
 </resources>

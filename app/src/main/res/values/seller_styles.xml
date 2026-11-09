@@ -11,4 +11,40 @@
         <item name="android:textSize">@dimen/text_20</item>
         <item name="android:textColor">@color/seller_text_primary</item>
     </style>
+    <style name="Widget.Seller.FilterChip" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:background">@drawable/bg_seller_filter_chip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">52dp</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:textColor">@color/seller_text_primary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="Widget.Seller.FieldLabel" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">@color/seller_text_secondary</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+    <style name="Widget.Seller.Input" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">34dp</item>
+        <item name="android:background">@drawable/bg_seller_input</item>
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:textColor">@color/seller_text_primary</item>
+        <item name="android:textColorHint">@color/seller_input_hint</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="Widget.Seller.FormChip" parent="@style/Widget.Seller.FilterChip">
+        <item name="android:background">@drawable/bg_seller_filter_chip</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingHorizontal">2dp</item>
+        <item name="android:textSize">11sp</item>
+    </style>
 </resources>

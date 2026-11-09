@@ -25,6 +25,7 @@ import java.util.Map;
 public final class SellerMainActivity extends AppCompatActivity {
     private ActivitySellerMainBinding binding;
     private NavController nav;
+    private int bottomSystemInset;
     private final Map<Integer, ItemSellerNavBinding> tabs = new LinkedHashMap<>();
 
     @Override
@@ -43,7 +44,13 @@ public final class SellerMainActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (view, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
                     | WindowInsetsCompat.Type.displayCutout());
-            view.setPadding(bars.left, bars.top, bars.right, 0);
+            bottomSystemInset = bars.bottom;
+            int active = nav == null || nav.getCurrentDestination() == null ? -1
+                    : nav.getCurrentDestination().getId();
+            boolean hiddenBottomNav = nav != null && isBottomNavHidden(active);
+            view.setPadding(bars.left, bars.top, bars.right,
+                    hiddenBottomNav && active != R.id.sellerVouchersFragment
+                            ? bottomSystemInset : 0);
             binding.llSellerBottomNav.setPadding(0, 0, 0, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
@@ -75,14 +82,24 @@ public final class SellerMainActivity extends AppCompatActivity {
 
         nav.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int active = destination.getId();
-            // Detail is a full-screen child of Seller Orders, not a seventh bottom tab.
-            boolean isOrderDetail = active == R.id.sellerOrderDetailFragment;
-            binding.llSellerBottomNav.setVisibility(isOrderDetail ? View.GONE : View.VISIBLE);
-            int selectedTab = isOrderDetail ? R.id.sellerOrdersFragment : active;
+            boolean hiddenBottomNav = isBottomNavHidden(active);
+            binding.llSellerBottomNav.setVisibility(hiddenBottomNav ? View.GONE : View.VISIBLE);
+            binding.getRoot().setPadding(binding.getRoot().getPaddingLeft(),
+                    binding.getRoot().getPaddingTop(), binding.getRoot().getPaddingRight(),
+                    hiddenBottomNav && active != R.id.sellerVouchersFragment
+                            ? bottomSystemInset : 0);
+            // Detail inherits the tab of the screen it was opened from.
+            int selectedDestination = getParentTab(active);
+            if (active == R.id.sellerOrderDetailFragment) {
+                androidx.navigation.NavBackStackEntry previous = controller.getPreviousBackStackEntry();
+                if (previous != null) {
+                    selectedDestination = getParentTab(previous.getDestination().getId());
+                }
+            }
             int selectedColor = ContextCompat.getColor(this, R.color.seller_nav_active);
             int idleColor = ContextCompat.getColor(this, R.color.seller_nav_inactive);
             for (Map.Entry<Integer, ItemSellerNavBinding> entry : tabs.entrySet()) {
-                boolean selected = entry.getKey() == selectedTab;
+                boolean selected = entry.getKey() == selectedDestination;
                 ItemSellerNavBinding tab = entry.getValue();
                 tab.getRoot().setSelected(selected);
                 int color = selected ? selectedColor : idleColor;
@@ -94,19 +111,21 @@ public final class SellerMainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Preserve the immediate parent on detail pages; tab roots retain old Home behavior.
-                if (nav.getCurrentDestination() != null
-                        && nav.getCurrentDestination().getId() == R.id.sellerOrderDetailFragment) {
+                int current = nav.getCurrentDestination() == null ? -1
+                        : nav.getCurrentDestination().getId();
+                // Detail pages return to Orders; other secondary screens return to their parent tab.
+                if (current == R.id.sellerOrderDetailFragment) {
                     if (!nav.popBackStack()) openTab(R.id.sellerOrdersFragment);
                     return;
                 }
-                if (nav.getCurrentDestination() != null
-                        && nav.getCurrentDestination().getId() != R.id.sellerHomeFragment) {
-                    if (!nav.popBackStack(R.id.sellerHomeFragment, false)) {
-                        openTab(R.id.sellerHomeFragment);
-                    }
-                } else {
+                if (current == R.id.sellerHomeFragment || current == -1) {
                     finish();
+                } else if (isPrimaryTab(current)) {
+                    openTab(R.id.sellerHomeFragment);
+                } else if (!nav.popBackStack()) {
+                    int parentTab = getParentTab(current);
+                    if (parentTab != -1) openTab(parentTab);
+                    else finish();
                 }
             }
         });
@@ -131,5 +150,32 @@ public final class SellerMainActivity extends AppCompatActivity {
                 .setPopUpTo(R.id.sellerHomeFragment, false, true)
                 .build();
         nav.navigate(destination, null, options);
+    }
+
+    private boolean isBottomNavHidden(int destination) {
+        return destination == R.id.sellerEditProductFragment
+                || destination == R.id.sellerVouchersFragment
+                || destination == R.id.sellerVoucherFormFragment;
+    }
+
+    private int getParentTab(int destination) {
+        if (destination == R.id.sellerOrderDetailFragment) return R.id.sellerOrdersFragment;
+        if (destination == R.id.sellerEditProductFragment) return R.id.sellerProductFragment;
+        if (destination == R.id.sellerStatisticFragment
+                || destination == R.id.sellerHistoryFragment
+                || destination == R.id.sellerVouchersFragment
+                || destination == R.id.sellerVoucherFormFragment) {
+            return R.id.sellerOtherFeaturesFragment;
+        }
+        return destination;
+    }
+
+    private boolean isPrimaryTab(int destination) {
+        return destination == R.id.sellerHomeFragment
+                || destination == R.id.sellerNotificationFragment
+                || destination == R.id.sellerOrdersFragment
+                || destination == R.id.sellerProductFragment
+                || destination == R.id.sellerOtherFeaturesFragment
+                || destination == R.id.sellerProfileFragment;
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/seller_surface" />
+    <corners android:radius="@dimen/voucher_action_corner_radius" />
+    <stroke android:width="@dimen/voucher_outline_width" android:color="@color/seller_danger" />
+</shape>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.Voucher.FilterChip" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/bg_voucher_filter_chip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">@dimen/voucher_filter_min_width</item>
+        <item name="android:paddingHorizontal">@dimen/voucher_filter_horizontal_padding</item>
+        <item name="android:textColor">@color/seller_text_primary</item>
+        <item name="android:textSize">@dimen/voucher_filter_text_size</item>
+    </style>
+</resources>

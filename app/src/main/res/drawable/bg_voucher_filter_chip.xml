@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/voucher_primary" />
+            <corners android:radius="@dimen/voucher_pill_corner_radius" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/seller_surface" />
+            <stroke android:width="@dimen/voucher_outline_width" android:color="@color/seller_surface_border" />
+            <corners android:radius="@dimen/voucher_pill_corner_radius" />
+        </shape>
+    </item>
+</selector>

@@ -29,6 +29,13 @@ public final class Order {
 
     public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
                  long subtotal, long discount, String voucherCode, OrderStatus status,
+                 String customerName) {
+        this(orderId, createdAt, tableNumber, items, subtotal, discount, voucherCode, status,
+                customerName, PaymentMethod.UNSPECIFIED, false);
+    }
+
+    public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
+                 long subtotal, long discount, String voucherCode, OrderStatus status,
                  String customerName, PaymentMethod paymentMethod, boolean isDemo) {
         this.orderId = orderId == null ? "" : orderId;
         this.createdAt = createdAt;
@@ -84,5 +91,20 @@ public final class Order {
                 value.optString("customerName", "Khách"),
                 PaymentMethod.fromStorage(value.optString("paymentMethod", "UNSPECIFIED")),
                 value.optBoolean("isDemo", false));
+    }
+
+    public Order withCustomerName(String name) {
+        return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
+                voucherCode, status, name, paymentMethod, isDemo);
+    }
+
+    public Order withCreatedAt(long timestamp) {
+        return new Order(orderId, timestamp, tableNumber, items, subtotal, discount,
+                voucherCode, status, customerName, paymentMethod, isDemo);
+    }
+
+    public Order withDemo(boolean demo) {
+        return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
+                voucherCode, status, customerName, paymentMethod, demo);
     }
 }

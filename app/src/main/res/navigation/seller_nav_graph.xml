@@ -30,11 +30,48 @@
         android:name="com.uitdrinkapp.app.ui.seller.product.ProductManagementFragment"
         android:label="@string/seller_title_product" />
     <fragment
+        android:id="@+id/sellerEditProductFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.product.SellerProductFormFragment"
+        android:label="@string/seller_title_product">
+        <argument
+            android:name="product_id"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+    <fragment
         android:id="@+id/sellerOtherFeaturesFragment"
         android:name="com.uitdrinkapp.app.ui.seller.otherfeatures.OtherFeaturesFragment"
         android:label="@string/seller_title_other_features" />
     <fragment
+        android:id="@+id/sellerHistoryFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.otherfeatures.SellerSalesHistoryFragment"
+        android:label="@string/seller_feature_sales_history">
+        <action
+            android:id="@+id/action_sellerHistory_to_orderDetail"
+            app:destination="@id/sellerOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sellerStatisticFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.statistic.StatisticFragment"
+        android:label="@string/seller_feature_statistic" />
+    <fragment
+        android:id="@+id/sellerVouchersFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.voucher.SellerVouchersFragment"
+        android:label="@string/seller_feature_vouchers" />
+    <fragment
+        android:id="@+id/sellerVoucherFormFragment"
+        android:name="com.uitdrinkapp.app.ui.seller.voucher.SellerVoucherFormFragment"
+        android:label="@string/seller_voucher_new_title">
+        <argument
+            android:name="voucher_id"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+    <fragment
         android:id="@+id/sellerProfileFragment"
         android:name="com.uitdrinkapp.app.ui.seller.profile.SellerProfileFragment"
         android:label="@string/seller_title_profile" />
+    <action
+        android:id="@+id/action_global_orderDetail"
+        app:destination="@id/sellerOrderDetailFragment" />
 </navigation>
