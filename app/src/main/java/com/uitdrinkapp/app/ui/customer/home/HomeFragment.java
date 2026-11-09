@@ -2,6 +2,8 @@ package com.uitdrinkapp.app.ui.customer.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import com.uitdrinkapp.app.data.model.Notification;
+import com.uitdrinkapp.app.data.model.User;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -47,6 +50,14 @@ public final class HomeFragment extends Fragment {
         // Temporary shortcut while the seller authentication route is being built.
         binding.btnHomeSellerPreview.setOnClickListener(clicked ->
                 startActivity(new Intent(requireContext(), SellerMainActivity.class)));
+        // Mở màn Thông báo + Tin nhắn khi bấm chuông.
+        binding.btnNotifications.setOnClickListener(clicked -> {
+            NavController nav = NavHostFragment.findNavController(this);
+            if (nav.getCurrentDestination() != null
+                    && nav.getCurrentDestination().getId() == R.id.homeFragment) {
+                nav.navigate(R.id.notificationFragment);
+            }
+        });
         binding.btnScanQr.setOnClickListener(clicked -> {
             if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.homeFragment)
                 NavHostFragment.findNavController(this).navigate(R.id.action_home_to_join);
@@ -105,6 +116,7 @@ public final class HomeFragment extends Fragment {
     @Override public void onResume() {
         super.onResume();
         refreshProductGrids();
+        refreshNotificationBadge();
         scheduleBannerAdvance();
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         binding.tvGreeting.setText(hour < 12 ? R.string.home_greeting_morning : hour < 18 ? R.string.home_greeting_afternoon : R.string.home_greeting_evening);
@@ -126,5 +138,13 @@ public final class HomeFragment extends Fragment {
         binding.rvRecommended.setAdapter(null);
         binding = null;
         super.onDestroyView();
+    }
+    /** Chấm đỏ trên chuông chỉ hiện khi còn thông báo chưa đọc. */
+    private void refreshNotificationBadge() {
+        if (binding == null) return;
+        User user = repositories.auth().getCurrentUser();
+        int unread = user == null ? 0
+                : repositories.notifications().getUnreadCount(Notification.RecipientType.BUYER, user.id);
+        binding.vHomeNotifBadge.setVisibility(unread > 0 ? View.VISIBLE : View.GONE);
     }
 }

@@ -1,5 +1,6 @@
 package com.uitdrinkapp.app.ui.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.uitdrinkapp.app.data.model.User;
 import com.uitdrinkapp.app.data.repository.AuthRepository;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentLoginBinding;
+import com.uitdrinkapp.app.ui.seller.main.SellerMainActivity;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
@@ -61,6 +63,13 @@ public class LoginFragment extends Fragment {
             User user = auth.login(email, password);
             if (user == null) {
                 binding.tilLoginPassword.setError(getString(R.string.vy_error_login_failed));
+                return;
+            }
+
+            // Định tuyến theo vai trò: người bán sang SellerMainActivity, người mua vào Home
+            if (user.role == User.Role.SELLER) {
+                startActivity(new Intent(requireContext(), SellerMainActivity.class));
+                requireActivity().finish();
                 return;
             }
             NavHostFragment.findNavController(this).navigate(R.id.homeFragment, null,

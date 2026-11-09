@@ -8,7 +8,7 @@
             </LinearLayout>
             <FrameLayout android:id="@+id/btn_notifications" android:layout_width="@dimen/home_touch_target" android:layout_height="@dimen/home_touch_target" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@string/home_notifications">
                 <ImageView android:layout_width="@dimen/home_icon_button_size" android:layout_height="@dimen/home_icon_button_size" android:layout_gravity="center" android:background="@drawable/bg_home_circle" android:padding="@dimen/home_notification_padding" android:src="@drawable/ic_bell" android:importantForAccessibility="no"/>
-                <View android:layout_width="@dimen/home_badge_size" android:layout_height="@dimen/home_badge_size" android:layout_gravity="top|end" android:layout_margin="@dimen/spacing_4" android:background="@drawable/bg_home_badge"/>
+                <View android:id="@+id/v_home_notif_badge" android:layout_width="@dimen/home_badge_size" android:layout_height="@dimen/home_badge_size" android:layout_gravity="top|end" android:layout_margin="@dimen/spacing_4" android:background="@drawable/bg_home_badge"/>
             </FrameLayout>
         </LinearLayout>
         <com.google.android.material.button.MaterialButton

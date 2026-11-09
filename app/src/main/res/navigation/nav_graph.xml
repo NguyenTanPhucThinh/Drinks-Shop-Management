@@ -11,6 +11,9 @@
     <fragment android:id="@+id/profileFragment"
         android:name="com.uitdrinkapp.app.ui.customer.profile.ProfileFragment"
         android:label="@string/home_tab_profile"/>
+    <fragment android:id="@+id/notificationFragment"
+        android:name="com.uitdrinkapp.app.ui.customer.notification.NotificationFragment"
+        android:label="@string/vy_notif_title"/>
     <fragment android:id="@+id/loginFragment"
         android:name="com.uitdrinkapp.app.ui.auth.LoginFragment"
         android:label="@string/vy_login_title"/>
