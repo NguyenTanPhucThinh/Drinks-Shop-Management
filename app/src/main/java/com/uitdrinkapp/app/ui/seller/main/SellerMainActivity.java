@@ -139,7 +139,7 @@ public final class SellerMainActivity extends AppCompatActivity {
         tabs.put(destination, tab);
     }
 
-    private void openTab(int destination) {
+    public void openTab(int destination) {
         if (nav.getCurrentDestination() == null
                 || nav.getCurrentDestination().getId() == destination) {
             return;

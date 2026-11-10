@@ -170,6 +170,11 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
                 PaymentMethod.UNSPECIFIED);
     }
 
+    @Override public synchronized Order placeOrder(String voucherCode, String customerName,
+            PaymentMethod paymentMethod) {
+        return placeOrder(voucherCode, currentTableNumber(), customerName, paymentMethod);
+    }
+
     @Override public synchronized Order placeOrder(String voucherCode, String tableNumber,
             String customerName, PaymentMethod paymentMethod) {
         List<CartLine> cart = getCart();

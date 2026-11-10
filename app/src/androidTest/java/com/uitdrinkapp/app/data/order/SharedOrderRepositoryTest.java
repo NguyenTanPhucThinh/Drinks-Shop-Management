@@ -59,6 +59,16 @@ public final class SharedOrderRepositoryTest {
         assertFalse(seller.updateStatus(order.orderId, OrderStatus.COMPLETED));
     }
 
+    @Test public void checkoutMetadataIsPersistedForSellerOrderReads() {
+        buyer.addToCart(drink());
+        Order placed = buyer.placeOrder("", "Buyer Đã Đăng Ký", PaymentMethod.EWALLET);
+
+        Order sellerView = buyer.getOrder(placed.orderId);
+        assertNotNull(sellerView);
+        assertEquals("Buyer Đã Đăng Ký", sellerView.customerName);
+        assertEquals(PaymentMethod.EWALLET, sellerView.paymentMethod);
+    }
+
     @Test public void completedOrderIsCountedAndCanBeReviewed() {
         buyer.addToCart(drink());
         Order order = buyer.placeOrder("");

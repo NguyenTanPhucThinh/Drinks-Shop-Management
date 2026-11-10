@@ -1,5 +1,6 @@
 package com.uitdrinkapp.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.NavGraph;                       // THÊM MỚI
+import androidx.navigation.NavGraph;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
-import com.uitdrinkapp.app.data.repository.RepositoryProvider; // THÊM MỚI
+import com.uitdrinkapp.app.data.model.User;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.databinding.HomeActivityBinding;
+import com.uitdrinkapp.app.ui.seller.main.SellerMainActivity;
 
 public class MainActivity extends AppCompatActivity {
     private HomeActivityBinding binding;
@@ -26,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private NavController nav;
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // THÊM MỚI: đã đăng nhập bằng tài khoản người bán thì chuyển thẳng sang màn Seller
+        User currentUser = RepositoryProvider.get(this).auth().getCurrentUser();
+        if (currentUser != null && currentUser.role == User.Role.SELLER) {
+            startActivity(new Intent(this, SellerMainActivity.class));
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         binding = HomeActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -40,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if (host == null) throw new IllegalStateException("Missing navigation host");
         nav = host.getNavController();
 
-        // THÊM MỚI: chưa đăng nhập thì mở màn Login, đã đăng nhập thì mở Home
+        // Chưa đăng nhập thì mở màn Login, đã đăng nhập thì mở Home
         if (savedInstanceState == null) {
             NavGraph graph = nav.getNavInflater().inflate(R.navigation.nav_graph);
             boolean loggedIn = RepositoryProvider.get(this).auth().isLoggedIn();

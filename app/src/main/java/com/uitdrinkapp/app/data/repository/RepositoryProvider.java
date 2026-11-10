@@ -8,7 +8,7 @@ public final class RepositoryProvider {
     private final ProductRepository products;
     private final VoucherRepository vouchers;
     private final HomeRepository home = new FakeHomeRepository();
-    private final ShopRepository shops = new FakeShopRepository();
+    private final ShopRepository shops;
     private final NotificationRepository notifications = new FakeNotificationRepository();
     private final ShopSessionRepository sessions;
     private final AuthRepository auth;
@@ -16,6 +16,7 @@ public final class RepositoryProvider {
     private RepositoryProvider(Context context) {
         products = new LocalProductRepository(context);
         vouchers = new FakeVoucherRepository(context);
+        shops = new FakeShopRepository(context);
         sessions = new PreferencesShopSessionRepository(context, shops);
         auth = new LocalAuthRepository(context);
     }

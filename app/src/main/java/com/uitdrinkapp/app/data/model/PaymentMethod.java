@@ -1,6 +1,6 @@
 package com.uitdrinkapp.app.data.model;
 
-/** Metadata only. Buyer radio-button mapping has not been agreed by the team. */
+/** Payment methods selected in Buyer Checkout and persisted with each order. */
 public enum PaymentMethod {
     UNSPECIFIED, CASH, TRANSFER, EWALLET;
 

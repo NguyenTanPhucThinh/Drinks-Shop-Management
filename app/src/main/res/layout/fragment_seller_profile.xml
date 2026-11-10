@@ -1,9 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_seller_profile_title"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="@dimen/screen_padding"
-    android:text="@string/seller_title_profile"
-    android:textAppearance="@style/TextAppearance.Seller.ScreenTitle" />
+    android:background="@color/seller_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Hồ sơ quán"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Logo Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_circle_orange">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/detail_image"
+                    android:src="@drawable/ic_cup"
+                    app:tint="@color/white" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_seller_header_shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Quán Trà Sữa ABC"
+                android:textColor="@color/seller_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_change_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Đổi logo quán"
+                android:textColor="@color/seller_nav_active"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Form Fields -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Tên quán"
+            android:textColor="@color/seller_text_secondary"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/et_seller_shop_name"
+            style="@style/Widget.Seller.Input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_seller_input"
+            android:autofillHints="name"
+            android:hint="Tên quán"
+            android:inputType="textPersonName"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Số điện thoại"
+            android:textColor="@color/seller_text_secondary"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/et_seller_phone"
+            style="@style/Widget.Seller.Input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_seller_input"
+            android:autofillHints="phone"
+            android:hint="Số điện thoại"
+            android:inputType="phone"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Email"
+            android:textColor="@color/seller_text_secondary"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/et_seller_email"
+            style="@style/Widget.Seller.Input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_seller_input"
+            android:autofillHints="emailAddress"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Địa chỉ quán"
+            android:textColor="@color/seller_text_secondary"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/et_seller_address"
+            style="@style/Widget.Seller.Input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_seller_input"
+            android:autofillHints="postalAddress"
+            android:hint="Địa chỉ quán"
+            android:inputType="textPostalAddress"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Giờ mở cửa"
+            android:textColor="@color/seller_text_secondary"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/et_seller_hours"
+            style="@style/Widget.Seller.Input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_seller_input"
+            android:autofillHints=""
+            android:clickable="true"
+            android:focusable="false"
+            android:hint="07:00 - 22:00"
+            android:inputType="none"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/seller_text_primary"
+            android:textSize="14sp" />
+
+        <!-- Buttons -->
+        <TextView
+            android:id="@+id/btn_seller_save_profile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_seller_primary_button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="Lưu thay đổi"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_seller_logout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/bg_seller_danger_button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="Đăng xuất"
+            android:textColor="@color/seller_danger"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+</ScrollView>

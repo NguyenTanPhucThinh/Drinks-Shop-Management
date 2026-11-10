@@ -6,4 +6,5 @@ public interface ShopRepository {
     Shop findById(String id);
     String getDemoCode();
     String getDemoTable();
+    void updateShopInfo(String name, String address, String hours);
 }

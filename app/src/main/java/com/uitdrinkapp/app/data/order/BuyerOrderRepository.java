@@ -17,6 +17,8 @@ public interface BuyerOrderRepository extends OrderRepository {
     long getSubtotal();
     long calculateDiscount(String voucherCode, long subtotal);
     Order placeOrder(String voucherCode);
+    /** Places an order with the authenticated Buyer and selected Checkout payment method. */
+    Order placeOrder(String voucherCode, String customerName, PaymentMethod paymentMethod);
     /** Optional metadata for future Buyer profile/payment integration; existing call unchanged. */
     Order placeOrder(String voucherCode, String tableNumber, String customerName,
                      PaymentMethod paymentMethod);

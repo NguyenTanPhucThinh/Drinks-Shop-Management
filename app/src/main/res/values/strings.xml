@@ -77,7 +77,10 @@
     <string name="detail_topping_limit">Bạn có thể chọn tối đa 3 topping</string>
     <string name="home_seller_preview">go to seller</string>
     <string name="seller_title_home">Tổng quan</string>
+    <string name="seller_home_recent_orders">Đơn hàng gần đây</string>
+    <string name="seller_home_orders_empty">Chưa có đơn hàng.</string>
     <string name="seller_title_notification">Thông báo</string>
+    <string name="seller_notifications_empty">Chưa có thông báo.</string>
     <string name="seller_title_orders">Đơn hàng</string>
     <string name="seller_title_product">Sản phẩm</string>
     <string name="seller_title_other_features">Chức năng khác</string>

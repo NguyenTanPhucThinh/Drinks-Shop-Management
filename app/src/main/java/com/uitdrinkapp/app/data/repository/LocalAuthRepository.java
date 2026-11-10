@@ -9,7 +9,8 @@ import org.json.JSONObject;
 import java.util.UUID;
 
 public final class LocalAuthRepository implements AuthRepository {
-    private static final String PREFS = "vy_auth_store_v1";
+    // Đổi v1 -> v2 để máy đã chạy bản cũ được seed lại (có thêm tài khoản Seller)
+    private static final String PREFS = "vy_auth_store_v2";
     private static final String KEY_USERS = "users";
     private static final String KEY_CURRENT = "current_email";
     private final SharedPreferences prefs;
@@ -19,7 +20,9 @@ public final class LocalAuthRepository implements AuthRepository {
         if (!prefs.contains(KEY_USERS)) {
             JSONArray seed = new JSONArray();
             // id "buyer-demo" khớp FakeNotificationRepository.DEMO_BUYER_ID
-            seed.put(toJson("buyer-demo", "Khách Demo", "demo@uit.edu.vn", "0900000000", "123456"));
+            seed.put(toJson("buyer-demo", "Khách Demo", "demo@uit.edu.vn", "0900000000", "123456", "BUYER"));
+            // id "seller-demo" khớp FakeNotificationRepository.DEMO_SELLER_ID
+            seed.put(toJson("seller-demo", "Chủ quán Demo", "seller@uit.edu.vn", "0911111111", "123456", "SELLER"));
             prefs.edit().putString(KEY_USERS, seed.toString()).apply();
         }
     }
@@ -29,7 +32,8 @@ public final class LocalAuthRepository implements AuthRepository {
         catch (JSONException e) { return new JSONArray(); }
     }
 
-    private static JSONObject toJson(String id, String fullName, String email, String phone, String password) {
+    private static JSONObject toJson(String id, String fullName, String email, String phone,
+                                     String password, String role) {
         JSONObject value = new JSONObject();
         try {
             value.put("id", id);
@@ -37,13 +41,20 @@ public final class LocalAuthRepository implements AuthRepository {
             value.put("email", email);
             value.put("phone", phone);
             value.put("password", password);
+            value.put("role", role);
         } catch (JSONException ignored) { }
         return value;
     }
 
     private static User toUser(JSONObject value) {
         return new User(value.optString("id"), value.optString("fullName"),
-                value.optString("email"), value.optString("phone"));
+                value.optString("email"), value.optString("phone"),
+                roleOf(value.optString("role", "BUYER")));
+    }
+
+    private static User.Role roleOf(String name) {
+        try { return User.Role.valueOf(name); }
+        catch (IllegalArgumentException ignored) { return User.Role.BUYER; }
     }
 
     @Override public User login(String email, String password) {
@@ -65,7 +76,8 @@ public final class LocalAuthRepository implements AuthRepository {
             JSONObject value = all.optJSONObject(i);
             if (value != null && value.optString("email").equalsIgnoreCase(email.trim())) return false;
         }
-        all.put(toJson("buyer-" + UUID.randomUUID(), fullName.trim(), email.trim(), phone.trim(), password));
+        // Đăng ký luôn tạo tài khoản người mua
+        all.put(toJson("buyer-" + UUID.randomUUID(), fullName.trim(), email.trim(), phone.trim(), password, "BUYER"));
         prefs.edit().putString(KEY_USERS, all.toString()).putString(KEY_CURRENT, email.trim()).apply();
         return true;
     }

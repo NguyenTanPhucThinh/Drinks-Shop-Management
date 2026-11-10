@@ -10,9 +10,16 @@
     <string name="vy_hint_phone">Số điện thoại</string>
     <string name="vy_btn_login">Đăng nhập</string>
     <string name="vy_btn_register">Tạo tài khoản</string>
-    <string name="vy_go_register">Chưa có tài khoản? Đăng ký</string>
+    <string name="vy_go_register">Chưa có tài khoản? Tạo tại đây</string>
     <string name="vy_go_login">Đã có tài khoản? Đăng nhập</string>
     <string name="vy_login_hint_demo">Tài khoản thử: demo@uit.edu.vn / 123456</string>
+    <string name="vy_login_hint_seller_demo">Tài khoản thử: seller@uit.edu.vn / 123456</string>
+    <string name="vy_seller_subtitle">Dành cho chủ quán &amp; nhân viên</string>
+    <string name="vy_role_buyer">Người mua</string>
+    <string name="vy_role_seller">Người bán</string>
+    <string name="vy_hint_contact">Email / Số điện thoại</string>
+    <string name="vy_hint_username">Tên đăng nhập</string>
+    <string name="vy_forgot_password">Quên mật khẩu?</string>
     <string name="vy_error_required">Không được để trống</string>
     <string name="vy_error_email">Email không hợp lệ</string>
     <string name="vy_error_password_short">Mật khẩu tối thiểu 6 ký tự</string>
