@@ -11,13 +11,6 @@
                 <View android:id="@+id/v_home_notif_badge" android:layout_width="@dimen/home_badge_size" android:layout_height="@dimen/home_badge_size" android:layout_gravity="top|end" android:layout_margin="@dimen/spacing_4" android:background="@drawable/bg_home_badge"/>
             </FrameLayout>
         </LinearLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_home_seller_preview"
-            style="@style/Widget.Drink.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:text="@string/home_seller_preview" />
         <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_12" app:cardBackgroundColor="@color/surface" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/card_elevation" app:strokeColor="@color/home_border" app:strokeWidth="@dimen/divider_height">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/spacing_8" android:gravity="center_vertical" android:orientation="horizontal" android:baselineAligned="false">
                 <ImageView android:layout_width="@dimen/icon_24" android:layout_height="@dimen/icon_24" android:src="@drawable/ic_pin" app:tint="@color/home_green" android:importantForAccessibility="no"/>

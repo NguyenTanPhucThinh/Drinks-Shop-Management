@@ -1,6 +1,6 @@
 package com.uitdrinkapp.app.ui.customer.home;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import com.uitdrinkapp.app.data.model.Notification;
 import com.uitdrinkapp.app.data.model.User;
@@ -47,9 +47,7 @@ public final class HomeFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
         repositories = RepositoryProvider.get(requireContext());
-        // Temporary shortcut while the seller authentication route is being built.
-        binding.btnHomeSellerPreview.setOnClickListener(clicked ->
-                startActivity(new Intent(requireContext(), SellerMainActivity.class)));
+
         // Mở màn Thông báo + Tin nhắn khi bấm chuông.
         binding.btnNotifications.setOnClickListener(clicked -> {
             NavController nav = NavHostFragment.findNavController(this);
