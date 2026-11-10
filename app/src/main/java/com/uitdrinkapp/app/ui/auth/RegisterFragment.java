@@ -1,7 +1,6 @@
 package com.uitdrinkapp.app.ui.auth;
 
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +35,8 @@ public class RegisterFragment extends Fragment {
 
         binding.btnRegister.setOnClickListener(clicked -> {
             String name = read(binding.etRegisterName);
-            String email = read(binding.etRegisterEmail);
-            String phone = read(binding.etRegisterPhone);
+            String contact = read(binding.etRegisterEmail);
+            String username = read(binding.etRegisterUsername);
             CharSequence passwordValue = binding.etRegisterPassword.getText();
             CharSequence confirmValue = binding.etRegisterConfirm.getText();
             String password = passwordValue == null ? "" : passwordValue.toString();
@@ -49,9 +48,13 @@ public class RegisterFragment extends Fragment {
             binding.tilRegisterName.setError(nameOk ? null : getString(R.string.vy_error_required));
             valid &= nameOk;
 
-            boolean emailOk = Patterns.EMAIL_ADDRESS.matcher(email).matches();
-            binding.tilRegisterEmail.setError(emailOk ? null : getString(R.string.vy_error_email));
-            valid &= emailOk;
+            boolean contactOk = !contact.isEmpty();
+            binding.tilRegisterEmail.setError(contactOk ? null : getString(R.string.vy_error_required));
+            valid &= contactOk;
+
+            boolean userOk = !username.isEmpty();
+            binding.tilRegisterUsername.setError(userOk ? null : getString(R.string.vy_error_required));
+            valid &= userOk;
 
             boolean passOk = password.length() >= 6;
             binding.tilRegisterPassword.setError(passOk ? null : getString(R.string.vy_error_password_short));
@@ -63,10 +66,15 @@ public class RegisterFragment extends Fragment {
 
             if (!valid) return;
 
+            // Determine email vs phone from contact input
+            String email = contact.contains("@") ? contact : contact + "@uit.edu.vn";
+            String phone = contact.contains("@") ? "0900000000" : contact;
+
             if (!auth.register(name, email, phone, password)) {
                 binding.tilRegisterEmail.setError(getString(R.string.vy_error_email_exists));
                 return;
             }
+
             NavHostFragment.findNavController(this).navigate(R.id.homeFragment, null,
                     new NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build());
         });
