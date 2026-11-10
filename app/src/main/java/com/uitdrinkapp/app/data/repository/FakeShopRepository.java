@@ -12,14 +12,18 @@ public final class FakeShopRepository implements ShopRepository {
     private static final String KEY_HOURS = "shop_hours";
     private final SharedPreferences prefs;
 
+    public FakeShopRepository() {
+        this.prefs = null;
+    }
+
     public FakeShopRepository(Context context) {
-        this.prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        this.prefs = context != null ? context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE) : null;
     }
 
     private Shop getShop() {
-        String name = prefs.getString(KEY_NAME, ShopMockData.SHOP.getName());
-        String address = prefs.getString(KEY_ADDRESS, "12 Võ Văn Ngân, Thủ Đức, TP.HCM");
-        String hours = prefs.getString(KEY_HOURS, "07:00 - 22:00");
+        String name = prefs != null ? prefs.getString(KEY_NAME, ShopMockData.SHOP.getName()) : ShopMockData.SHOP.getName();
+        String address = prefs != null ? prefs.getString(KEY_ADDRESS, "12 Võ Văn Ngân, Thủ Đức, TP.HCM") : "12 Võ Văn Ngân, Thủ Đức, TP.HCM";
+        String hours = prefs != null ? prefs.getString(KEY_HOURS, "07:00 - 22:00") : "07:00 - 22:00";
         return new Shop(ShopMockData.SHOP.getId(), ShopMockData.SHOP.getCode(), name, address, hours);
     }
 
@@ -45,10 +49,12 @@ public final class FakeShopRepository implements ShopRepository {
 
     @Override
     public void updateShopInfo(String name, String address, String hours) {
-        prefs.edit()
-                .putString(KEY_NAME, name.trim())
-                .putString(KEY_ADDRESS, address.trim())
-                .putString(KEY_HOURS, hours.trim())
-                .apply();
+        if (prefs != null) {
+            prefs.edit()
+                    .putString(KEY_NAME, name.trim())
+                    .putString(KEY_ADDRESS, address.trim())
+                    .putString(KEY_HOURS, hours.trim())
+                    .apply();
+        }
     }
 }
