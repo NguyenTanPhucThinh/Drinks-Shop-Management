@@ -42,13 +42,6 @@
                 android:layout_weight="1" />
 
             <include
-                android:id="@+id/ll_seller_nav_notification"
-                layout="@layout/item_seller_nav"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <include
                 android:id="@+id/ll_seller_nav_orders"
                 layout="@layout/item_seller_nav"
                 android:layout_width="0dp"
