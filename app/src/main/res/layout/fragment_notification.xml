@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:background="@color/home_background">
 
@@ -12,16 +11,32 @@
             android:padding="@dimen/spacing_12" android:src="@drawable/ic_back"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/vy_back"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/vy_notif_title"
-            android:textAppearance="@style/TextAppearance.Drink.Section"/>
+            android:textAppearance="@style/TextAppearance.Drink.Section"
+            android:textColor="@color/home_ink"/>
+        <TextView android:id="@+id/tv_notif_read_all"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minHeight="@dimen/home_touch_target" android:gravity="center"
+            android:paddingHorizontal="@dimen/spacing_8"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true" android:focusable="true"
+            android:text="@string/vy_notif_read_all"
+            android:textColor="@color/home_green" android:textSize="13sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout android:id="@+id/tab_notification"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:tabTextColor="@color/home_muted" app:tabSelectedTextColor="@color/home_green"
-        app:tabIndicatorColor="@color/home_green"/>
-
-    <androidx.viewpager2.widget.ViewPager2 android:id="@+id/vp_notification"
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_notif"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:clipToPadding="false" android:paddingHorizontal="@dimen/screen_padding"
+            android:paddingBottom="@dimen/spacing_16"/>
+        <TextView android:id="@+id/tv_notif_empty"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:visibility="gone"
+            android:text="@string/vy_notif_empty"
+            android:textAppearance="@style/TextAppearance.Drink.Muted"/>
+    </FrameLayout>
 </LinearLayout>
