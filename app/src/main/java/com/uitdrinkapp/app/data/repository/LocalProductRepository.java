@@ -185,10 +185,19 @@ public final class LocalProductRepository implements ProductRepository {
         JSONArray ids = row.optJSONArray("toppingIds");
         if (ids != null) for (int i = 0; i < ids.length(); i++) toppingIds.add(ids.optString(i));
         return new Product(row.optString("id"), row.optString("name"), row.optLong("price"),
-                row.optString("imageUrl"), row.optString("description"), row.optString("categoryId"),
+                row.optString("imageUrl"), row.optString("description"),
+                migrateCategory(row.optString("categoryId"), row.optString("name")),
                 prices, temperatures, sugars, toppingIds,
                 row.optBoolean("available", row.optBoolean("inStock", true)),
                 row.optBoolean("visible", true));
+    }
+    /** Danh mục cũ "tea" (Trà & trà sữa) đã tách thành Trà sữa / Trà trái cây. */
+    private static String migrateCategory(String categoryId, String name) {
+        if (!"tea".equals(categoryId)) return categoryId;
+        String n = name == null ? "" : name.toLowerCase(java.util.Locale.ROOT);
+        boolean fruit = n.contains("trà đào") || n.contains("trà trái") || n.contains("trà vải")
+                || n.contains("trà cam") || n.contains("trà chanh") || n.contains("trà dâu");
+        return fruit ? "fruit_tea" : "milk_tea";
     }
     private static <T extends Enum<T>> List<T> enumList(JSONArray values, Class<T> type) {
         if (values == null) return null; // legacy: all supported

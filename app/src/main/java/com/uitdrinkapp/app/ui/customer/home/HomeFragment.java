@@ -31,6 +31,7 @@ import java.util.List;
 
 public final class HomeFragment extends Fragment {
     public static final String JOIN_RESULT = "join_result";
+    private static final int HOME_PREVIEW_COUNT = 2;
     private FragmentHomeBinding binding;
     private RepositoryProvider repositories;
     private ViewPager2.OnPageChangeCallback bannerCallback;
@@ -67,6 +68,8 @@ public final class HomeFragment extends Fragment {
             if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.homeFragment)
                 NavHostFragment.findNavController(this).navigate(R.id.action_home_to_join);
         });
+        binding.btnFeaturedAll.setOnClickListener(clicked -> openMenu());
+        binding.btnRecommendedAll.setOnClickListener(clicked -> openMenu());
         binding.rvFeatured.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.rvRecommended.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         refreshProductGrids();
@@ -96,13 +99,28 @@ public final class HomeFragment extends Fragment {
         }
         return result;
     }
-    /** Show every visible catalog entry, including drinks newly created by the Seller. */
+    /** Trang chủ chỉ hiện vài món; "Xem tất cả" mở màn Menu với đầy đủ sản phẩm. */
     private void refreshProductGrids() {
         if (binding == null || repositories == null) return;
-        binding.rvFeatured.setAdapter(new ProductAdapter(
-                products(repositories.home().getFeaturedProductIds()), this::openProduct));
-        binding.rvRecommended.setAdapter(new ProductAdapter(
-                repositories.products().getProducts(), this::openProduct));
+        List<Product> featured = products(repositories.home().getFeaturedProductIds());
+        List<Product> recommended = new ArrayList<>();
+        List<String> featuredIds = repositories.home().getFeaturedProductIds();
+        for (Product p : repositories.products().getProducts()) {
+            if (!featuredIds.contains(p.getId())) recommended.add(p);
+        }
+        if (recommended.isEmpty()) recommended.addAll(repositories.products().getProducts());
+        binding.rvFeatured.setAdapter(new ProductAdapter(limit(featured), this::openProduct));
+        binding.rvRecommended.setAdapter(new ProductAdapter(limit(recommended), this::openProduct));
+    }
+    private static List<Product> limit(List<Product> all) {
+        return new ArrayList<>(all.subList(0, Math.min(HOME_PREVIEW_COUNT, all.size())));
+    }
+    private void openMenu() {
+        NavController nav = NavHostFragment.findNavController(this);
+        if (nav.getCurrentDestination() != null
+                && nav.getCurrentDestination().getId() == R.id.homeFragment) {
+            nav.navigate(R.id.menuFragment);
+        }
     }
     private void scheduleBannerAdvance() {
         bannerHandler.removeCallbacks(advanceBanner);

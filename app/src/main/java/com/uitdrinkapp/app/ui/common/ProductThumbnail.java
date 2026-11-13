@@ -16,20 +16,9 @@ public final class ProductThumbnail {
 
     private ProductThumbnail() { }
 
-    /** Đơn demo cũ lưu ID kiểu "milk-tea-01"; đổi sang ID danh mục chung để tìm được ảnh. */
-    private static String catalogId(String productId) {
-        switch (productId) {
-            case "milk-tea-01": return "milk_tea";
-            case "fruit-tea-02": return "peach_tea";
-            case "coffee-03": return "salt_coffee";
-            case "matcha-04": return "matcha";
-            default: return productId;
-        }
-    }
-
     public static void bind(ImageView view, String productId) {
         Product product = productId == null ? null
-                : RepositoryProvider.get(view.getContext()).products().getProductById(catalogId(productId));
+                : RepositoryProvider.get(view.getContext()).products().getProductById(LegacyProductIds.toCatalogId(productId));
         int radius = Math.round(CORNER_DP * view.getResources().getDisplayMetrics().density);
         RequestBuilder<Drawable> request = product == null
                 ? Glide.with(view).load(R.drawable.ic_thien_cup_asset)

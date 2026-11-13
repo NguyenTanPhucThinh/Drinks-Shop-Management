@@ -4,6 +4,7 @@
         <action android:id="@+id/action_home_to_join" app:destination="@id/joinShopFragment"/>
         <action android:id="@+id/action_home_to_shop_info" app:destination="@id/shopInfoFragment"/>
     </fragment>
+    <fragment android:id="@+id/menuFragment" android:name="com.uitdrinkapp.app.ui.customer.menu.MenuFragment" android:label="@string/menu_title"/>
     <fragment android:id="@+id/shopInfoFragment" android:name="com.uitdrinkapp.app.ui.customer.shopinfo.ShopInfoFragment" android:label="@string/shop_info_title"/>
     <fragment android:id="@+id/joinShopFragment" android:name="com.uitdrinkapp.app.ui.customer.storeentry.JoinShopFragment" android:label="@string/join_title"/>
     <fragment android:id="@+id/vouchersFragment" android:name="com.uitdrinkapp.app.ui.customer.voucher.VouchersFragment" android:label="@string/voucher_title"/>
