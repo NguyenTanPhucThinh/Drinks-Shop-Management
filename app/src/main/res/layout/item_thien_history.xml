@@ -7,9 +7,11 @@
   <LinearLayout android:id="@+id/thien_history_row" android:layout_width="match_parent"
       android:layout_height="wrap_content" android:minHeight="52dp"
       android:orientation="horizontal" android:gravity="center_vertical" android:clickable="true" android:focusable="true">
-    <ImageView android:layout_width="44dp" android:layout_height="44dp"
+    <ImageView android:id="@+id/iv_thien_history_image"
+      android:layout_width="44dp" android:layout_height="44dp"
       android:src="@drawable/ic_thien_cup_asset" android:background="@drawable/bg_thien_mint"
-      android:padding="10dp" android:contentDescription="@string/thien_product_illustration"/>
+      android:scaleType="centerCrop"
+      android:contentDescription="@string/thien_product_illustration"/>
     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
       android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="9dp">
       <TextView android:id="@+id/tv_thien_history_id" android:layout_width="match_parent"

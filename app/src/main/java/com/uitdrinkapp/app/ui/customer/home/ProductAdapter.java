@@ -30,7 +30,7 @@ final class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Holder> {
                 price + " · " + b.getRoot().getContext().getString(R.string.thien_buyer_out_of_stock));
         b.btnAddProduct.setEnabled(product.isAvailable());
         b.btnAddProduct.setContentDescription(b.getRoot().getContext().getString(R.string.home_add_product, product.getName()));
-        Glide.with(b.ivProductImage).load(LocalImages.resolve(product.getImageUrl())).centerCrop().into(b.ivProductImage);
+        LocalImages.load(Glide.with(b.ivProductImage), product.getImageUrl()).centerCrop().into(b.ivProductImage);
         b.getRoot().setOnClickListener(view -> onProductClick.accept(product.getId()));
         b.btnAddProduct.setOnClickListener(view -> {
             if (product.isAvailable()) onProductClick.accept(product.getId());

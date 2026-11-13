@@ -6,9 +6,11 @@
     android:layout_marginBottom="8dp" android:minHeight="70dp"
     android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="7dp" android:paddingBottom="7dp"
     android:background="@drawable/bg_thien_card">
-    <ImageView android:layout_width="42dp" android:layout_height="42dp"
+    <ImageView android:id="@+id/iv_thien_cart_image"
+        android:layout_width="42dp" android:layout_height="42dp"
         android:src="@drawable/ic_thien_cup_asset" android:background="@drawable/bg_thien_mint"
-        android:padding="10dp" android:contentDescription="@string/thien_product_illustration"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/thien_product_illustration"/>
     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
         android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="8dp">
         <TextView android:id="@+id/tv_thien_cart_item_name" android:layout_width="match_parent"

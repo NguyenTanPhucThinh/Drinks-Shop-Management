@@ -17,6 +17,7 @@ import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienPurchaseHistoryBinding;
 import com.uitdrinkapp.app.databinding.ItemThienHistoryBinding;
 import com.google.android.material.button.MaterialButton;
+import com.uitdrinkapp.app.ui.common.ProductThumbnail;
 import com.uitdrinkapp.app.ui.customer.order.OrderUiFormat;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
@@ -92,6 +93,8 @@ public final class PurchaseHistoryFragment extends Fragment {
             for (OrderItem line : order.items) qty += line.quantity;
             String name = order.items.isEmpty() ? "Đồ uống" : order.items.get(0).productName;
             row.tvThienHistoryProducts.setText(qty + " món · " + name);
+            ProductThumbnail.bind(row.ivThienHistoryImage,
+                    order.items.isEmpty() ? null : order.items.get(0).productId);
             row.btnThienHistoryDetails.setOnClickListener(v -> {
                 Bundle args = new Bundle(); args.putString("order_id", order.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_history_to_tracking, args);

@@ -56,9 +56,8 @@ public final class SellerProductAdapter extends RecyclerView.Adapter<SellerProdu
         b.tvThienSellerProductStatus.setTextColor(b.getRoot().getContext().getColor(
                 product.isVisible() && product.isAvailable()
                         ? R.color.thien_seller_product_success : R.color.thien_seller_product_warning));
-        Glide.with(b.ivThienSellerProductImage)
-                .load(LocalImages.resolve(product.getImageUrl())).centerCrop()
-                .into(b.ivThienSellerProductImage);
+        LocalImages.load(Glide.with(b.ivThienSellerProductImage), product.getImageUrl())
+                .centerCrop().into(b.ivThienSellerProductImage);
         b.btnThienSellerProductDelete.setOnClickListener(clicked -> deleteAction.onProduct(product.getId()));
         b.btnThienSellerProductEdit.setOnClickListener(clicked -> editAction.onProduct(product.getId()));
     }
