@@ -21,6 +21,13 @@
     <string name="home_tab_vouchers">Quản lý voucher</string>
     <string name="home_tab_profile">Cá nhân</string>
     <string name="join_title">Vào quán</string>
+    <string name="shop_info_title">Thông tin quán</string>
+    <string name="shop_info_hours_title">Giờ mở cửa</string>
+    <string name="shop_info_hours_daily">Hàng ngày</string>
+    <string name="shop_info_contact_title">Địa chỉ &amp; liên hệ</string>
+    <string name="shop_info_address">Địa chỉ</string>
+    <string name="shop_info_phone">Số điện thoại</string>
+    <string name="shop_info_email">Email</string>
     <string name="join_back">Quay lại Trang chủ</string>
     <string name="join_instructions">Đưa mã QR tại bàn/quầy vào khung để vào quán</string>
     <string name="join_manual">— hoặc nhập số bàn —</string>

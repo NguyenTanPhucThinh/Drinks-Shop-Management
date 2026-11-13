@@ -56,6 +56,13 @@ public final class HomeFragment extends Fragment {
                 nav.navigate(R.id.notificationFragment);
             }
         });
+        binding.cardShopInfo.setOnClickListener(clicked -> {
+            NavController nav = NavHostFragment.findNavController(this);
+            if (nav.getCurrentDestination() != null
+                    && nav.getCurrentDestination().getId() == R.id.homeFragment) {
+                nav.navigate(R.id.action_home_to_shop_info);
+            }
+        });
         binding.btnScanQr.setOnClickListener(clicked -> {
             if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.homeFragment)
                 NavHostFragment.findNavController(this).navigate(R.id.action_home_to_join);
