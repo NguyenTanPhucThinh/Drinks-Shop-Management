@@ -93,7 +93,7 @@ public final class ProductDetailFragment extends Fragment {
         bindChoice(binding.cgSize, new int[]{R.id.chip_size_s, R.id.chip_size_m, R.id.chip_size_l}, Size.values(), selection.getSize(), selection::setSize);
         bindChoice(binding.cgSugar, new int[]{R.id.chip_sugar_0, R.id.chip_sugar_30, R.id.chip_sugar_50, R.id.chip_sugar_70, R.id.chip_sugar_100}, SugarLevel.values(), selection.getSugar(), selection::setSugar);
         restrictOptions(new int[]{R.id.chip_sugar_0, R.id.chip_sugar_30, R.id.chip_sugar_50, R.id.chip_sugar_70, R.id.chip_sugar_100}, SugarLevel.values(), product.getSugarLevels());
-        bindChoice(binding.cgFulfillment, new int[]{R.id.chip_counter, R.id.chip_takeaway, R.id.chip_delivery}, FulfillmentMethod.values(), selection.getFulfillment(), selection::setFulfillment);
+        bindChoice(binding.cgFulfillment, new int[]{R.id.chip_counter, R.id.chip_takeaway}, FulfillmentMethod.values(), selection.getFulfillment(), selection::setFulfillment);
         for (Topping topping : allowedToppings) addTopping(topping);
         binding.btnDetailAddCart.setOnClickListener(clicked -> addSelectedToCart(false));
         binding.btnDetailBuy.setOnClickListener(clicked -> addSelectedToCart(true));

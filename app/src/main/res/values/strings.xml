@@ -64,7 +64,6 @@
     <string name="detail_sugar_100">100%</string>
     <string name="detail_counter">Tại quầy</string>
     <string name="detail_takeaway">Mang về</string>
-    <string name="detail_delivery">Ship về</string>
     <string name="detail_quantity">Số lượng %1$d</string>
     <string name="detail_increase">Tăng số lượng</string>
     <string name="detail_decrease">Giảm số lượng</string>
