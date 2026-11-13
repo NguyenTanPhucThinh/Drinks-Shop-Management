@@ -7,9 +7,11 @@ import com.uitdrinkapp.app.ui.customer.order.BuyerNavBars;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienPurchaseHistoryBinding;
@@ -37,10 +39,25 @@ public final class PurchaseHistoryFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         repo = BuyerOrderRepositoryProvider.get(requireContext());
+        binding.btnThienHistoryBack.setOnClickListener(v -> navigateToHome());
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        navigateToHome();
+                    }
+                });
         binding.btnThienHistoryAll.setOnClickListener(v -> { selected = Filter.ALL; render(); });
         binding.btnThienHistoryCompleted.setOnClickListener(v -> { selected = Filter.COMPLETED; render(); });
         binding.btnThienHistoryCancelled.setOnClickListener(v -> { selected = Filter.CANCELLED; render(); });
         render();
+    }
+    private void navigateToHome() {
+        NavController nav = NavHostFragment.findNavController(this);
+        if (!nav.popBackStack(R.id.homeFragment, false)) {
+            nav.navigate(R.id.homeFragment);
+        }
     }
     @Override public void onResume() {
         super.onResume(); BuyerNavBars.setVisible(requireActivity(), true);

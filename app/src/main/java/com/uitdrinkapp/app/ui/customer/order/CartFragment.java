@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.uitdrinkapp.app.data.model.Product;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import com.uitdrinkapp.app.R;
@@ -38,7 +40,15 @@ public final class CartFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
         repo = BuyerOrderRepositoryProvider.get(requireContext());
-        binding.btnThienCartBack.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
+        binding.btnThienCartBack.setOnClickListener(v -> navigateToHome());
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        navigateToHome();
+                    }
+                });
         binding.btnThienCheckout.setOnClickListener(v -> {
             if (repo.getCart().isEmpty()) return;
             Bundle args = new Bundle(); args.putString("voucher_code", voucher);
@@ -50,6 +60,12 @@ public final class CartFragment extends Fragment {
         binding.btnThienFilterPeach.setOnClickListener(v -> { category = 2; render(); });
         binding.btnThienFilterCoffee.setOnClickListener(v -> { category = 3; render(); });
         render();
+    }
+    private void navigateToHome() {
+        NavController nav = NavHostFragment.findNavController(this);
+        if (!nav.popBackStack(R.id.homeFragment, false)) {
+            nav.navigate(R.id.homeFragment);
+        }
     }
     @Override public void onResume() {
         super.onResume();
