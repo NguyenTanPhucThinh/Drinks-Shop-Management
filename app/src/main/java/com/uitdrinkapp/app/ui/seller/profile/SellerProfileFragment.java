@@ -19,6 +19,7 @@ import com.uitdrinkapp.app.data.repository.AuthRepository;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.data.repository.ShopRepository;
 import com.uitdrinkapp.app.databinding.FragmentSellerProfileBinding;
+import com.uitdrinkapp.app.ui.common.ChangePasswordDialog;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -64,6 +65,9 @@ public final class SellerProfileFragment extends Fragment {
 
         // Opening hours time picker dialog
         binding.etSellerHours.setOnClickListener(v -> showOpeningTimePicker());
+
+        binding.btnSellerChangePassword.setOnClickListener(v ->
+                ChangePasswordDialog.show(requireContext()));
 
         binding.btnSellerSaveProfile.setOnClickListener(v -> {
             String name = binding.etSellerShopName.getText().toString().trim();
