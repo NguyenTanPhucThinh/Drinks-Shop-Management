@@ -1,7 +1,5 @@
 package com.uitdrinkapp.app.ui.customer.profile;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +17,9 @@ import com.uitdrinkapp.app.data.model.User;
 import com.uitdrinkapp.app.data.repository.AuthRepository;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentProfileBinding;
+import com.uitdrinkapp.app.ui.common.ChangePasswordDialog;
 
 public class ProfileFragment extends Fragment {
-    private static final String PREFS = "vy_customer_profile_store";
-    private static final String KEY_ADDRESS = "customer_address";
     private FragmentProfileBinding binding;
 
     @Nullable
@@ -43,22 +40,19 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        String savedAddress = prefs.getString(KEY_ADDRESS, "Thủ Đức, TP.HCM");
-
         binding.etProfileName.setText(user.fullName);
         binding.tvProfileHeaderName.setText(user.fullName);
         binding.etProfileEmail.setText(user.email);
         binding.etProfilePhone.setText(user.phone);
-        binding.etProfileAddress.setText(savedAddress);
+
+        binding.btnProfileChangePassword.setOnClickListener(clicked ->
+                ChangePasswordDialog.show(requireContext()));
 
         binding.btnProfileSave.setOnClickListener(clicked -> {
             CharSequence nameValue = binding.etProfileName.getText();
             CharSequence phoneValue = binding.etProfilePhone.getText();
-            CharSequence addressValue = binding.etProfileAddress.getText();
             String name = nameValue == null ? "" : nameValue.toString().trim();
             String phone = phoneValue == null ? "" : phoneValue.toString().trim();
-            String address = addressValue == null ? "" : addressValue.toString().trim();
 
             if (name.isEmpty()) {
                 binding.tilProfileName.setError(getString(R.string.vy_error_required));
@@ -67,7 +61,6 @@ public class ProfileFragment extends Fragment {
             binding.tilProfileName.setError(null);
 
             auth.updateProfile(name, phone);
-            prefs.edit().putString(KEY_ADDRESS, address).apply();
             binding.tvProfileHeaderName.setText(name);
 
             ((MainActivity) requireActivity()).showMessage(R.string.vy_profile_saved);

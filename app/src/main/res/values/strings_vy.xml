@@ -11,6 +11,13 @@
     <string name="vy_btn_login">Đăng nhập</string>
     <string name="vy_btn_register">Đăng ký</string>
     <string name="vy_or_register_with">hoặc đăng ký bằng</string>
+    <string name="pw_change">Đổi mật khẩu</string>
+    <string name="pw_title">Đổi mật khẩu</string>
+    <string name="pw_hint_current">Mật khẩu hiện tại</string>
+    <string name="pw_hint_new">Mật khẩu mới</string>
+    <string name="pw_hint_confirm">Xác nhận mật khẩu mới</string>
+    <string name="pw_cancel">Hủy</string>
+    <string name="pw_confirm">Xác nhận</string>
     <string name="vy_or_login_with">hoặc đăng nhập bằng</string>
     <string name="vy_go_register">Chưa có tài khoản? Tạo tại đây</string>
     <string name="vy_go_login">Đã có tài khoản? Đăng nhập</string>

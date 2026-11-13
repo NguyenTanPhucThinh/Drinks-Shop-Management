@@ -18,6 +18,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/vy_profile_title"
             android:textAppearance="@style/TextAppearance.Drink.Section"
+            android:textColor="@color/home_ink"
             android:textSize="22sp" />
 
         <!-- Avatar Section -->
@@ -31,7 +32,7 @@
             <FrameLayout
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/bg_circle_green">
+                android:background="@drawable/bg_circle_mint">
 
                 <ImageView
                     android:layout_width="40dp"
@@ -39,7 +40,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/detail_image"
                     android:src="@drawable/ic_profile"
-                    app:tint="@color/white" />
+                    app:tint="@color/home_green" />
             </FrameLayout>
 
             <TextView
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="Nguyễn Văn A"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/home_ink"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -59,67 +60,95 @@
                 android:layout_marginTop="4dp"
                 android:text="Đổi ảnh đại diện"
                 android:textColor="@color/home_green"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Form Fields -->
+        <!-- Full name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/vy_hint_full_name"
+            android:textColor="@color/home_muted"
+            android:textSize="12sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_profile_name"
             style="@style/Widget.Drink.Input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="@string/vy_hint_full_name">
+            android:layout_marginTop="4dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                android:hint="@string/vy_hint_full_name"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/home_muted" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Phone -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12"
+            android:text="@string/vy_hint_phone"
+            android:textColor="@color/home_muted"
+            android:textSize="12sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Drink.Input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:hint="@string/vy_hint_phone">
+            android:layout_marginTop="4dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_profile_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:hint="@string/vy_hint_phone"
+                android:inputType="phone"
+                android:textColorHint="@color/home_muted" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12"
+            android:text="@string/vy_hint_email"
+            android:textColor="@color/home_muted"
+            android:textSize="12sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Drink.Input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:hint="@string/vy_hint_email">
+            android:layout_marginTop="4dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_profile_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:inputType="textEmailAddress" />
+                android:hint="@string/vy_hint_email"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/home_muted" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Drink.Input"
-            android:layout_width="match_parent"
+        <!-- Change password -->
+        <TextView
+            android:id="@+id/btn_profile_change_password"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:hint="Địa chỉ">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_profile_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:padding="@dimen/spacing_8"
+            android:text="@string/pw_change"
+            android:textColor="@color/home_green"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <!-- Buttons -->
         <com.google.android.material.button.MaterialButton
@@ -127,7 +156,7 @@
             style="@style/Widget.Drink.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_24"
+            android:layout_marginTop="@dimen/spacing_8"
             android:backgroundTint="@color/home_green"
             android:text="@string/vy_btn_save" />
 
