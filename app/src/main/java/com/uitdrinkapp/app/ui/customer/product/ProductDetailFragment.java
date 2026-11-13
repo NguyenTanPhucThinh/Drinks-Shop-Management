@@ -72,7 +72,7 @@ public final class ProductDetailFragment extends Fragment {
         binding.tvDetailName.setText(product.getName());
         binding.tvDetailDescription.setText(product.getDescription());
         binding.ivDetailImage.setContentDescription(getString(R.string.detail_image, product.getName()));
-        Glide.with(this).load(LocalImages.resolve(product.getImageUrl())).centerCrop().into(binding.ivDetailImage);
+        LocalImages.load(Glide.with(this), product.getImageUrl()).centerCrop().into(binding.ivDetailImage);
         for (Category category : repository.getCategories()) {
             if (category.getId().equals(product.getCategoryId())) binding.tvDetailCategory.setText(category.getName());
         }

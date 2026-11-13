@@ -21,6 +21,7 @@ import com.uitdrinkapp.app.databinding.ItemThienCartBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
 import com.uitdrinkapp.app.data.order.CartLine;
+import com.uitdrinkapp.app.ui.common.ProductThumbnail;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -121,6 +122,7 @@ public final class CartFragment extends Fragment {
             ItemThienCartBinding row = ItemThienCartBinding.inflate(getLayoutInflater(),
                     binding.thienCartContainer, false);
             row.tvThienCartItemName.setText(item.productName);
+            ProductThumbnail.bind(row.ivThienCartImage, item.productId);
             row.tvThienCartItemOptions.setText(getString(R.string.thien_cart_options,
                     item.size.name(), item.sugar.percent, item.ice.percent));
             row.tvThienCartItemTopping.setVisibility(item.toppings.isEmpty() ? View.GONE : View.VISIBLE);
