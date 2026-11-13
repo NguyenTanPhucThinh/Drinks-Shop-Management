@@ -21,10 +21,10 @@ import com.uitdrinkapp.app.databinding.ItemThienCartBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
 import com.uitdrinkapp.app.data.order.CartLine;
+import com.uitdrinkapp.app.ui.common.LegacyProductIds;
 import com.uitdrinkapp.app.ui.common.ProductThumbnail;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /** Màn 06: danh sách món hiện có; chọn số lượng để đưa vào giỏ, không dùng nút Thêm món khác. */
 public final class CartFragment extends Fragment {
@@ -83,11 +83,12 @@ public final class CartFragment extends Fragment {
                 }).setNegativeButton(R.string.thien_close, null).show();
     }
     private boolean matches(CartLine line) {
-        String name = line.productName.toLowerCase(Locale.ROOT);
-        if (category == 1) return name.contains("trà sữa") || name.contains("matcha");
-        if (category == 2) return name.contains("trà đào") || name.contains("trà trái") || name.contains("trà vải");
-        if (category == 3) return name.contains("cà phê") || name.contains("cafe");
-        return true;
+        if (category == 0) return true;
+        Product product = RepositoryProvider.get(requireContext()).products()
+                .getProductForSeller(LegacyProductIds.toCatalogId(line.productId));
+        if (product == null) return false;
+        String wanted = category == 1 ? "milk_tea" : category == 2 ? "fruit_tea" : "coffee";
+        return wanted.equals(product.getCategoryId());
     }
     private void filter(MaterialButton button, boolean active) {
         button.setBackgroundTintList(ColorStateList.valueOf(requireContext().getColor(
@@ -151,14 +152,7 @@ public final class CartFragment extends Fragment {
     }
     /** Ánh xạ tạm ID demo của Thiên sang ID danh mục chung của nhóm. */
     private void openProductDetails(CartLine line) {
-        String sharedId;
-        switch (line.productId) {
-            case "milk-tea-01": sharedId = "milk_tea"; break;
-            case "fruit-tea-02": sharedId = "peach_tea"; break;
-            case "coffee-03": sharedId = "salt_coffee"; break;
-            case "matcha-04": sharedId = "matcha"; break;
-            default: sharedId = line.productId;
-        }
+        String sharedId = LegacyProductIds.toCatalogId(line.productId);
         Product product = RepositoryProvider.get(requireContext()).products().getProductById(sharedId);
         if (product == null || !product.getName().equalsIgnoreCase(line.productName)) {
             // Chưa có trong danh mục phía Duyên: vẫn xem được thông tin demo,

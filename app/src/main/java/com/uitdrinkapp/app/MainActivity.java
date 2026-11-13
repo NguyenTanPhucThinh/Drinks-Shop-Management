@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
             boolean showBottomNav =
                     id == R.id.homeFragment ||
+                            id == R.id.menuFragment ||
                             id == R.id.vouchersFragment ||
                             id == R.id.thien_history ||
                             id == R.id.profileFragment;
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
             );
 
             selectTab(binding.btnNavHome, id == R.id.homeFragment);
-            selectTab(binding.btnNavMenu, id == R.id.thien_cart);
+            selectTab(binding.btnNavMenu, id == R.id.menuFragment);
+            selectTab(binding.btnNavOrder, id == R.id.thien_cart);
             selectTab(binding.btnNavHistory, id == R.id.thien_history);
             selectTab(binding.btnNavVouchers, id == R.id.vouchersFragment);
             selectTab(binding.btnNavProfile, id == R.id.profileFragment);
@@ -85,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
         binding.btnNavVouchers.setOnClickListener(view -> openVouchers());
         binding.btnNavProfile.setOnClickListener(view -> openProfile());
 
-        binding.btnNavMenu.setOnClickListener(view ->
+        binding.btnNavMenu.setOnClickListener(view -> openMenu());
+
+        binding.btnNavOrder.setOnClickListener(view ->
                 nav.navigate(R.id.thien_flow));
 
         binding.btnNavHistory.setOnClickListener(view -> {
@@ -108,6 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (nav.getCurrentDestination().getId() != R.id.vouchersFragment) {
             nav.navigate(R.id.vouchersFragment);
+        }
+    }
+    public void openMenu() {
+        if (nav.getCurrentDestination() == null) return;
+
+        if (nav.getCurrentDestination().getId() != R.id.menuFragment) {
+            nav.navigate(R.id.menuFragment);
         }
     }
     public void openProfile() {

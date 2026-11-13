@@ -144,4 +144,10 @@
     <string name="seller_voucher_invalid_dates">Ngày hết hạn phải sau ngày bắt đầu</string>
     <string name="seller_voucher_saved">Đã lưu voucher</string>
     <string name="seller_back">Quay lại</string>
+    <string name="home_tab_menu_list">Menu</string>
+    <string name="menu_title">Menu</string>
+    <string name="menu_back">Quay lại</string>
+    <string name="menu_search_hint">Tìm đồ uống yêu thích</string>
+    <string name="menu_filter_all">Tất cả</string>
+    <string name="menu_empty">Không tìm thấy đồ uống phù hợp</string>
 </resources>
