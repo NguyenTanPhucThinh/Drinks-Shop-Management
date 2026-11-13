@@ -5,11 +5,13 @@
     <string name="vy_register_title">Đăng ký</string>
     <string name="vy_hint_email">Email</string>
     <string name="vy_hint_password">Mật khẩu</string>
-    <string name="vy_hint_confirm_password">Nhập lại mật khẩu</string>
+    <string name="vy_hint_confirm_password">Xác nhận mật khẩu</string>
     <string name="vy_hint_full_name">Họ và tên</string>
     <string name="vy_hint_phone">Số điện thoại</string>
     <string name="vy_btn_login">Đăng nhập</string>
-    <string name="vy_btn_register">Tạo tài khoản</string>
+    <string name="vy_btn_register">Đăng ký</string>
+    <string name="vy_or_register_with">hoặc đăng ký bằng</string>
+    <string name="vy_or_login_with">hoặc đăng nhập bằng</string>
     <string name="vy_go_register">Chưa có tài khoản? Tạo tại đây</string>
     <string name="vy_go_login">Đã có tài khoản? Đăng nhập</string>
     <string name="vy_login_hint_demo">Tài khoản thử: demo@uit.edu.vn / 123456</string>

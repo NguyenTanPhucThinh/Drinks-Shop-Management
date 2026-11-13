@@ -81,6 +81,12 @@ public class LoginFragment extends Fragment {
                     new NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build());
         });
 
+        View.OnClickListener socialClick = v -> android.widget.Toast
+                .makeText(requireContext(), R.string.home_unavailable, android.widget.Toast.LENGTH_SHORT).show();
+        binding.btnLoginGoogle.setOnClickListener(socialClick);
+        binding.btnLoginWechat.setOnClickListener(socialClick);
+        binding.btnLoginFacebook.setOnClickListener(socialClick);
+
         binding.tvLoginGoRegister.setOnClickListener(clicked ->
                 NavHostFragment.findNavController(this).navigate(R.id.registerFragment));
     }

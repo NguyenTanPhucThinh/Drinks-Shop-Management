@@ -16,9 +16,9 @@
         <!-- Coffee Logo Circle -->
         <FrameLayout
             android:id="@+id/fl_login_logo_bg"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/bg_circle_green">
 
             <ImageView
@@ -34,9 +34,11 @@
             android:id="@+id/tv_login_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/vy_login_title"
             android:textAppearance="@style/TextAppearance.Drink.Section"
+            android:textColor="@color/home_ink"
+            android:textStyle="bold"
             android:textSize="@dimen/text_28" />
 
         <TextView
@@ -95,6 +97,8 @@
                 android:id="@+id/et_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/vy_hint_email"
+                android:textColorHint="@color/home_muted"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,6 +115,8 @@
                 android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/vy_hint_password"
+                android:textColorHint="@color/home_muted"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,7 +127,8 @@
             android:gravity="end"
             android:text="@string/vy_forgot_password"
             android:textAppearance="@style/TextAppearance.Drink.Body"
-            android:textColor="@color/text_secondary"
+            android:textColor="@color/home_green"
+            android:textStyle="bold"
             android:textSize="13sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -132,6 +139,79 @@
             android:layout_marginTop="@dimen/spacing_24"
             android:backgroundTint="@color/home_green"
             android:text="@string/vy_btn_login" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/vy_or_login_with"
+            android:textAppearance="@style/TextAppearance.Drink.Muted"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/btn_login_google"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_home_circle"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="G"
+                    android:textColor="#EA4335"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btn_login_wechat"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_home_circle"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="W"
+                    android:textColor="#07C160"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btn_login_facebook"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_home_circle"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="f"
+                    android:textColor="#1877F2"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_login_go_register"
