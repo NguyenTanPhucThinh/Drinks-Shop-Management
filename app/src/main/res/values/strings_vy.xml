@@ -40,8 +40,6 @@
     <string name="vy_btn_logout">Đăng xuất</string>
     <string name="vy_profile_saved">Đã lưu hồ sơ</string>
     <string name="vy_notif_title">Thông báo</string>
-    <string name="vy_tab_notifications">Thông báo</string>
-    <string name="vy_tab_messages">Tin nhắn</string>
     <string name="vy_notif_empty">Chưa có thông báo</string>
-    <string name="vy_msg_empty">Chưa có tin nhắn</string>
+    <string name="vy_notif_read_all">Đọc tất cả</string>
 </resources>
