@@ -64,8 +64,6 @@ public final class SellerMainActivity extends AppCompatActivity {
         nav = host.getNavController();
         bindTab(binding.llSellerNavHome, R.id.sellerHomeFragment,
                 R.string.seller_title_home, R.drawable.ic_seller_home);
-        bindTab(binding.llSellerNavNotification, R.id.sellerNotificationFragment,
-                R.string.seller_title_notification, R.drawable.ic_seller_notification);
         bindTab(binding.llSellerNavOrders, R.id.sellerOrdersFragment,
                 R.string.seller_title_orders, R.drawable.ic_seller_orders);
         bindTab(binding.llSellerNavProduct, R.id.sellerProductFragment,
@@ -74,11 +72,6 @@ public final class SellerMainActivity extends AppCompatActivity {
                 R.string.seller_tab_other_features, R.drawable.ic_seller_other_features);
         bindTab(binding.llSellerNavProfile, R.id.sellerProfileFragment,
                 R.string.seller_title_profile, R.drawable.ic_seller_profile);
-
-        // Static unread indicator for the shell preview; real notification data comes later.
-        binding.llSellerNavNotification.vSellerNavBadge.setVisibility(View.VISIBLE);
-        binding.llSellerNavNotification.getRoot().setContentDescription(
-                getString(R.string.seller_notification_unread));
 
         nav.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int active = destination.getId();

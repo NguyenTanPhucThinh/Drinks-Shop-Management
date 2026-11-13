@@ -13,8 +13,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.data.model.Notification;
 import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.Shop;
+import com.uitdrinkapp.app.data.model.User;
+import com.uitdrinkapp.app.data.repository.FakeNotificationRepository;
 import com.uitdrinkapp.app.data.order.OrderRepository;
 import com.uitdrinkapp.app.data.order.OrderRepositoryProvider;
 import com.uitdrinkapp.app.data.repository.RepositoryProvider;
@@ -59,6 +62,12 @@ public final class SellerHomeFragment extends Fragment {
             }
         });
 
+        binding.btnSellerHomeBell.setOnClickListener(v -> {
+            if (requireActivity() instanceof SellerMainActivity) {
+                ((SellerMainActivity) requireActivity()).openTab(R.id.sellerNotificationFragment);
+            }
+        });
+
         refreshData();
     }
 
@@ -74,6 +83,13 @@ public final class SellerHomeFragment extends Fragment {
         if (shop != null) {
             binding.tvSellerHomeShopName.setText(shop.getName());
         }
+
+        // Bell badge
+        User user = repositories.auth().getCurrentUser();
+        String sellerId = user == null ? FakeNotificationRepository.DEMO_SELLER_ID : user.id;
+        int unread = repositories.notifications()
+                .getUnreadCount(Notification.RecipientType.SELLER, sellerId);
+        binding.vSellerHomeBellBadge.setVisibility(unread > 0 ? View.VISIBLE : View.GONE);
 
         // Statistics
         OrderStatistics stats = OrderStatistics.fromOrders(orders.getOrders(), System.currentTimeMillis());

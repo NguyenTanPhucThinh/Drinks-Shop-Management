@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_shop_info_back"
+                android:layout_width="@dimen/home_touch_target"
+                android:layout_height="@dimen/home_touch_target"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/join_back"
+                android:padding="@dimen/spacing_12"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shop_info_title"
+                android:textAppearance="@style/TextAppearance.Drink.Section"
+                android:textColor="@color/home_ink"
+                android:textSize="@dimen/home_header_text" />
+        </LinearLayout>
+
+        <!-- Tên quán + mô tả -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="@dimen/radius_12"
+            app:cardElevation="@dimen/card_elevation"
+            app:strokeColor="@color/home_border"
+            app:strokeWidth="@dimen/divider_height">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_16">
+
+                <TextView
+                    android:id="@+id/tv_shop_info_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/home_ink"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_shop_info_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:textAppearance="@style/TextAppearance.Drink.Muted"
+                    android:textSize="@dimen/home_small_text" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Giờ mở cửa -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="@dimen/radius_12"
+            app:cardElevation="@dimen/card_elevation"
+            app:strokeColor="@color/home_border"
+            app:strokeWidth="@dimen/divider_height">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_16">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shop_info_hours_title"
+                    android:textColor="@color/home_ink"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/shop_info_hours_daily"
+                        android:textAppearance="@style/TextAppearance.Drink.Muted"
+                        android:textSize="@dimen/home_small_text" />
+
+                    <TextView
+                        android:id="@+id/tv_shop_info_hours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/home_ink"
+                        android:textSize="@dimen/home_small_text"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Địa chỉ & liên hệ -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="@dimen/radius_12"
+            app:cardElevation="@dimen/card_elevation"
+            app:strokeColor="@color/home_border"
+            app:strokeWidth="@dimen/divider_height">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_16">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shop_info_contact_title"
+                    android:textColor="@color/home_ink"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_12"
+                    android:text="@string/shop_info_address"
+                    android:textAppearance="@style/TextAppearance.Drink.Muted"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_shop_info_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:textColor="@color/home_ink"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_12"
+                    android:text="@string/shop_info_phone"
+                    android:textAppearance="@style/TextAppearance.Drink.Muted"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_shop_info_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:textColor="@color/home_green"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_12"
+                    android:text="@string/shop_info_email"
+                    android:textAppearance="@style/TextAppearance.Drink.Muted"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_shop_info_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:textColor="@color/home_green"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
