@@ -15,9 +15,9 @@
 
         <!-- Coffee Logo Circle -->
         <FrameLayout
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/bg_circle_green">
 
             <ImageView
@@ -29,44 +29,54 @@
                 app:tint="@color/white" />
         </FrameLayout>
 
+        <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/vy_register_title"
             android:textAppearance="@style/TextAppearance.Drink.Section"
-            android:textSize="@dimen/text_28" />
+            android:textColor="@color/home_ink"
+            android:textSize="@dimen/text_28"
+            android:textStyle="bold" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_register_name"
-            style="@style/Widget.Drink.Input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="@string/vy_hint_full_name">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_register_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
-
+        <!-- 1. Email Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_register_email"
             style="@style/Widget.Drink.Input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:hint="@string/vy_hint_contact">
+            android:layout_marginTop="16dp"
+            android:hint="@string/vy_hint_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:hint="@string/vy_hint_email"
+                android:textColorHint="@color/home_muted"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- 2. Phone Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_register_phone"
+            style="@style/Widget.Drink.Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_12"
+            android:hint="@string/vy_hint_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_register_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/vy_hint_phone"
+                android:textColorHint="@color/home_muted"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 3. Username / Full Name Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_register_username"
             style="@style/Widget.Drink.Input"
@@ -79,9 +89,12 @@
                 android:id="@+id/et_register_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textVisiblePassword" />
+                android:hint="@string/vy_hint_username"
+                android:textColorHint="@color/home_muted"
+                android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- 4. Password Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_register_password"
             style="@style/Widget.Drink.Input"
@@ -95,9 +108,12 @@
                 android:id="@+id/et_register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/vy_hint_password"
+                android:textColorHint="@color/home_muted"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- 5. Confirm Password Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_register_confirm"
             style="@style/Widget.Drink.Input"
@@ -111,27 +127,111 @@
                 android:id="@+id/et_register_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/vy_hint_confirm_password"
+                android:textColorHint="@color/home_muted"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Register Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_register"
             style="@style/Widget.Drink.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_24"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/home_green"
             android:text="@string/vy_btn_register" />
 
+        <!-- Social Register Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/vy_or_register_with"
+            android:textAppearance="@style/TextAppearance.Drink.Muted"
+            android:textSize="13sp" />
+
+        <!-- Social Circular Buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Google Button -->
+            <FrameLayout
+                android:id="@+id/btn_social_google"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_home_circle"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="G"
+                    android:textColor="#EA4335"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <!-- WeChat / Wallet Button -->
+            <FrameLayout
+                android:id="@+id/btn_social_wechat"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_home_circle"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="W"
+                    android:textColor="#07C160"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <!-- Facebook Button -->
+            <FrameLayout
+                android:id="@+id/btn_social_facebook"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_home_circle"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="f"
+                    android:textColor="#1877F2"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Login Link -->
         <TextView
             android:id="@+id/tv_register_go_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
             android:padding="@dimen/spacing_8"
             android:text="@string/vy_go_login"
             android:textAppearance="@style/TextAppearance.Drink.Body"
             android:textColor="@color/home_green" />
+
     </LinearLayout>
 </ScrollView>

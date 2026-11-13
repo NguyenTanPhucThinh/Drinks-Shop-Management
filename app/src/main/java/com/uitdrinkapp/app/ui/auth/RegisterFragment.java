@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,8 +35,8 @@ public class RegisterFragment extends Fragment {
         AuthRepository auth = RepositoryProvider.get(requireContext()).auth();
 
         binding.btnRegister.setOnClickListener(clicked -> {
-            String name = read(binding.etRegisterName);
-            String contact = read(binding.etRegisterEmail);
+            String email = read(binding.etRegisterEmail);
+            String phone = read(binding.etRegisterPhone);
             String username = read(binding.etRegisterUsername);
             CharSequence passwordValue = binding.etRegisterPassword.getText();
             CharSequence confirmValue = binding.etRegisterConfirm.getText();
@@ -44,13 +45,14 @@ public class RegisterFragment extends Fragment {
 
             boolean valid = true;
 
-            boolean nameOk = !name.isEmpty();
-            binding.tilRegisterName.setError(nameOk ? null : getString(R.string.vy_error_required));
-            valid &= nameOk;
+            boolean emailOk = !email.isEmpty() && email.contains("@");
+            binding.tilRegisterEmail.setError(email.isEmpty() ? getString(R.string.vy_error_required)
+                    : (email.contains("@") ? null : getString(R.string.vy_error_email)));
+            valid &= emailOk;
 
-            boolean contactOk = !contact.isEmpty();
-            binding.tilRegisterEmail.setError(contactOk ? null : getString(R.string.vy_error_required));
-            valid &= contactOk;
+            boolean phoneOk = !phone.isEmpty();
+            binding.tilRegisterPhone.setError(phoneOk ? null : getString(R.string.vy_error_required));
+            valid &= phoneOk;
 
             boolean userOk = !username.isEmpty();
             binding.tilRegisterUsername.setError(userOk ? null : getString(R.string.vy_error_required));
@@ -66,11 +68,9 @@ public class RegisterFragment extends Fragment {
 
             if (!valid) return;
 
-            // Determine email vs phone from contact input
-            String email = contact.contains("@") ? contact : contact + "@uit.edu.vn";
-            String phone = contact.contains("@") ? "0900000000" : contact;
+            String fullName = username.isEmpty() ? email : username;
 
-            if (!auth.register(name, email, phone, password)) {
+            if (!auth.register(fullName, email, phone, password)) {
                 binding.tilRegisterEmail.setError(getString(R.string.vy_error_email_exists));
                 return;
             }
@@ -78,6 +78,13 @@ public class RegisterFragment extends Fragment {
             NavHostFragment.findNavController(this).navigate(R.id.homeFragment, null,
                     new NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build());
         });
+
+        View.OnClickListener socialClickListener = v ->
+                Toast.makeText(requireContext(), R.string.home_unavailable, Toast.LENGTH_SHORT).show();
+
+        binding.btnSocialGoogle.setOnClickListener(socialClickListener);
+        binding.btnSocialWechat.setOnClickListener(socialClickListener);
+        binding.btnSocialFacebook.setOnClickListener(socialClickListener);
 
         binding.tvRegisterGoLogin.setOnClickListener(clicked ->
                 NavHostFragment.findNavController(this).popBackStack());

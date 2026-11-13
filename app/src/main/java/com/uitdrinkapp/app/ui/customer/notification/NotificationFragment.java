@@ -26,7 +26,7 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         binding.btnNotifBack.setOnClickListener(v ->
-                NavHostFragment.findNavController(this).navigateUp());
+                NavHostFragment.findNavController(this).popBackStack());
 
         binding.vpNotification.setAdapter(new FragmentStateAdapter(this) {
             @NonNull @Override public Fragment createFragment(int position) {
