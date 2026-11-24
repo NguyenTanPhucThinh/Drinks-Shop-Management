@@ -13,8 +13,10 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
+import com.uitdrinkapp.app.data.model.User;
 import com.uitdrinkapp.app.data.repository.FakeShopRepository;
 import com.uitdrinkapp.app.data.repository.PreferencesShopSessionRepository;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider;
 import com.uitdrinkapp.app.domain.JoinShopService;
 import com.uitdrinkapp.app.domain.ShopQrCode;
 import java.io.InputStream;
@@ -25,6 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
@@ -32,10 +36,14 @@ import static org.junit.Assert.*;
 public class CameraQrTest {
     @Test public void cameraPreviewStreamsAndRestartsAfterRecreation() throws Exception {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        // Start with an explicit Buyer session regardless of previous tests.
+        User buyer = RepositoryProvider.get(context).auth().login("demo@uit.edu.vn", "123456");
+        assertNotNull("Demo Buyer login must succeed", buyer);
+        assertEquals(User.Role.BUYER, buyer.role);
         InstrumentationRegistry.getInstrumentation().getUiAutomation().grantRuntimePermission(
                 context.getPackageName(), android.Manifest.permission.CAMERA);
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
-            onView(withId(R.id.btn_scan_qr)).perform(click());
+            onView(withId(R.id.btn_scan_qr)).check(matches(isDisplayed())).perform(click());
             assertStreaming(scenario);
             scenario.recreate();
             assertStreaming(scenario);
@@ -45,6 +53,7 @@ public class CameraQrTest {
         CountDownLatch streaming = new CountDownLatch(1);
         scenario.onActivity(activity -> {
             PreviewView preview = activity.findViewById(R.id.preview_camera);
+            assertNotNull("Camera preview must exist on the join screen", preview);
             preview.getPreviewStreamState().observe(activity, state -> {
                 if (state == PreviewView.StreamState.STREAMING) streaming.countDown();
             });
