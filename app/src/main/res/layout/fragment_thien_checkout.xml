@@ -41,6 +41,18 @@
         <RadioButton android:id="@+id/rb_thien_cash" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/thien_figma_037" android:checked="true" android:textSize="@dimen/thien_small_size" android:buttonTint="@color/primary"/>
         <RadioButton android:id="@+id/rb_thien_wallet" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/thien_figma_038" android:textSize="@dimen/thien_small_size" android:buttonTint="@color/primary"/>
       </LinearLayout>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+          android:orientation="vertical" android:background="@drawable/bg_thien_card"
+          android:padding="@dimen/thien_card_pad" android:layout_marginBottom="@dimen/thien_card_gap">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="@string/task03_order_note">
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/et_task03_order_note" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:inputType="textCapSentences|textMultiLine"
+              android:minLines="2" android:maxLines="4" android:maxLength="300" />
+        </com.google.android.material.textfield.TextInputLayout>
+      </LinearLayout>
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
   <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_thien_card" android:padding="@dimen/thien_card_pad" android:layout_marginBottom="0dp" android:layout_marginStart="@dimen/thien_page_space" android:layout_marginEnd="@dimen/thien_page_space">

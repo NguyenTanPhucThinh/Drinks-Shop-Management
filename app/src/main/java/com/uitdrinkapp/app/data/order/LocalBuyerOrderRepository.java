@@ -6,6 +6,7 @@ import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderItem;
 import com.uitdrinkapp.app.data.model.OrderStatus;
 import com.uitdrinkapp.app.data.model.PaymentMethod;
+import com.uitdrinkapp.app.data.model.Temperature;
 import com.uitdrinkapp.app.data.model.Review;
 import com.uitdrinkapp.app.data.model.ShopSession;
 import com.uitdrinkapp.app.data.model.Product;
@@ -88,7 +89,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
             }
             items.add(new OrderItem(line.lineId, line.productId, line.productName, line.basePrice,
                     line.size.name(), line.sugar.percent, line.ice.percent, toppings,
-                    line.quantity, line.unitPrice()));
+                    line.quantity, line.unitPrice(), line.temperature, line.fulfillmentMethod));
         }
         return items;
     }
@@ -118,7 +119,9 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
                     ? CartLine.Level.P0 : CartLine.Level.P50;
             result.add(new CartLine(p.getId(), p.getName(), p.getPrice(),
                     CartLine.Size.S, sugar, ice,
-                    Collections.emptyList(), 1, p.getPriceS()));
+                    Collections.emptyList(), 1, p.getPriceS(),
+                    ice == CartLine.Level.P0 ? Temperature.HOT : Temperature.ICED,
+                    null));
         }
         return result;
     }
@@ -177,6 +180,17 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
 
     @Override public synchronized Order placeOrder(String voucherCode, String tableNumber,
             String customerName, PaymentMethod paymentMethod) {
+        return placeOrderInternal(voucherCode, tableNumber, customerName, paymentMethod, "", "");
+    }
+
+    @Override public synchronized Order placeOrderWithDetails(String voucherCode, String customerName,
+            PaymentMethod paymentMethod, String customerPhone, String note) {
+        return placeOrderInternal(voucherCode, currentTableNumber(), customerName, paymentMethod,
+                customerPhone, note);
+    }
+
+    private Order placeOrderInternal(String voucherCode, String tableNumber, String customerName,
+            PaymentMethod paymentMethod, String customerPhone, String note) {
         List<CartLine> cart = getCart();
         if (cart.isEmpty()) throw new IllegalStateException("Giỏ hàng đang trống");
         for (CartLine line : cart) validateCurrentProduct(line);
@@ -186,7 +200,7 @@ public final class LocalBuyerOrderRepository implements BuyerOrderRepository {
         Order order = new Order(id, System.currentTimeMillis(), tableNumber,
                 snapshotOrderItems(cart), subtotal, discount,
                 voucherCode == null ? "" : voucherCode, OrderStatus.PENDING,
-                customerName, paymentMethod, true);
+                customerName, paymentMethod, true, customerPhone, note);
         List<Order> orders = getOrders();
         orders.add(0, order);
         saveOrders(orders);

@@ -38,6 +38,8 @@ public final class OrderItem {
     public final String size;
     public final int sugarPercent;
     public final int icePercent;
+    public final Temperature temperature;
+    public final FulfillmentMethod fulfillmentMethod;
     public final List<Topping> toppings;
     public final int quantity;
 
@@ -45,19 +47,28 @@ public final class OrderItem {
                      String size, int sugarPercent, int icePercent,
                      List<Topping> toppings, int quantity) {
         this(lineId, productId, productName, basePrice, size, sugarPercent, icePercent,
-                toppings, quantity, null);
+                toppings, quantity, null, null, null);
     }
 
     public OrderItem(String lineId, String productId, String productName, long basePrice,
                      String size, int sugarPercent, int icePercent,
                      List<Topping> toppings, int quantity, long unitPriceAtPurchase) {
         this(lineId, productId, productName, basePrice, size, sugarPercent, icePercent,
-                toppings, quantity, Long.valueOf(unitPriceAtPurchase));
+                toppings, quantity, Long.valueOf(unitPriceAtPurchase), null, null);
+    }
+
+    public OrderItem(String lineId, String productId, String productName, long basePrice,
+                     String size, int sugarPercent, int icePercent, List<Topping> toppings,
+                     int quantity, long unitPriceAtPurchase, Temperature temperature,
+                     FulfillmentMethod fulfillmentMethod) {
+        this(lineId, productId, productName, basePrice, size, sugarPercent, icePercent,
+                toppings, quantity, Long.valueOf(unitPriceAtPurchase), temperature, fulfillmentMethod);
     }
 
     private OrderItem(String lineId, String productId, String productName, long basePrice,
                       String size, int sugarPercent, int icePercent,
-                      List<Topping> toppings, int quantity, Long savedUnitPrice) {
+                      List<Topping> toppings, int quantity, Long savedUnitPrice, Temperature temperature,
+                      FulfillmentMethod fulfillmentMethod) {
         this.lineId = lineId == null || lineId.isEmpty() ? UUID.randomUUID().toString() : lineId;
         this.productId = productId == null ? "" : productId;
         this.productName = productName == null ? "" : productName;
@@ -65,6 +76,8 @@ public final class OrderItem {
         this.size = size == null || size.isEmpty() ? "M" : size;
         this.sugarPercent = clampPercent(sugarPercent);
         this.icePercent = clampPercent(icePercent);
+        this.temperature = temperature;
+        this.fulfillmentMethod = fulfillmentMethod;
         List<Topping> safeToppings = toppings == null ? new ArrayList<>() : new ArrayList<>(toppings);
         this.toppings = Collections.unmodifiableList(safeToppings);
         this.quantity = Math.max(1, quantity);
@@ -88,7 +101,7 @@ public final class OrderItem {
 
     public OrderItem copy() {
         return new OrderItem(lineId, productId, productName, basePrice,
-                size, sugarPercent, icePercent, toppings, quantity, unitPrice);
+                size, sugarPercent, icePercent, toppings, quantity, unitPrice, temperature, fulfillmentMethod);
     }
 
     JSONObject toJson() throws JSONException {
@@ -101,6 +114,8 @@ public final class OrderItem {
         value.put("size", size);
         value.put("sugar", sugarPercent);
         value.put("ice", icePercent);
+        if (temperature != null) value.put("temperature", temperature.name());
+        if (fulfillmentMethod != null) value.put("fulfillmentMethod", fulfillmentMethod.name());
         value.put("quantity", quantity);
         JSONArray toppingValues = new JSONArray();
         for (Topping topping : toppings) toppingValues.put(topping.toJson());
@@ -122,7 +137,13 @@ public final class OrderItem {
                 value.optString("productName"), value.optLong("basePrice"),
                 value.optString("size", "M"), readPercent(value, "sugar", 50),
                 readPercent(value, "ice", 50), toppingValues, value.optInt("quantity", 1),
-                savedUnitPrice);
+                savedUnitPrice, readEnum(Temperature.class, value.optString("temperature")),
+                readEnum(FulfillmentMethod.class, value.optString("fulfillmentMethod")));
+    }
+
+    private static <E extends Enum<E>> E readEnum(Class<E> type, String value) {
+        try { return Enum.valueOf(type, value); }
+        catch (IllegalArgumentException ignored) { return null; }
     }
 
     private static int readPercent(JSONObject value, String key, int fallback) {

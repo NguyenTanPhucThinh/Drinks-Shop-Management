@@ -12,6 +12,8 @@ public final class Order {
     public final long createdAt;
     public final String tableNumber;
     public final String customerName;
+    public final String customerPhone;
+    public final String note;
     public final PaymentMethod paymentMethod;
     /** True only for newly created local demo orders and explicit demo seeds. */
     public final boolean isDemo;
@@ -37,11 +39,21 @@ public final class Order {
     public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
                  long subtotal, long discount, String voucherCode, OrderStatus status,
                  String customerName, PaymentMethod paymentMethod, boolean isDemo) {
+        this(orderId, createdAt, tableNumber, items, subtotal, discount, voucherCode, status,
+                customerName, paymentMethod, isDemo, "", "");
+    }
+
+    public Order(String orderId, long createdAt, String tableNumber, List<OrderItem> items,
+                 long subtotal, long discount, String voucherCode, OrderStatus status,
+                 String customerName, PaymentMethod paymentMethod, boolean isDemo,
+                 String customerPhone, String note) {
         this.orderId = orderId == null ? "" : orderId;
         this.createdAt = createdAt;
         this.tableNumber = tableNumber == null ? "" : tableNumber;
         this.customerName = customerName == null || customerName.trim().isEmpty()
                 ? "Khách" : customerName;
+        this.customerPhone = customerPhone == null ? "" : customerPhone.trim();
+        this.note = note == null ? "" : note.trim();
         this.paymentMethod = paymentMethod == null ? PaymentMethod.UNSPECIFIED : paymentMethod;
         this.isDemo = isDemo;
         List<OrderItem> safeItems = new ArrayList<>();
@@ -61,6 +73,8 @@ public final class Order {
         value.put("createdAt", createdAt);
         value.put("tableNumber", tableNumber);
         value.put("customerName", customerName);
+        value.put("customerPhone", customerPhone);
+        value.put("note", note);
         value.put("paymentMethod", paymentMethod.name());
         value.put("isDemo", isDemo);
         value.put("subtotal", subtotal);
@@ -90,21 +104,22 @@ public final class Order {
                 value.optLong("discount"), value.optString("voucherCode"), status,
                 value.optString("customerName", "Khách"),
                 PaymentMethod.fromStorage(value.optString("paymentMethod", "UNSPECIFIED")),
-                value.optBoolean("isDemo", false));
+                value.optBoolean("isDemo", false), value.optString("customerPhone", ""),
+                value.optString("note", ""));
     }
 
     public Order withCustomerName(String name) {
         return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
-                voucherCode, status, name, paymentMethod, isDemo);
+                voucherCode, status, name, paymentMethod, isDemo, customerPhone, note);
     }
 
     public Order withCreatedAt(long timestamp) {
         return new Order(orderId, timestamp, tableNumber, items, subtotal, discount,
-                voucherCode, status, customerName, paymentMethod, isDemo);
+                voucherCode, status, customerName, paymentMethod, isDemo, customerPhone, note);
     }
 
     public Order withDemo(boolean demo) {
         return new Order(orderId, createdAt, tableNumber, items, subtotal, discount,
-                voucherCode, status, customerName, paymentMethod, demo);
+                voucherCode, status, customerName, paymentMethod, demo, customerPhone, note);
     }
 }

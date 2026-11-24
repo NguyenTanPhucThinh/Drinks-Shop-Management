@@ -149,7 +149,8 @@ public final class ProductDetailFragment extends Fragment {
             cartToppings.add(new CartLine.Topping(t.getName(), t.getPrice()));
         }
         return new CartLine(productId, productName, basePrice, cartSize, cartSugar, cartIce,
-                cartToppings, selection.getQuantity(), product.getPriceFor(selection.getSize()));
+                cartToppings, selection.getQuantity(), product.getPriceFor(selection.getSize()),
+                selection.getTemperature(), selection.getFulfillment());
     }
     private <T extends Enum<T>> void bindChoice(ChipGroup group, int[] ids, T[] values, T selected, Consumer<T> setter) {
         group.check(ids[selected.ordinal()]);

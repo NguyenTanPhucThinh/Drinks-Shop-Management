@@ -124,8 +124,16 @@ public final class CartFragment extends Fragment {
                     binding.thienCartContainer, false);
             row.tvThienCartItemName.setText(item.productName);
             ProductThumbnail.bind(row.ivThienCartImage, item.productId);
-            row.tvThienCartItemOptions.setText(getString(R.string.thien_cart_options,
-                    item.size.name(), item.sugar.percent, item.ice.percent));
+            String options = item.temperature == null
+                    ? getString(R.string.thien_cart_options, item.size.name(), item.sugar.percent, item.ice.percent)
+                    : getString(R.string.task03_cart_options, item.size.name(), item.sugar.percent,
+                            getString(item.temperature == com.uitdrinkapp.app.data.model.Temperature.HOT
+                                    ? R.string.detail_hot : R.string.detail_iced));
+            if (item.fulfillmentMethod != null) {
+                options += " · " + getString(item.fulfillmentMethod == com.uitdrinkapp.app.data.model.FulfillmentMethod.TAKEAWAY
+                        ? R.string.detail_takeaway : R.string.detail_counter);
+            }
+            row.tvThienCartItemOptions.setText(options);
             row.tvThienCartItemTopping.setVisibility(item.toppings.isEmpty() ? View.GONE : View.VISIBLE);
             row.tvThienCartItemTopping.setText(item.toppings.isEmpty() ? "" :
                     getString(R.string.thien_topping_label, item.toppingLabel()));

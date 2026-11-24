@@ -60,7 +60,11 @@ public final class CheckoutFragment extends Fragment {
                 String customerName = buyer == null ? "" : buyer.fullName;
                 PaymentMethod paymentMethod = binding.rbThienWallet.isChecked()
                         ? PaymentMethod.EWALLET : PaymentMethod.CASH;
-                Order newOrder = repo.placeOrder(voucher, customerName, paymentMethod);
+                String customerPhone = buyer == null ? "" : buyer.phone;
+                String note = binding.etTask03OrderNote.getText() == null ? ""
+                        : binding.etTask03OrderNote.getText().toString();
+                Order newOrder = repo.placeOrderWithDetails(voucher, customerName, paymentMethod,
+                        customerPhone, note);
                 Bundle args = new Bundle(); args.putString("order_id", newOrder.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_checkout_to_tracking, args);
             } catch (IllegalStateException ex) {
