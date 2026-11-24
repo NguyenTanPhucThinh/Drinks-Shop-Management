@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UIT Drink Management App</string>
+    <string name="app_name">UIT Drinks</string>
     <string name="home_greeting_morning">Chào buổi sáng,</string>
     <string name="home_greeting_afternoon">Chào buổi chiều,</string>
     <string name="home_greeting_evening">Chào buổi tối,</string>
