@@ -40,6 +40,22 @@
           <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/thien_small_size" android:text="@string/thien_figma_049" android:layout_weight="1"/>
           <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/thien_small_size" android:text="" android:id="@+id/tv_thien_tracking_total" android:textStyle="bold"/>
         </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_thien_tracking_detail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_8"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/task03_buyer_view_details"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/thien_body_size"
+            android:visibility="gone"
+            app:backgroundTint="@color/thien_white"
+            app:cornerRadius="@dimen/radius_8"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp" />
         <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_cancel_order" android:layout_width="match_parent" android:layout_height="@dimen/button_height" android:text="@string/thien_figma_050" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/error" app:backgroundTint="@color/thien_white" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" app:strokeColor="@color/error" app:strokeWidth="1dp" android:layout_marginTop="@dimen/spacing_8"/>
         <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_tracking_review" android:layout_width="match_parent" android:layout_height="@dimen/button_height" android:text="@string/thien_review_action" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/on_primary" android:insetTop="0dp" android:insetBottom="0dp" android:layout_marginTop="8dp" android:visibility="gone" app:backgroundTint="@color/primary" app:cornerRadius="@dimen/radius_8"/>
         <com.google.android.material.button.MaterialButton android:id="@+id/btn_thien_open_history" android:layout_width="match_parent" android:layout_height="@dimen/button_height" android:text="@string/thien_figma_052" android:textSize="@dimen/thien_body_size" android:textAllCaps="false" android:textColor="@color/primary" app:backgroundTint="@color/thien_white" app:cornerRadius="@dimen/radius_8" android:insetTop="0dp" android:insetBottom="0dp" app:strokeColor="@color/primary" app:strokeWidth="1dp" android:layout_marginTop="@dimen/spacing_8" android:visibility="gone"/>
@@ -111,22 +127,6 @@
                 app:strokeColor="@color/thien_muted"
                 app:strokeWidth="1dp" />
         </LinearLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_thien_tracking_detail"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/spacing_8"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/thien_demo_view_details"
-            android:textAllCaps="false"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/thien_body_size"
-            android:visibility="gone"
-            app:backgroundTint="@color/thien_white"
-            app:cornerRadius="@dimen/radius_8"
-            app:strokeColor="@color/primary"
-            app:strokeWidth="1dp" />
       </LinearLayout>
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>

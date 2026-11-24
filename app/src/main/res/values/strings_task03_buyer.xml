@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="task03_buyer_hot">Nóng</string>
+    <string name="task03_buyer_iced">Đá</string>
+    <string name="task03_buyer_counter">Tại quầy</string>
+    <string name="task03_buyer_takeaway">Mang về</string>
+    <string name="task03_buyer_unknown">Chưa có dữ liệu</string>
+    <string name="task03_buyer_temperature">Nhiệt độ: %1$s</string>
+    <string name="task03_buyer_fulfillment">Hình thức lấy hàng: %1$s</string>
+    <string name="task03_buyer_hot_options">Đường %1$d%%</string>
+    <string name="task03_buyer_cold_options">Đường %1$d%% · Đá %2$d%%</string>
+    <string name="task03_buyer_toppings">Topping: %1$s</string>
+    <string name="task03_buyer_no_toppings">Không có</string>
+    <string name="task03_buyer_note">Ghi chú: %1$s</string>
+    <string name="task03_buyer_no_note">Không có ghi chú</string>
+    <string name="task03_buyer_no_items">Không có sản phẩm</string>
+    <string name="task03_buyer_subtotal">Tạm tính: %1$s</string>
+    <string name="task03_buyer_discount">Giảm giá: %1$s</string>
+    <string name="task03_buyer_voucher">Voucher: %1$s</string>
+    <string name="task03_buyer_view_details">Xem chi tiết đơn hàng</string>
+</resources>

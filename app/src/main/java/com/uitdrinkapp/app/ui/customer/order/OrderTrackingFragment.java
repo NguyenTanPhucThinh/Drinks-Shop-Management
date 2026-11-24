@@ -15,9 +15,11 @@ import com.uitdrinkapp.app.R;
 import com.uitdrinkapp.app.databinding.FragmentThienOrderTrackingBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
+import com.uitdrinkapp.app.data.model.FulfillmentMethod;
 import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderItem;
 import com.uitdrinkapp.app.data.model.OrderStatus;
+import com.uitdrinkapp.app.data.model.Temperature;
 
 /** Màn 09: theo dõi đơn, công cụ demo PENDING -> DELIVERING -> COMPLETED. */
 public final class OrderTrackingFragment extends Fragment {
@@ -112,7 +114,7 @@ public final class OrderTrackingFragment extends Fragment {
                 order.status == OrderStatus.DELIVERING);
         setDemoEnabled(binding.btnThienDemoReset,
                 !waiting);
-        binding.btnThienTrackingDetail.setVisibility(finished ? View.VISIBLE : View.GONE);
+        binding.btnThienTrackingDetail.setVisibility(View.VISIBLE);
         binding.btnThienOpenHistory.setVisibility(View.GONE);
         binding.btnThienTrackingReview.setVisibility(finished ? View.VISIBLE : View.GONE);
         binding.btnThienTrackingReview.setText(repo.hasReview(order.orderId)
@@ -142,18 +144,50 @@ public final class OrderTrackingFragment extends Fragment {
         Order order = repo.getOrder(orderId);
         if (order == null) return;
         StringBuilder body = new StringBuilder();
-        for (OrderItem line : order.items) {
-            if (body.length() > 0) body.append("\n");
-            body.append(getString(R.string.thien_checkout_item_line,
-                    line.quantity, line.productName, line.size,
-                    OrderUiFormat.money(line.totalPrice())));
+        for (OrderItem item : order.items) {
+            if (body.length() > 0) body.append("\n\n");
+            body.append(formatDetailItem(item));
         }
-        body.append("\n\n").append(getString(R.string.thien_demo_details_total,
+        if (order.items.isEmpty()) body.append(getString(R.string.task03_buyer_no_items));
+        body.append("\n\n").append(getString(R.string.task03_buyer_note,
+                order.note == null || order.note.trim().isEmpty()
+                        ? getString(R.string.task03_buyer_no_note) : order.note));
+        body.append("\n\n").append(getString(R.string.task03_buyer_subtotal,
+                OrderUiFormat.money(order.subtotal)));
+        if (order.discount > 0L) {
+            body.append("\n").append(getString(R.string.task03_buyer_discount,
+                    OrderUiFormat.money(order.discount)));
+            if (order.voucherCode != null && !order.voucherCode.trim().isEmpty()) {
+                body.append("\n").append(getString(R.string.task03_buyer_voucher, order.voucherCode));
+            }
+        }
+        body.append("\n").append(getString(R.string.thien_demo_details_total,
                 OrderUiFormat.money(order.totalAmount())));
         new AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.thien_demo_details_title, order.orderId))
                 .setMessage(body.toString())
                 .setPositiveButton(R.string.thien_close, null).show();
+    }
+
+    private String formatDetailItem(OrderItem item) {
+        String title = getString(R.string.thien_checkout_item_line,
+                item.quantity, item.productName, item.size,
+                OrderUiFormat.money(item.totalPrice()));
+        String temperature = getString(item.temperature == Temperature.HOT
+                ? R.string.task03_buyer_hot : item.temperature == Temperature.ICED
+                ? R.string.task03_buyer_iced : R.string.task03_buyer_unknown);
+        String fulfillment = getString(item.fulfillmentMethod == FulfillmentMethod.AT_COUNTER
+                ? R.string.task03_buyer_counter : item.fulfillmentMethod == FulfillmentMethod.TAKEAWAY
+                ? R.string.task03_buyer_takeaway : R.string.task03_buyer_unknown);
+        String options = item.temperature == Temperature.HOT
+                ? getString(R.string.task03_buyer_hot_options, item.sugarPercent)
+                : getString(R.string.task03_buyer_cold_options, item.sugarPercent, item.icePercent);
+        String toppings = item.toppings.isEmpty()
+                ? getString(R.string.task03_buyer_no_toppings) : item.toppingLabel();
+        return title + "\n" + options + "\n"
+                + getString(R.string.task03_buyer_temperature, temperature) + "\n"
+                + getString(R.string.task03_buyer_fulfillment, fulfillment) + "\n"
+                + getString(R.string.task03_buyer_toppings, toppings);
     }
     @Override public void onDestroyView() { super.onDestroyView(); binding = null; }
 }
