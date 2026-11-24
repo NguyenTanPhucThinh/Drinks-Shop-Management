@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="task03_seller_phone">SĐT khách</string>
+    <string name="task03_seller_show_phone">Xem số</string>
+    <string name="task03_seller_hide_phone">Ẩn số</string>
+    <string name="task03_seller_note">Ghi chú đơn hàng</string>
+    <string name="task03_seller_no_note">Không có ghi chú</string>
+    <string name="task03_seller_hot_options">Size %1$s · Đường %2$d%%</string>
+    <string name="task03_seller_item_metadata">Nhiệt độ: %1$s · Hình thức: %2$s</string>
+    <string name="task03_seller_hot">Nóng</string>
+    <string name="task03_seller_iced">Đá</string>
+    <string name="task03_seller_counter">Tại quầy</string>
+    <string name="task03_seller_takeaway">Mang về</string>
+    <string name="task03_seller_unspecified">Chưa có dữ liệu</string>
+    <string name="task03_seller_none">Không có</string>
+</resources>

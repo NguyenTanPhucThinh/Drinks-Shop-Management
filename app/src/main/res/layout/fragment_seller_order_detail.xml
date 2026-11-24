@@ -99,6 +99,38 @@
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_customer" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
                         <TextView android:id="@+id/tv_seller_detail_customer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/spacing_8" android:maxWidth="@dimen/thien_seller_detail_value_max_width" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" android:gravity="end" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_4"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/task03_seller_phone"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/text_12" />
+                        <TextView
+                            android:id="@+id/tv_seller_detail_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_8"
+                            android:gravity="end"
+                            android:textColor="@color/seller_text_primary"
+                            android:textSize="@dimen/text_14"
+                            android:visibility="invisible" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_seller_detail_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            android:layout_marginStart="@dimen/spacing_8"
+                            android:text="@string/task03_seller_show_phone"
+                            android:textAllCaps="false"
+                            android:textSize="@dimen/text_12" />
+                    </LinearLayout>
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_8" android:orientation="horizontal">
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_table" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
                         <TextView android:id="@+id/tv_seller_detail_table" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" />
@@ -107,6 +139,20 @@
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/thien_seller_detail_payment" android:textColor="@color/text_secondary" android:textSize="@dimen/text_12" />
                         <TextView android:id="@+id/tv_seller_detail_payment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/spacing_8" android:maxWidth="@dimen/thien_seller_detail_value_max_width" android:gravity="end" android:textColor="@color/seller_text_primary" android:textSize="@dimen/text_12" />
                     </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_12"
+                        android:text="@string/task03_seller_note"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_12" />
+                    <TextView
+                        android:id="@+id/tv_seller_detail_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_4"
+                        android:textColor="@color/seller_text_primary"
+                        android:textSize="@dimen/text_14" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
