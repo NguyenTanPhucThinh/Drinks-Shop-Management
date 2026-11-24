@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/ic_cup"
-    android:inset="27dp" />
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/task03_launcher_teapot"
+    android:gravity="fill"
+    android:filter="true" />
