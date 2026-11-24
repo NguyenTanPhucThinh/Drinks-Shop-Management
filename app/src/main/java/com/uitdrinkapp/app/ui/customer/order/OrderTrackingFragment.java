@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.ui.common.OrderSystemNotifications;
 import com.uitdrinkapp.app.databinding.FragmentThienOrderTrackingBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
@@ -45,8 +46,11 @@ public final class OrderTrackingFragment extends Fragment {
                 .setMessage(R.string.thien_cancel_confirm_body)
                 .setNegativeButton(R.string.thien_close, null)
                 .setPositiveButton(R.string.thien_cancel_order, (dialog, which) -> {
-                    if (!repo.cancelOrder(orderId))
+                    if (!repo.cancelOrder(orderId)) {
                         Toast.makeText(requireContext(), R.string.thien_cannot_cancel, Toast.LENGTH_SHORT).show();
+                    } else {
+                        OrderSystemNotifications.buyerCancelled(requireContext(), orderId);
+                    }
                     render();
                 }).show());
         binding.btnThienSimulatePrepare.setOnClickListener(v -> confirmDemo(

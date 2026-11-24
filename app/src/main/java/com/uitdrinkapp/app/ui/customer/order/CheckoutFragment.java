@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.ui.common.OrderSystemNotifications;
 import com.uitdrinkapp.app.databinding.FragmentThienCheckoutBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
@@ -35,6 +36,7 @@ public final class CheckoutFragment extends Fragment {
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         repo = BuyerOrderRepositoryProvider.get(requireContext());
+        OrderSystemNotifications.prepare(requireActivity());
         BuyerNavBars.setVisible(requireActivity(), false);
         voucher = getArguments()==null?"":getArguments().getString("voucher_code","");
         binding.rbThienCash.setOnClickListener(v -> binding.rbThienWallet.setChecked(false));
@@ -65,6 +67,7 @@ public final class CheckoutFragment extends Fragment {
                         : binding.etTask03OrderNote.getText().toString();
                 Order newOrder = repo.placeOrderWithDetails(voucher, customerName, paymentMethod,
                         customerPhone, note);
+                OrderSystemNotifications.orderCreated(requireContext(), newOrder.orderId);
                 Bundle args = new Bundle(); args.putString("order_id", newOrder.orderId);
                 NavHostFragment.findNavController(this).navigate(R.id.action_thien_checkout_to_tracking, args);
             } catch (IllegalStateException ex) {

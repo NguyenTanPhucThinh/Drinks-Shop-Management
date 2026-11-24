@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.ui.common.OrderSystemNotifications;
 import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderStatus;
 import com.uitdrinkapp.app.data.order.OrderRepository;
@@ -51,6 +52,7 @@ public final class OrderManagementFragment extends Fragment {
             catch (IllegalArgumentException ignored) { filter = SellerOrderUiPolicy.Filter.ALL; }
         }
         orders = OrderRepositoryProvider.get(requireContext());
+        OrderSystemNotifications.prepare(requireActivity());
         adapter = new SellerOrderAdapter(this::confirmTransition, this::openDetail);
         binding.rvThienSellerOrders.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvThienSellerOrders.setAdapter(adapter);
@@ -128,6 +130,7 @@ public final class OrderManagementFragment extends Fragment {
                     Order now = orders.getOrder(id);
                     boolean valid = now != null && OrderTransitions.canSellerTransition(now.status, target);
                     boolean changed = valid && orders.updateStatus(id, target);
+                    if (changed) OrderSystemNotifications.sellerStatusChanged(requireContext(), id, target);
                     Toast.makeText(requireContext(), changed
                             ? R.string.thien_seller_orders_updated : R.string.thien_seller_orders_invalid,
                             Toast.LENGTH_SHORT).show();
