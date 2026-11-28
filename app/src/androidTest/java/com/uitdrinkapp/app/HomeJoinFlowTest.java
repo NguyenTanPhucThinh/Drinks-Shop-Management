@@ -8,6 +8,9 @@ import com.uitdrinkapp.app.data.model.ShopSession;
 import com.uitdrinkapp.app.data.repository.FakeShopRepository;
 import com.uitdrinkapp.app.data.repository.PreferencesShopSessionRepository;
 import org.junit.Before;
+import org.junit.After;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
@@ -22,15 +25,20 @@ public class HomeJoinFlowTest {
     private Context context;
     @Before public void resetSession() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertNotNull("Demo Buyer login required", RepositoryProvider.get(context).auth()
+                .login("demo@uit.edu.vn", "123456"));
         context.getSharedPreferences("shop_session", Context.MODE_PRIVATE).edit().clear().commit();
         InstrumentationRegistry.getInstrumentation().getUiAutomation().grantRuntimePermission(
                 context.getPackageName(), android.Manifest.permission.CAMERA);
+    }
+    @After public void cleanTestSession() {
+        RepositoryProvider.get(context).auth().logout();
+        context.getSharedPreferences("shop_session", Context.MODE_PRIVATE).edit().clear().commit();
     }
     @Test public void manualEntryPersistsAndBackDoesNotChangeSelection() {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.tv_shop_status)).check(matches(withText(R.string.home_not_joined)));
             onView(withId(R.id.btn_scan_qr)).perform(click());
-            onView(withId(R.id.et_shop_code)).perform(scrollTo(), replaceText("ts-0123"), closeSoftKeyboard());
             onView(withId(R.id.et_table_number)).perform(scrollTo(), replaceText("05"), closeSoftKeyboard());
             scenario.recreate();
             onView(withId(R.id.et_table_number)).check(matches(withText("05")));
@@ -48,14 +56,20 @@ public class HomeJoinFlowTest {
         assertNotNull(persisted);
         assertEquals("05", persisted.getTableNumber());
     }
-    @Test public void cameraScreenAndUnavailableActions() {
-        try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(MainActivity.class)) {
+    @Test public void cameraScreenAndMenuNavigation() {
+        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.btn_scan_qr)).perform(click());
             onView(withId(R.id.preview_camera)).check(matches(isDisplayed()));
             pressBack();
             onView(withId(R.id.tv_shop_status)).check(matches(withText(R.string.home_not_joined)));
             onView(withId(R.id.btn_nav_menu)).perform(click());
-            onView(withText(R.string.home_unavailable)).check(matches(isDisplayed()));
+            scenario.onActivity(activity -> {
+                NavHostFragment host = (NavHostFragment) activity.getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment);
+                assertNotNull(host);
+                assertEquals(R.id.menuFragment, host.getNavController().getCurrentDestination().getId());
+            });
+            pressBack();
             onView(withId(R.id.btn_scan_qr)).check(matches(isDisplayed()));
         }
     }

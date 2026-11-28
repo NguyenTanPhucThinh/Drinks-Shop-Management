@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/thien_page">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="54dp"
+        android:gravity="center_vertical" android:orientation="horizontal"
+        android:paddingStart="@dimen/thien_page_space" android:paddingEnd="@dimen/thien_page_space">
+        <androidx.appcompat.widget.AppCompatImageButton android:id="@+id/btn_gd07_detail_back"
+            android:layout_width="48dp" android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless" android:padding="12dp"
+            android:contentDescription="@string/gd07_back" app:srcCompat="@drawable/ic_back"
+            app:tint="@color/text_primary" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="@string/gd07_detail_title" android:textStyle="bold"
+            android:textColor="@color/text_primary" android:textSize="@dimen/thien_title_size" />
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+        <LinearLayout android:id="@+id/ll_gd07_detail_cards" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical"
+            android:paddingStart="@dimen/thien_page_space" android:paddingEnd="@dimen/thien_page_space"
+            android:paddingBottom="@dimen/spacing_16" />
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

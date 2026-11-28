@@ -11,11 +11,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.data.model.FulfillmentMethod;
 import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderItem;
 import com.uitdrinkapp.app.data.model.OrderStatus;
 import com.uitdrinkapp.app.data.model.PaymentMethod;
 import com.uitdrinkapp.app.data.model.Review;
+import com.uitdrinkapp.app.data.model.Temperature;
 import com.uitdrinkapp.app.data.order.OrderRepository;
 import com.uitdrinkapp.app.data.order.OrderRepositoryProvider;
 import com.uitdrinkapp.app.databinding.FragmentSellerOrderDetailBinding;
@@ -73,6 +75,9 @@ public final class OrderDetailFragment extends Fragment {
                 R.string.thien_seller_detail_order_id, order.orderId));
         binding.tvSellerDetailDate.setText(formatDate(order.createdAt));
         binding.tvSellerDetailCustomer.setText(displayValue(order.customerName));
+        bindCustomerPhone(order.customerPhone);
+        binding.tvSellerDetailNote.setText(order.note == null || order.note.trim().isEmpty()
+                ? getString(R.string.task03_seller_no_note) : order.note);
         binding.tvSellerDetailTable.setText(order.tableNumber == null || order.tableNumber.trim().isEmpty()
                 ? getString(R.string.thien_seller_detail_no_table)
                 : getString(R.string.thien_seller_detail_table_number, order.tableNumber));
@@ -90,16 +95,16 @@ public final class OrderDetailFragment extends Fragment {
             row.tvSellerDetailItemTitle.setText(getString(
                     R.string.thien_seller_detail_item_title, item.quantity, item.productName));
             row.tvSellerDetailItemPrice.setText(money(item.totalPrice()));
-            row.tvSellerDetailItemOptions.setText(getString(
-                    R.string.thien_seller_detail_item_options, item.size,
-                    item.sugarPercent, item.icePercent));
-            if (item.toppings.isEmpty()) {
-                row.tvSellerDetailItemToppings.setVisibility(View.GONE);
-            } else {
-                row.tvSellerDetailItemToppings.setVisibility(View.VISIBLE);
-                row.tvSellerDetailItemToppings.setText(getString(
-                        R.string.thien_seller_detail_item_toppings, item.toppingLabel()));
-            }
+            row.tvSellerDetailItemOptions.setText(item.temperature == Temperature.HOT
+                    ? getString(R.string.task03_seller_hot_options, item.size, item.sugarPercent)
+                    : getString(R.string.thien_seller_detail_item_options, item.size,
+                            item.sugarPercent, item.icePercent));
+            row.tvSellerDetailItemMetadata.setText(getString(R.string.task03_seller_item_metadata,
+                    temperatureLabel(item.temperature), fulfillmentLabel(item.fulfillmentMethod)));
+            row.tvSellerDetailItemToppings.setVisibility(View.VISIBLE);
+            row.tvSellerDetailItemToppings.setText(getString(
+                    R.string.thien_seller_detail_item_toppings, item.toppings.isEmpty()
+                            ? getString(R.string.task03_seller_none) : item.toppingLabel()));
             row.tvSellerDetailItemUnitPrice.setText(getString(
                     R.string.thien_seller_detail_item_unit_price, money(item.unitPrice())));
             binding.llSellerDetailItems.addView(row.getRoot());
@@ -118,6 +123,41 @@ public final class OrderDetailFragment extends Fragment {
         }
         binding.tvSellerDetailTotal.setText(money(order.totalAmount()));
         showReview(repository.getReview(order.orderId));
+    }
+
+    private void bindCustomerPhone(@Nullable String phone) {
+        final String value = phone == null ? "" : phone.trim();
+        binding.tvSellerDetailPhone.setVisibility(View.VISIBLE);
+        binding.btnSellerDetailPhone.setEnabled(!value.isEmpty());
+        binding.btnSellerDetailPhone.setAlpha(value.isEmpty() ? 0.45f : 1f);
+        renderPhone(value, false);
+        binding.btnSellerDetailPhone.setOnClickListener(view -> {
+            if (value.isEmpty()) return;
+            renderPhone(value, !binding.btnSellerDetailPhone.isSelected());
+        });
+    }
+
+    private void renderPhone(String value, boolean revealed) {
+        binding.tvSellerDetailPhone.setText(value.isEmpty() ? "" : revealed
+                ? value : getString(R.string.gd07_phone_mask));
+        binding.btnSellerDetailPhone.setSelected(revealed);
+        binding.btnSellerDetailPhone.setImageResource(revealed
+                ? R.drawable.ic_gd07_eye_off : R.drawable.ic_gd07_eye);
+        binding.btnSellerDetailPhone.setContentDescription(getString(value.isEmpty()
+                ? R.string.gd07_phone_unavailable : revealed
+                ? R.string.task03_seller_hide_phone : R.string.task03_seller_show_phone));
+    }
+
+    private String temperatureLabel(@Nullable Temperature temperature) {
+        if (temperature == Temperature.HOT) return getString(R.string.task03_seller_hot);
+        if (temperature == Temperature.ICED) return getString(R.string.task03_seller_iced);
+        return getString(R.string.task03_seller_unspecified);
+    }
+
+    private String fulfillmentLabel(@Nullable FulfillmentMethod method) {
+        if (method == FulfillmentMethod.AT_COUNTER) return getString(R.string.task03_seller_counter);
+        if (method == FulfillmentMethod.TAKEAWAY) return getString(R.string.task03_seller_takeaway);
+        return getString(R.string.task03_seller_unspecified);
     }
 
     private void showStatus(OrderStatus status) {

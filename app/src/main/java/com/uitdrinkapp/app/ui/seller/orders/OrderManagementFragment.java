@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.ui.common.OrderSystemNotifications;
 import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderStatus;
 import com.uitdrinkapp.app.data.order.OrderRepository;
@@ -51,6 +52,7 @@ public final class OrderManagementFragment extends Fragment {
             catch (IllegalArgumentException ignored) { filter = SellerOrderUiPolicy.Filter.ALL; }
         }
         orders = OrderRepositoryProvider.get(requireContext());
+        OrderSystemNotifications.prepare(requireActivity());
         adapter = new SellerOrderAdapter(this::confirmTransition, this::openDetail);
         binding.rvThienSellerOrders.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvThienSellerOrders.setAdapter(adapter);
@@ -85,10 +87,10 @@ public final class OrderManagementFragment extends Fragment {
             if (SellerOrderUiPolicy.matches(item.status, SellerOrderUiPolicy.Filter.PREPARING)) preparingCount++;
             if (SellerOrderUiPolicy.matches(item.status, filter)) visible.add(item);
         }
-        binding.btnThienSellerFilterAll.setText(getString(R.string.thien_seller_orders_filter_all, all.size()));
-        binding.btnThienSellerFilterNew.setText(getString(R.string.thien_seller_orders_filter_new, newCount));
+        binding.btnThienSellerFilterAll.setText(getString(R.string.gd07_seller_filter_all, newCount + preparingCount));
+        binding.btnThienSellerFilterNew.setText(getString(R.string.gd07_seller_filter_new, newCount));
         binding.btnThienSellerFilterPreparing.setText(getString(
-                R.string.thien_seller_orders_filter_preparing, preparingCount));
+                R.string.gd07_seller_filter_preparing, preparingCount));
         paintFilter(binding.btnThienSellerFilterAll, filter == SellerOrderUiPolicy.Filter.ALL);
         paintFilter(binding.btnThienSellerFilterNew, filter == SellerOrderUiPolicy.Filter.NEW);
         paintFilter(binding.btnThienSellerFilterPreparing, filter == SellerOrderUiPolicy.Filter.PREPARING);
@@ -128,6 +130,7 @@ public final class OrderManagementFragment extends Fragment {
                     Order now = orders.getOrder(id);
                     boolean valid = now != null && OrderTransitions.canSellerTransition(now.status, target);
                     boolean changed = valid && orders.updateStatus(id, target);
+                    if (changed) OrderSystemNotifications.sellerStatusChanged(requireContext(), id, target);
                     Toast.makeText(requireContext(), changed
                             ? R.string.thien_seller_orders_updated : R.string.thien_seller_orders_invalid,
                             Toast.LENGTH_SHORT).show();

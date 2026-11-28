@@ -12,11 +12,18 @@
     <fragment android:id="@+id/thien_tracking" android:name="com.uitdrinkapp.app.ui.customer.order.OrderTrackingFragment" android:label="@string/thien_tracking_title">
         <argument android:name="order_id" app:argType="string" app:nullable="true" android:defaultValue="@null"/>
         <action android:id="@+id/action_thien_tracking_to_history" app:destination="@id/thien_history"/>
+        <action android:id="@+id/action_thien_tracking_to_detail" app:destination="@id/thien_order_detail"/>
     <action android:id="@+id/action_thien_tracking_to_review" app:destination="@id/thien_review"/></fragment>
 
     <fragment android:id="@+id/thien_history" android:name="com.uitdrinkapp.app.ui.customer.history.PurchaseHistoryFragment" android:label="@string/thien_history_title">
         <action android:id="@+id/action_thien_history_to_tracking" app:destination="@id/thien_tracking"/>
+        <action android:id="@+id/action_thien_history_to_detail" app:destination="@id/thien_order_detail"/>
         <action android:id="@+id/action_thien_history_to_review" app:destination="@id/thien_review"/>
+    </fragment>
+
+    <fragment android:id="@+id/thien_order_detail" android:name="com.uitdrinkapp.app.ui.customer.order.BuyerOrderDetailFragment" android:label="@string/gd07_detail_title">
+        <argument android:name="order_id" app:argType="string" />
+        <action android:id="@+id/action_thien_detail_to_tracking" app:destination="@id/thien_tracking" />
     </fragment>
 
     <fragment android:id="@+id/thien_review" android:name="com.uitdrinkapp.app.ui.customer.review.ReviewFragment" android:label="@string/thien_review_title">

@@ -1,5 +1,7 @@
 package com.uitdrinkapp.app.data.order;
 
+import com.uitdrinkapp.app.data.model.Temperature;
+import com.uitdrinkapp.app.data.model.FulfillmentMethod;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +43,8 @@ public final class CartLine {
     public final Size size;
     public final Level sugar;
     public final Level ice;
+    public final Temperature temperature;
+    public final FulfillmentMethod fulfillmentMethod;
     public final List<Topping> toppings;
     public int quantity;
 
@@ -48,7 +52,7 @@ public final class CartLine {
     public CartLine(String productId, String productName, long basePrice,
                     Size size, Level sugar, Level ice, List<Topping> toppings, int quantity) {
         this(UUID.randomUUID().toString(), productId, productName, basePrice,
-                size, sugar, ice, toppings, quantity, -1L);
+                size, sugar, ice, toppings, quantity, -1L, null, null);
     }
 
     /** Snapshot a seller-configured price for this size; later edits do not reprice orders. */
@@ -56,12 +60,21 @@ public final class CartLine {
                     Size size, Level sugar, Level ice, List<Topping> toppings,
                     int quantity, long sizePrice) {
         this(UUID.randomUUID().toString(), productId, productName, basePrice,
-                size, sugar, ice, toppings, quantity, sizePrice);
+                size, sugar, ice, toppings, quantity, sizePrice, null, null);
+    }
+
+    public CartLine(String productId, String productName, long basePrice,
+                    Size size, Level sugar, Level ice, List<Topping> toppings,
+                    int quantity, long sizePrice, Temperature temperature,
+                    FulfillmentMethod fulfillmentMethod) {
+        this(UUID.randomUUID().toString(), productId, productName, basePrice,
+                size, sugar, ice, toppings, quantity, sizePrice, temperature, fulfillmentMethod);
     }
 
     private CartLine(String lineId, String productId, String productName, long basePrice,
                      Size size, Level sugar, Level ice, List<Topping> toppings,
-                     int quantity, long sizePrice) {
+                     int quantity, long sizePrice, Temperature temperature,
+                     FulfillmentMethod fulfillmentMethod) {
         this.lineId = lineId;
         this.productId = productId;
         this.productName = productName;
@@ -70,6 +83,8 @@ public final class CartLine {
         this.size = size;
         this.sugar = sugar;
         this.ice = ice;
+        this.temperature = temperature;
+        this.fulfillmentMethod = fulfillmentMethod;
         this.toppings = Collections.unmodifiableList(new ArrayList<>(toppings));
         this.quantity = Math.max(1, quantity);
     }
@@ -92,13 +107,14 @@ public final class CartLine {
     }
     public CartLine copy() {
         return new CartLine(lineId, productId, productName, basePrice, size, sugar, ice,
-                toppings, quantity, sizePrice);
+                toppings, quantity, sizePrice, temperature, fulfillmentMethod);
     }
     public boolean sameConfiguration(CartLine other) {
         // Never merge a newly priced selection into a cart entry at an old price.
         if (!productId.equals(other.productId) || size != other.size ||
                 basePrice != other.basePrice || sizePrice != other.sizePrice ||
-                sugar != other.sugar || ice != other.ice || toppings.size() != other.toppings.size()) return false;
+                sugar != other.sugar || ice != other.ice || temperature != other.temperature ||
+                fulfillmentMethod != other.fulfillmentMethod || toppings.size() != other.toppings.size()) return false;
         for (int i = 0; i < toppings.size(); i++) {
             Topping a = toppings.get(i), b = other.toppings.get(i);
             if (!a.name.equals(b.name) || a.price != b.price) return false;
@@ -111,6 +127,8 @@ public final class CartLine {
         o.put("productName", productName); o.put("basePrice", basePrice);
         if (hasSizePriceSnapshot()) o.put("sizePrice", sizePrice);
         o.put("size", size.name()); o.put("sugar", sugar.name()); o.put("ice", ice.name());
+        if (temperature != null) o.put("temperature", temperature.name());
+        if (fulfillmentMethod != null) o.put("fulfillmentMethod", fulfillmentMethod.name());
         o.put("quantity", quantity);
         JSONArray arr = new JSONArray();
         for (Topping t : toppings) arr.put(t.toJson());
@@ -127,7 +145,13 @@ public final class CartLine {
                 o.optString("productId"), o.optString("productName"), o.optLong("basePrice"),
                 safeSize(o.optString("size")), safeLevel(o.optString("sugar")),
                 safeLevel(o.optString("ice")), toppings, o.optInt("quantity", 1),
-                o.optLong("sizePrice", -1L));
+                o.optLong("sizePrice", -1L),
+                readEnum(Temperature.class, o.optString("temperature")),
+                readEnum(FulfillmentMethod.class, o.optString("fulfillmentMethod")));
+    }
+    private static <E extends Enum<E>> E readEnum(Class<E> type, String value) {
+        try { return Enum.valueOf(type, value); }
+        catch (IllegalArgumentException ignored) { return null; }
     }
     private static Size safeSize(String value) {
         try { return Size.valueOf(value); } catch (IllegalArgumentException e) { return Size.M; }

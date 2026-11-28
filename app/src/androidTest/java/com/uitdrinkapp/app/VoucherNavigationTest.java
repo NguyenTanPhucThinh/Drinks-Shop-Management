@@ -15,9 +15,24 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import com.uitdrinkapp.app.data.repository.RepositoryProvider;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class VoucherNavigationTest {
+    @Before
+    public void loginBuyer() {
+        android.content.Context context =
+                InstrumentationRegistry.getInstrumentation()
+                        .getTargetContext();
+
+        assertNotNull(
+                RepositoryProvider.get(context)
+                        .auth()
+                        .login("demo@uit.edu.vn", "123456")
+        );
+    }
     @Test public void bannerOpensVouchersAndNavigationStaysConsistent() throws Exception {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.vp_banners)).perform(click());
@@ -26,7 +41,12 @@ public class VoucherNavigationTest {
             onView(withId(R.id.btn_nav_home)).check(matches(org.hamcrest.Matchers.not(isSelected())));
             scenario.onActivity(activity -> {
                 RecyclerView list = activity.findViewById(R.id.rv_vouchers);
-                assertEquals(4, list.getAdapter().getItemCount());
+//                assertEquals(4, list.getAdapter().getItemCount());
+                assertEquals(
+                        RepositoryProvider.get(activity)
+                                .vouchers().getVouchers().size(),
+                        list.getAdapter().getItemCount()
+                );
             });
             scenario.recreate();
             onView(withId(R.id.btn_nav_vouchers)).check(matches(isSelected()));

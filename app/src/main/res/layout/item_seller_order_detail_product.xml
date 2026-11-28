@@ -37,6 +37,13 @@
         android:textColor="@color/text_secondary"
         android:textSize="@dimen/text_12" />
     <TextView
+        android:id="@+id/tv_seller_detail_item_metadata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_12" />
+    <TextView
         android:id="@+id/tv_seller_detail_item_toppings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

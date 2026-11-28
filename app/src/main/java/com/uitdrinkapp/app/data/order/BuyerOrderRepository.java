@@ -22,6 +22,15 @@ public interface BuyerOrderRepository extends OrderRepository {
     /** Optional metadata for future Buyer profile/payment integration; existing call unchanged. */
     Order placeOrder(String voucherCode, String tableNumber, String customerName,
                      PaymentMethod paymentMethod);
+    /** Optional Task 03 metadata; legacy implementations still compile. */
+    default Order placeOrderWithDetails(String voucherCode, String customerName,
+                                        PaymentMethod paymentMethod, String customerPhone, String note) {
+        if ((customerPhone != null && !customerPhone.trim().isEmpty())
+                || (note != null && !note.trim().isEmpty())) {
+            throw new IllegalStateException("Order metadata is not supported by this repository");
+        }
+        return placeOrder(voucherCode, customerName, paymentMethod);
+    }
     boolean cancelOrder(String orderId);
     boolean simulateComplete(String orderId);
     /** Chỉ repository demo được phép đặt lại trạng thái; remote mặc định không hỗ trợ. */

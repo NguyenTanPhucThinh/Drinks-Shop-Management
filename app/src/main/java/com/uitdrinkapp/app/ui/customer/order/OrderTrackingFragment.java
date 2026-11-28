@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.uitdrinkapp.app.R;
+import com.uitdrinkapp.app.ui.common.OrderSystemNotifications;
 import com.uitdrinkapp.app.databinding.FragmentThienOrderTrackingBinding;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepository;
 import com.uitdrinkapp.app.data.order.BuyerOrderRepositoryProvider;
@@ -19,7 +20,7 @@ import com.uitdrinkapp.app.data.model.Order;
 import com.uitdrinkapp.app.data.model.OrderItem;
 import com.uitdrinkapp.app.data.model.OrderStatus;
 
-/** Màn 09: theo dõi đơn, công cụ demo PENDING -> DELIVERING -> COMPLETED. */
+/** Buyer order tracking: read order status and allow only legitimate buyer actions. */
 public final class OrderTrackingFragment extends Fragment {
     private FragmentThienOrderTrackingBinding binding;
     private BuyerOrderRepository repo;
@@ -43,19 +44,14 @@ public final class OrderTrackingFragment extends Fragment {
                 .setMessage(R.string.thien_cancel_confirm_body)
                 .setNegativeButton(R.string.thien_close, null)
                 .setPositiveButton(R.string.thien_cancel_order, (dialog, which) -> {
-                    if (!repo.cancelOrder(orderId))
+                    if (!repo.cancelOrder(orderId)) {
                         Toast.makeText(requireContext(), R.string.thien_cannot_cancel, Toast.LENGTH_SHORT).show();
+                    } else {
+                        OrderSystemNotifications.buyerCancelled(requireContext(), orderId);
+                    }
                     render();
                 }).show());
-        binding.btnThienSimulatePrepare.setOnClickListener(v -> confirmDemo(
-                R.string.thien_demo_confirm_begin, () ->
-                        repo.updateStatus(orderId, OrderStatus.DELIVERING)));
-        binding.btnThienSimulateComplete.setOnClickListener(v -> confirmDemo(
-                R.string.thien_demo_confirm_finish, () ->
-                        repo.updateStatus(orderId, OrderStatus.COMPLETED)));
-        binding.btnThienDemoReset.setOnClickListener(v -> confirmDemo(
-                R.string.thien_demo_confirm_reset, () -> repo.resetDemoOrder(orderId)));
-        binding.btnThienTrackingDetail.setOnClickListener(v -> showOrderDetails());
+        binding.btnThienTrackingDetail.setOnClickListener(v -> openOrderDetails());
         binding.btnThienTrackingReview.setOnClickListener(v -> {
             Bundle args = new Bundle(); args.putString("order_id", orderId);
             NavHostFragment.findNavController(this).navigate(R.id.action_thien_tracking_to_review, args);
@@ -90,8 +86,8 @@ public final class OrderTrackingFragment extends Fragment {
         boolean cancelled=order.status==OrderStatus.CANCELLED || order.status==OrderStatus.REJECTED;
         binding.tvThienStepReceived.setText(cancelled ? "●  Đơn đã hủy" :
                 (waiting ? "○  Đang chờ xử lý" : "✓  Đã nhận đơn"));
-        binding.tvThienStepPreparing.setText(finished ? "✓  Đã pha chế xong" :
-                (waiting || cancelled ? "○  Đang pha chế" : "●  Đang pha chế"));
+        binding.tvThienStepPreparing.setText(finished || order.status == OrderStatus.READY
+                ? "✓  Đã pha chế xong" : (waiting || cancelled ? "○  Đang pha chế" : "●  Đang pha chế"));
         binding.tvThienStepDone.setText(finished ? "✓  Hoàn thành" : "○  Hoàn thành");
         binding.tvThienStepDone.setTextColor(requireContext().getColor(finished?R.color.primary:R.color.text_secondary));
         binding.thienTrackingItems.removeAllViews();
@@ -105,55 +101,26 @@ public final class OrderTrackingFragment extends Fragment {
             binding.thienTrackingItems.addView(label);
         }
         binding.btnThienCancelOrder.setVisibility(order.status == OrderStatus.PENDING ? View.VISIBLE : View.GONE);
-        // Hai nút luôn hiển thị trong khối demo, chỉ kích hoạt khi bước đó hợp lệ.
-        binding.thienDemoTools.setVisibility(View.VISIBLE);
-        setDemoEnabled(binding.btnThienSimulatePrepare, waiting);
-        setDemoEnabled(binding.btnThienSimulateComplete,
-                order.status == OrderStatus.DELIVERING);
-        setDemoEnabled(binding.btnThienDemoReset,
-                !waiting);
-        binding.btnThienTrackingDetail.setVisibility(finished ? View.VISIBLE : View.GONE);
+
+        binding.btnThienTrackingDetail.setVisibility(View.VISIBLE);
         binding.btnThienOpenHistory.setVisibility(View.GONE);
         binding.btnThienTrackingReview.setVisibility(finished ? View.VISIBLE : View.GONE);
         binding.btnThienTrackingReview.setText(repo.hasReview(order.orderId)
                 ? R.string.thien_review_view : R.string.thien_review_action);
     }
-    private interface DemoChange { boolean apply(); }
-
-    private void confirmDemo(int messageId, DemoChange change) {
-        if (repo.getOrder(orderId) == null) return;
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.thien_demo_confirm_title)
-                .setMessage(messageId)
-                .setNegativeButton(R.string.thien_close, null)
-                .setPositiveButton(R.string.thien_demo_confirm_yes, (dialog, which) -> {
-                    if (!change.apply()) Toast.makeText(requireContext(),
-                            R.string.thien_demo_invalid_transition, Toast.LENGTH_SHORT).show();
-                    render();
-                }).show();
-    }
-
-    private void setDemoEnabled(com.google.android.material.button.MaterialButton button, boolean enabled) {
-        button.setEnabled(enabled);
-        button.setAlpha(enabled ? 1f : 0.45f);
-    }
-
-    private void showOrderDetails() {
-        Order order = repo.getOrder(orderId);
-        if (order == null) return;
-        StringBuilder body = new StringBuilder();
-        for (OrderItem line : order.items) {
-            if (body.length() > 0) body.append("\n");
-            body.append(getString(R.string.thien_checkout_item_line,
-                    line.quantity, line.productName, line.size,
-                    OrderUiFormat.money(line.totalPrice())));
+    private void openOrderDetails() {
+        if (orderId == null || repo.getOrder(orderId) == null) return;
+        androidx.navigation.NavController nav = NavHostFragment.findNavController(this);
+        androidx.navigation.NavBackStackEntry previous = nav.getPreviousBackStackEntry();
+        if (previous != null && previous.getDestination().getId() == R.id.thien_order_detail
+                && previous.getArguments() != null
+                && orderId.equals(previous.getArguments().getString("order_id"))) {
+            nav.popBackStack();
+            return;
         }
-        body.append("\n\n").append(getString(R.string.thien_demo_details_total,
-                OrderUiFormat.money(order.totalAmount())));
-        new AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.thien_demo_details_title, order.orderId))
-                .setMessage(body.toString())
-                .setPositiveButton(R.string.thien_close, null).show();
+        Bundle args = new Bundle();
+        args.putString("order_id", orderId);
+        nav.navigate(R.id.action_thien_tracking_to_detail, args);
     }
     @Override public void onDestroyView() { super.onDestroyView(); binding = null; }
 }

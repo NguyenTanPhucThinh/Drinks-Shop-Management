@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                             id == R.id.menuFragment ||
                             id == R.id.vouchersFragment ||
                             id == R.id.thien_history ||
+                            id == R.id.thien_order_detail ||
                             id == R.id.profileFragment;
 
             binding.llBottomNav.setVisibility(
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             selectTab(binding.btnNavHome, id == R.id.homeFragment);
             selectTab(binding.btnNavMenu, id == R.id.menuFragment);
             selectTab(binding.btnNavOrder, id == R.id.thien_cart);
-            selectTab(binding.btnNavHistory, id == R.id.thien_history);
+            selectTab(binding.btnNavHistory, id == R.id.thien_history || id == R.id.thien_order_detail);
             selectTab(binding.btnNavVouchers, id == R.id.vouchersFragment);
             selectTab(binding.btnNavProfile, id == R.id.profileFragment);
             if (messageBar != null) messageBar.dismiss();
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
                 nav.navigate(R.id.thien_flow));
 
         binding.btnNavHistory.setOnClickListener(view -> {
+            if (nav.getCurrentDestination() != null
+                    && nav.getCurrentDestination().getId() == R.id.thien_order_detail
+                    && nav.popBackStack(R.id.thien_history, false)) return;
             if (nav.getCurrentDestination() != null &&
                     nav.getCurrentDestination().getId() == R.id.thien_history) {
                 return;

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import com.uitdrinkapp.app.ui.common.OrderSystemNotifications;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -45,6 +46,7 @@ public final class SellerNotificationFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        OrderSystemNotifications.prepare(requireActivity());
         repositories = RepositoryProvider.get(requireContext());
         orders = OrderRepositoryProvider.get(requireContext());
         User user = repositories.auth().getCurrentUser();

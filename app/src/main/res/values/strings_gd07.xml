@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gd07_phone_mask">•••• ••• •••</string>
+    <string name="gd07_phone_unavailable">Khách chưa cung cấp số điện thoại</string>
+    <string name="gd07_seller_filter_all">Tất cả (%1$d)</string>
+    <string name="gd07_seller_filter_new">Mới (%1$d)</string>
+    <string name="gd07_seller_filter_preparing">Đang pha (%1$d)</string>
+    <string name="gd07_seller_filter_all_default">Tất cả</string>
+    <string name="gd07_seller_filter_new_default">Mới</string>
+    <string name="gd07_seller_filter_preparing_default">Đang pha</string>
+    <string name="gd07_back">Quay lại</string>
+    <string name="gd07_detail_title">Chi tiết đơn hàng</string>
+    <string name="gd07_order_id">Mã đơn hàng</string>
+    <string name="gd07_fulfillment">Hình thức lấy hàng</string>
+    <string name="gd07_items">Món đã đặt (%1$d)</string>
+    <string name="gd07_item_name">%1$d × %2$s</string>
+    <string name="gd07_size">Kích cỡ</string>
+    <string name="gd07_size_value">Size %1$s</string>
+    <string name="gd07_sugar">Đường</string>
+    <string name="gd07_ice">Đá</string>
+    <string name="gd07_temperature">Nhiệt độ</string>
+    <string name="gd07_topping">Topping</string>
+    <string name="gd07_note">Ghi chú</string>
+    <string name="gd07_payment">Chi tiết thanh toán</string>
+    <string name="gd07_subtotal">Tạm tính</string>
+    <string name="gd07_discount">Giảm giá</string>
+    <string name="gd07_voucher">Voucher</string>
+    <string name="gd07_total">Tổng cộng</string>
+    <string name="gd07_track">Theo dõi đơn</string>
+    <string name="gd07_mixed">Kết hợp</string>
+    <string name="gd07_partial_unknown">Một phần chưa có dữ liệu</string>
+    <string name="gd07_not_applicable">—</string>
+    <string name="gd07_percent">%1$d%%</string>
+    <item type="id" name="btn_gd07_track_order" />
+</resources>
