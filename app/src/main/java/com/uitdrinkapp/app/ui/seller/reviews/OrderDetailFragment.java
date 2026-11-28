@@ -127,16 +127,25 @@ public final class OrderDetailFragment extends Fragment {
 
     private void bindCustomerPhone(@Nullable String phone) {
         final String value = phone == null ? "" : phone.trim();
-        binding.tvSellerDetailPhone.setText("");
-        binding.tvSellerDetailPhone.setVisibility(View.INVISIBLE);
-        binding.btnSellerDetailPhone.setText(R.string.task03_seller_show_phone);
+        binding.tvSellerDetailPhone.setVisibility(View.VISIBLE);
+        binding.btnSellerDetailPhone.setEnabled(!value.isEmpty());
+        binding.btnSellerDetailPhone.setAlpha(value.isEmpty() ? 0.45f : 1f);
+        renderPhone(value, false);
         binding.btnSellerDetailPhone.setOnClickListener(view -> {
-            boolean reveal = binding.tvSellerDetailPhone.getVisibility() != View.VISIBLE;
-            binding.tvSellerDetailPhone.setText(reveal ? value : "");
-            binding.tvSellerDetailPhone.setVisibility(reveal ? View.VISIBLE : View.INVISIBLE);
-            binding.btnSellerDetailPhone.setText(reveal ? R.string.task03_seller_hide_phone
-                    : R.string.task03_seller_show_phone);
+            if (value.isEmpty()) return;
+            renderPhone(value, !binding.btnSellerDetailPhone.isSelected());
         });
+    }
+
+    private void renderPhone(String value, boolean revealed) {
+        binding.tvSellerDetailPhone.setText(value.isEmpty() ? "" : revealed
+                ? value : getString(R.string.gd07_phone_mask));
+        binding.btnSellerDetailPhone.setSelected(revealed);
+        binding.btnSellerDetailPhone.setImageResource(revealed
+                ? R.drawable.ic_gd07_eye_off : R.drawable.ic_gd07_eye);
+        binding.btnSellerDetailPhone.setContentDescription(getString(value.isEmpty()
+                ? R.string.gd07_phone_unavailable : revealed
+                ? R.string.task03_seller_hide_phone : R.string.task03_seller_show_phone));
     }
 
     private String temperatureLabel(@Nullable Temperature temperature) {

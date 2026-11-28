@@ -13,7 +13,17 @@ public final class SellerOrderUiPolicyTest {
             assertTrue(SellerOrderUiPolicy.matches(status, SellerOrderUiPolicy.Filter.PREPARING));
         }
         assertFalse(SellerOrderUiPolicy.matches(OrderStatus.CANCELLED, SellerOrderUiPolicy.Filter.PREPARING));
-        assertTrue(SellerOrderUiPolicy.matches(OrderStatus.COMPLETED, SellerOrderUiPolicy.Filter.ALL));
+        for (OrderStatus terminal : new OrderStatus[]{OrderStatus.COMPLETED,
+                OrderStatus.CANCELLED, OrderStatus.REJECTED}) {
+            for (SellerOrderUiPolicy.Filter filter : SellerOrderUiPolicy.Filter.values()) {
+                assertFalse(SellerOrderUiPolicy.matches(terminal, filter));
+            }
+        }
+        for (OrderStatus active : new OrderStatus[]{OrderStatus.PENDING, OrderStatus.ACCEPTED,
+                OrderStatus.PREPARING, OrderStatus.DELIVERING, OrderStatus.READY}) {
+            assertTrue(SellerOrderUiPolicy.matches(active, SellerOrderUiPolicy.Filter.ALL));
+        }
+        assertFalse(SellerOrderUiPolicy.matches(null, SellerOrderUiPolicy.Filter.ALL));
     }
 
     @Test public void pendingAndPreparingActionsMatchTeamDecision() {

@@ -97,7 +97,7 @@ public final class PurchaseHistoryFragment extends Fragment {
                     order.items.isEmpty() ? null : order.items.get(0).productId);
             row.btnThienHistoryDetails.setOnClickListener(v -> {
                 Bundle args = new Bundle(); args.putString("order_id", order.orderId);
-                NavHostFragment.findNavController(this).navigate(R.id.action_thien_history_to_tracking, args);
+                NavHostFragment.findNavController(this).navigate(R.id.action_thien_history_to_detail, args);
             });
             row.thienHistoryRow.setOnClickListener(v -> row.btnThienHistoryDetails.performClick());
             boolean canReview = order.status == OrderStatus.COMPLETED;

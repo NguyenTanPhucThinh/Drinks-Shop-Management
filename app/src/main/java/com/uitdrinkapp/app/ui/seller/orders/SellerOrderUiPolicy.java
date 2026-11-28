@@ -10,10 +10,11 @@ public final class SellerOrderUiPolicy {
     private SellerOrderUiPolicy() { }
 
     public static boolean matches(OrderStatus status, Filter filter) {
-        if (filter == null || filter == Filter.ALL) return true;
-        if (filter == Filter.NEW) return status == OrderStatus.PENDING;
-        return status == OrderStatus.DELIVERING || status == OrderStatus.ACCEPTED
+        boolean isNew = status == OrderStatus.PENDING;
+        boolean preparing = status == OrderStatus.DELIVERING || status == OrderStatus.ACCEPTED
                 || status == OrderStatus.PREPARING || status == OrderStatus.READY;
+        if (filter == null || filter == Filter.ALL) return isNew || preparing;
+        return filter == Filter.NEW ? isNew : preparing;
     }
 
     /** Maps the agreed 4-step Seller workflow while supporting PR #12's extended statuses. */

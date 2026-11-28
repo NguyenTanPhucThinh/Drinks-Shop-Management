@@ -87,10 +87,10 @@ public final class OrderManagementFragment extends Fragment {
             if (SellerOrderUiPolicy.matches(item.status, SellerOrderUiPolicy.Filter.PREPARING)) preparingCount++;
             if (SellerOrderUiPolicy.matches(item.status, filter)) visible.add(item);
         }
-        binding.btnThienSellerFilterAll.setText(getString(R.string.thien_seller_orders_filter_all, all.size()));
-        binding.btnThienSellerFilterNew.setText(getString(R.string.thien_seller_orders_filter_new, newCount));
+        binding.btnThienSellerFilterAll.setText(getString(R.string.gd07_seller_filter_all, newCount + preparingCount));
+        binding.btnThienSellerFilterNew.setText(getString(R.string.gd07_seller_filter_new, newCount));
         binding.btnThienSellerFilterPreparing.setText(getString(
-                R.string.thien_seller_orders_filter_preparing, preparingCount));
+                R.string.gd07_seller_filter_preparing, preparingCount));
         paintFilter(binding.btnThienSellerFilterAll, filter == SellerOrderUiPolicy.Filter.ALL);
         paintFilter(binding.btnThienSellerFilterNew, filter == SellerOrderUiPolicy.Filter.NEW);
         paintFilter(binding.btnThienSellerFilterPreparing, filter == SellerOrderUiPolicy.Filter.PREPARING);
